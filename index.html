@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QRForge — QR Code Generator</title>
+
+<title>QRForge</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
@@ -11,35 +12,58 @@
 :root{
   --bg:#07090d;
   --panel:rgba(255,255,255,.055);
-  --panel2:rgba(255,255,255,.075);
+  --panel2:rgba(255,255,255,.085);
   --border:rgba(255,255,255,.10);
   --text:#f7f8fa;
   --muted:#9299a6;
-  --accent:#7c8cff;
+  --accent:#7182ff;
   --good:#4ade80;
   --warn:#fbbf24;
   --bad:#fb7185;
   --radius:24px;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
-html,body{
+html,
+body{
   margin:0;
   min-height:100%;
   background:
-    radial-gradient(circle at 15% 0%,rgba(124,140,255,.13),transparent 30%),
-    radial-gradient(circle at 85% 15%,rgba(0,200,255,.08),transparent 28%),
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(113,130,255,.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(0,190,255,.08),
+      transparent 28%
+    ),
     var(--bg);
   color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-button,input,select,textarea{font:inherit}
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
 
 button{
-  border:0;
   color:inherit;
+  border:0;
   cursor:pointer;
 }
 
@@ -51,9 +75,9 @@ button{
 
 .topbar{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:16px;
+  align-items:center;
+  gap:15px;
   margin-bottom:20px;
 }
 
@@ -64,21 +88,31 @@ button{
 }
 
 .brandmark{
-  width:42px;
-  height:42px;
-  border-radius:13px;
+  width:44px;
+  height:44px;
+  border-radius:14px;
+
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#fff,#7c8cff);
+
   color:#090a0e;
-  font-weight:900;
-  box-shadow:0 8px 35px rgba(124,140,255,.28);
+  font-weight:950;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #8795ff
+    );
+
+  box-shadow:
+    0 12px 35px rgba(113,130,255,.28);
 }
 
 .brand h1{
   margin:0;
-  font-size:19px;
-  letter-spacing:-.03em;
+  font-size:20px;
+  letter-spacing:-.04em;
 }
 
 .brand span{
@@ -86,61 +120,61 @@ button{
   font-size:12px;
 }
 
-.lang{
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.lang,
+.account-button{
+  min-height:42px;
+  padding:0 13px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
   background:var(--panel);
   border:1px solid var(--border);
-  border-radius:14px;
-  padding:10px 13px;
-  backdrop-filter:blur(18px);
+  border-radius:13px;
+
+  backdrop-filter:blur(20px);
+}
+
+.account-button{
+  display:none;
+}
+
+.account-button.visible{
   display:flex;
-  gap:8px;
-  align-items:center;
 }
 
 .layout{
   display:grid;
-  grid-template-columns:minmax(300px,430px) minmax(400px,1fr);
+  grid-template-columns:minmax(310px,430px) minmax(400px,1fr);
   gap:20px;
 }
 
 .panel{
-  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.025)
+    );
+
   border:1px solid var(--border);
   border-radius:var(--radius);
-  box-shadow:0 25px 80px rgba(0,0,0,.28);
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.28);
+
   backdrop-filter:blur(25px);
 }
 
 .controls{
   padding:20px;
-}
-
-.preview{
-  min-height:720px;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-
-.tabs{
-  display:flex;
-  gap:7px;
-  padding:7px;
-  border-bottom:1px solid var(--border);
-}
-
-.tab{
-  flex:1;
-  background:transparent;
-  color:var(--muted);
-  padding:11px;
-  border-radius:13px;
-  transition:.2s;
-}
-
-.tab.active{
-  color:#fff;
-  background:rgba(255,255,255,.09);
 }
 
 .section{
@@ -149,8 +183,8 @@ button{
 
 .section-title{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:10px;
 }
 
@@ -164,23 +198,38 @@ button{
 
 label{
   display:block;
-  font-size:12px;
   color:var(--muted);
+  font-size:12px;
   margin-bottom:7px;
 }
 
 input[type=text],
+input[type=email],
+input[type=password],
 input[type=url],
 textarea,
 select{
   width:100%;
+
+  padding:12px 13px;
+
   border:1px solid var(--border);
+  border-radius:13px;
+
+  outline:none;
+
   background:rgba(0,0,0,.2);
   color:var(--text);
-  border-radius:13px;
-  padding:12px 13px;
-  outline:none;
+
   transition:.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:rgba(113,130,255,.7);
+  box-shadow:
+    0 0 0 3px rgba(113,130,255,.1);
 }
 
 textarea{
@@ -188,9 +237,34 @@ textarea{
   resize:vertical;
 }
 
-input:focus,textarea:focus,select:focus{
-  border-color:rgba(124,140,255,.65);
-  box-shadow:0 0 0 3px rgba(124,140,255,.09);
+.segment{
+  display:grid;
+  gap:4px;
+  padding:4px;
+
+  background:rgba(0,0,0,.18);
+  border:1px solid var(--border);
+  border-radius:13px;
+}
+
+.segment button{
+  padding:9px 5px;
+
+  border-radius:9px;
+
+  background:transparent;
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+.segment button.active{
+  background:rgba(255,255,255,.11);
+  color:#fff;
+}
+
+#typeTabs{
+  grid-template-columns:repeat(4,1fr);
 }
 
 .grid2{
@@ -205,29 +279,6 @@ input:focus,textarea:focus,select:focus{
   gap:8px;
 }
 
-.segment{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  padding:4px;
-  background:rgba(0,0,0,.18);
-  border:1px solid var(--border);
-  border-radius:13px;
-  gap:4px;
-}
-
-.segment button{
-  padding:9px 4px;
-  border-radius:9px;
-  background:transparent;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.segment button.active{
-  background:rgba(255,255,255,.11);
-  color:#fff;
-}
-
 .color-row{
   display:grid;
   grid-template-columns:52px 1fr;
@@ -237,22 +288,11 @@ input:focus,textarea:focus,select:focus{
 input[type=color]{
   width:52px;
   height:43px;
+  padding:4px;
+
+  background:transparent;
   border:1px solid var(--border);
   border-radius:12px;
-  padding:4px;
-  background:transparent;
-}
-
-.check{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  color:#cbd0da;
-  font-size:13px;
-}
-
-.check input{
-  accent-color:var(--accent);
 }
 
 .range{
@@ -260,195 +300,24 @@ input[type=color]{
   accent-color:var(--accent);
 }
 
-.logo-drop{
-  border:1px dashed rgba(255,255,255,.2);
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
-  background:rgba(255,255,255,.025);
-  transition:.2s;
-}
-
-.logo-drop.drag{
-  border-color:var(--accent);
-  background:rgba(124,140,255,.08);
-}
-
-.logo-drop button{
-  background:rgba(255,255,255,.09);
-  padding:9px 14px;
-  border-radius:10px;
-  margin-top:8px;
-}
-
-#logoFile{display:none}
-
-.logo-preview{
-  display:none;
-  align-items:center;
-  justify-content:space-between;
-  margin-top:10px;
-  padding:10px;
-  border:1px solid var(--border);
-  border-radius:13px;
-}
-
-.logo-preview img{
-  width:45px;
-  height:45px;
-  object-fit:contain;
-  border-radius:10px;
-  background:white;
-}
-
-.remove-logo{
-  background:rgba(255,100,100,.12);
-  color:#ff8c8c;
-  padding:8px 10px;
-  border-radius:9px;
-}
-
-.primary{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#8997ff,#6174ff);
-  color:white;
-  font-weight:750;
-  box-shadow:0 12px 35px rgba(97,116,255,.22);
-  transition:.2s;
-}
-
-.primary:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
-}
-
-.secondary{
-  padding:11px 13px;
-  border-radius:12px;
-  background:rgba(255,255,255,.075);
-  border:1px solid var(--border);
-}
-
-.export-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.qr-area{
-  flex:1;
-  display:grid;
-  place-items:center;
-  padding:35px;
-  position:relative;
-  overflow:hidden;
-}
-
-.qr-stage{
-  width:min(520px,90%);
-  aspect-ratio:1;
-  display:grid;
-  place-items:center;
-  position:relative;
-}
-
-#qrCanvas{
-  width:100%;
-  height:100%;
-  max-width:520px;
-  max-height:520px;
-  background:white;
-  border-radius:4px;
-  box-shadow:0 30px 80px rgba(0,0,0,.45);
-}
-
-.empty{
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  text-align:center;
-  color:var(--muted);
-  pointer-events:none;
-}
-
-.empty-inner{
-  max-width:300px;
-}
-
-.empty-icon{
-  width:75px;
-  height:75px;
-  margin:auto auto 15px;
-  border:1px solid var(--border);
-  border-radius:22px;
-  display:grid;
-  place-items:center;
-  font-size:25px;
-}
-
-.preview-bottom{
-  border-top:1px solid var(--border);
-  padding:15px 18px;
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:15px;
-  align-items:center;
-}
-
-.health{
+.inline{
   display:flex;
+  justify-content:space-between;
   align-items:center;
   gap:10px;
 }
 
-.health-bar{
-  width:130px;
-  height:7px;
-  background:rgba(255,255,255,.08);
-  border-radius:99px;
-  overflow:hidden;
-}
-
-.health-fill{
-  width:0;
-  height:100%;
-  background:var(--good);
-  transition:.4s;
-}
-
-.stats{
+.check{
   display:flex;
-  gap:15px;
-  color:var(--muted);
-  font-size:11px;
+  align-items:center;
+  gap:9px;
+
+  color:#cbd0da;
+  font-size:13px;
 }
 
-.stats strong{
-  color:#fff;
-}
-
-.hidden{display:none!important}
-
-.morph{
-  animation:qrMorph .65s cubic-bezier(.2,.8,.2,1);
-}
-
-@keyframes qrMorph{
-  0%{opacity:.2;transform:scale(.93) rotate(-1deg);filter:blur(8px)}
-  45%{opacity:1;transform:scale(1.015) rotate(.3deg);filter:blur(0)}
-  100%{transform:scale(1)}
-}
-
-.fade-in{
-  animation:fade .45s ease both;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:none}
+.check input{
+  accent-color:var(--accent);
 }
 
 .switch{
@@ -464,21 +333,27 @@ input[type=color]{
 .slider{
   position:absolute;
   inset:0;
-  background:#272b34;
+
   border-radius:20px;
+  background:#292d35;
+
   cursor:pointer;
-  transition:.2s;
 }
 
 .slider:before{
   content:"";
+
   position:absolute;
+
   width:18px;
   height:18px;
+
   top:3px;
   left:3px;
+
   background:#fff;
   border-radius:50%;
+
   transition:.2s;
 }
 
@@ -490,17 +365,304 @@ input[type=color]{
   transform:translateX(18px);
 }
 
-.inline{
+.logo-drop{
+  padding:18px;
+
+  text-align:center;
+
+  border:1px dashed rgba(255,255,255,.2);
+  border-radius:16px;
+
+  background:rgba(255,255,255,.025);
+
+  transition:.2s;
+}
+
+.logo-drop.drag{
+  border-color:var(--accent);
+  background:rgba(113,130,255,.08);
+}
+
+.logo-drop button{
+  margin-top:8px;
+
+  padding:9px 14px;
+
+  background:rgba(255,255,255,.09);
+  border-radius:10px;
+}
+
+#logoFile{
+  display:none;
+}
+
+.logo-preview{
+  display:none;
+
+  align-items:center;
+
+  margin-top:10px;
+  padding:10px;
+
+  border:1px solid var(--border);
+  border-radius:13px;
+}
+
+.logo-preview img{
+  width:45px;
+  height:45px;
+
+  object-fit:contain;
+
+  border-radius:10px;
+  background:#fff;
+}
+
+.logo-name{
+  flex:1;
+  padding:0 10px;
+
+  font-size:12px;
+}
+
+.remove-logo{
+  padding:8px 10px;
+
+  color:#ff8c8c;
+  background:rgba(255,100,100,.12);
+  border-radius:9px;
+}
+
+.primary{
+  width:100%;
+  padding:14px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8997ff,
+      #6174ff
+    );
+
+  color:#fff;
+  font-weight:750;
+
+  box-shadow:
+    0 12px 35px rgba(97,116,255,.22);
+
+  transition:.2s;
+}
+
+.primary:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.07);
+}
+
+.secondary{
+  padding:11px 13px;
+
+  background:rgba(255,255,255,.075);
+
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+.preview{
+  min-height:720px;
+
+  display:flex;
+  flex-direction:column;
+
+  overflow:hidden;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+
+  padding:7px;
+
+  border-bottom:1px solid var(--border);
+}
+
+.tab{
+  flex:1;
+
+  padding:11px;
+
+  background:transparent;
+  color:var(--muted);
+
+  border-radius:13px;
+}
+
+.tab.active{
+  background:rgba(255,255,255,.09);
+  color:#fff;
+}
+
+.qr-area{
+  flex:1;
+
+  display:grid;
+  place-items:center;
+
+  padding:35px;
+
+  position:relative;
+  overflow:hidden;
+}
+
+.qr-stage{
+  width:min(520px,90%);
+  aspect-ratio:1;
+
+  display:grid;
+  place-items:center;
+
+  position:relative;
+}
+
+#qrCanvas{
+  width:100%;
+  height:100%;
+  max-width:520px;
+  max-height:520px;
+
+  background:#fff;
+
+  border-radius:4px;
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.45);
+}
+
+.empty{
+  position:absolute;
+  inset:0;
+
+  display:grid;
+  place-items:center;
+
+  text-align:center;
+
+  color:var(--muted);
+
+  pointer-events:none;
+}
+
+.empty-inner{
+  max-width:300px;
+}
+
+.empty-icon{
+  width:75px;
+  height:75px;
+
+  margin:auto auto 15px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid var(--border);
+  border-radius:22px;
+
+  font-size:25px;
+}
+
+.preview-bottom{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:15px;
+  align-items:center;
+
+  padding:15px 18px;
+
+  border-top:1px solid var(--border);
+}
+
+.health{
   display:flex;
   align-items:center;
-  justify-content:space-between;
   gap:10px;
+}
+
+.health-bar{
+  width:130px;
+  height:7px;
+
+  overflow:hidden;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:99px;
+}
+
+.health-fill{
+  width:0;
+  height:100%;
+
+  background:var(--good);
+
+  transition:.4s;
+}
+
+.export-row{
+  display:flex;
+  gap:8px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.fade-in{
+  animation:fade .35s ease both;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.morph{
+  animation:
+    qrMorph .65s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes qrMorph{
+  0%{
+    opacity:.2;
+    transform:scale(.93) rotate(-1deg);
+    filter:blur(8px);
+  }
+
+  45%{
+    opacity:1;
+    transform:scale(1.015) rotate(.3deg);
+    filter:blur(0);
+  }
+
+  100%{
+    transform:scale(1);
+  }
 }
 
 .health-card{
   padding:14px;
-  border:1px solid var(--border);
+
   background:rgba(255,255,255,.025);
+
+  border:1px solid var(--border);
   border-radius:15px;
 }
 
@@ -513,272 +675,892 @@ input[type=color]{
   display:flex;
   justify-content:space-between;
   gap:12px;
+
   font-size:12px;
   color:var(--muted);
 }
 
-.good{color:var(--good)}
-.warn{color:var(--warn)}
-.bad{color:var(--bad)}
+.good{
+  color:var(--good);
+}
+
+.warn{
+  color:var(--warn);
+}
+
+.bad{
+  color:var(--bad);
+}
+
+/* ACCOUNT MODAL */
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+
+  display:none;
+  place-items:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.65);
+
+  backdrop-filter:blur(15px);
+}
+
+.modal-backdrop.open{
+  display:grid;
+}
+
+.modal{
+  width:min(430px,100%);
+
+  padding:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,28,36,.98),
+      rgba(12,14,19,.98)
+    );
+
+  border:1px solid var(--border);
+  border-radius:24px;
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.6);
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:18px;
+}
+
+.modal-header h2{
+  margin:0;
+  font-size:19px;
+}
+
+.close{
+  width:34px;
+  height:34px;
+
+  border-radius:10px;
+
+  background:rgba(255,255,255,.07);
+}
+
+.auth-google{
+  width:100%;
+  padding:12px;
+
+  background:#fff;
+  color:#111;
+
+  border-radius:12px;
+
+  font-weight:650;
+}
+
+.auth-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin:16px 0;
+
+  color:var(--muted);
+  font-size:11px;
+}
+
+.auth-divider:before,
+.auth-divider:after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--border);
+}
+
+.auth-actions{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.auth-message{
+  min-height:18px;
+  margin-top:10px;
+
+  color:var(--bad);
+
+  font-size:12px;
+}
+
+.account-info{
+  padding:13px;
+
+  margin-bottom:14px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+.account-email{
+  font-size:13px;
+  word-break:break-all;
+}
+
+.account-provider{
+  margin-top:4px;
+
+  color:var(--muted);
+  font-size:11px;
+}
+
+.danger{
+  color:#ff8999!important;
+  background:rgba(255,90,110,.08)!important;
+  border-color:rgba(255,90,110,.15)!important;
+}
 
 @media(max-width:900px){
-  .layout{grid-template-columns:1fr}
-  .preview{min-height:600px}
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .preview{
+    min-height:600px;
+  }
+
 }
 
 @media(max-width:550px){
-  .app{padding:12px}
-  .controls{padding:15px}
-  .qr-area{padding:18px}
-  .topbar{margin-bottom:12px}
-  .stats{display:none}
-  .grid3{grid-template-columns:1fr}
+
+  .app{
+    padding:12px;
+  }
+
+  .controls{
+    padding:15px;
+  }
+
+  .qr-area{
+    padding:18px;
+  }
+
+  .preview-bottom{
+    grid-template-columns:1fr;
+  }
+
+  .export-row{
+    width:100%;
+  }
+
+  .export-row button{
+    flex:1;
+  }
+
+  .stats{
+    display:none;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header class="topbar">
+
   <div class="brand">
-    <div class="brandmark">QR</div>
+
+    <div class="brandmark">
+      QR
+    </div>
+
     <div>
       <h1>QRForge</h1>
-      <span data-i18n="subtitle">Professional QR Studio</span>
-    </div>
-  </div>
-
-  <button class="lang" id="langBtn">🇩🇪 <span>Deutsch</span></button>
-</header>
-
-<main class="layout">
-
-<section class="panel controls">
-
-  <div class="section">
-    <div class="section-title">
-      <strong data-i18n="content">Inhalt</strong>
-    </div>
-
-    <div class="segment" id="typeTabs">
-      <button class="active" data-type="url" data-i18n="url">URL</button>
-      <button data-type="text" data-i18n="text">Text</button>
-      <button data-type="wifi" data-i18n="wifi">Wi-Fi</button>
-      <button data-type="email" data-i18n="email">E-Mail</button>
-    </div>
-  </div>
-
-  <div id="contentArea" class="section fade-in"></div>
-
-  <div class="section">
-    <div class="section-title">
-      <strong data-i18n="design">Design</strong>
-    </div>
-
-    <div class="grid2">
-      <div>
-        <label data-i18n="foreground">Vordergrund</label>
-        <div class="color-row">
-          <input id="fgColor" type="color" value="#111111">
-          <input id="fgText" type="text" value="#111111">
-        </div>
-      </div>
-
-      <div>
-        <label data-i18n="background">Hintergrund</label>
-        <div class="color-row">
-          <input id="bgColor" type="color" value="#ffffff">
-          <input id="bgText" type="text" value="#ffffff">
-        </div>
-      </div>
-    </div>
-
-    <div style="height:12px"></div>
-
-    <div class="inline">
-      <span class="check">
-        <input id="gradientEnabled" type="checkbox">
-        <span data-i18n="gradient">Farbverlauf</span>
+      <span data-i18n="subtitle">
+        Professional QR Studio
       </span>
     </div>
 
-    <div id="gradientSettings" class="hidden" style="margin-top:12px">
-      <div class="grid2">
-        <div>
-          <label data-i18n="gradientColor">Verlaufsfarbe</label>
-          <input id="gradientColor" type="color" value="#6677ff">
-        </div>
-        <div>
-          <label data-i18n="direction">Richtung</label>
-          <select id="gradientDirection">
-            <option value="horizontal" data-i18n="horizontal">Horizontal</option>
-            <option value="vertical" data-i18n="vertical">Vertikal</option>
-            <option value="diagonal" data-i18n="diagonal">Diagonal</option>
-          </select>
-        </div>
-      </div>
+  </div>
+
+  <div class="top-actions">
+
+    <button
+      class="lang"
+      id="langBtn">
+      🇩🇪 <span>Deutsch</span>
+    </button>
+
+    <button
+      class="account-button"
+      id="accountButton">
+      <span id="accountIcon">○</span>
+      <span data-i18n="account">Account</span>
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="layout">
+
+<!-- =====================================================
+     CONTROLS
+===================================================== -->
+
+<section class="panel controls">
+
+  <!-- CONTENT -->
+
+  <div class="section">
+
+    <div class="section-title">
+      <strong data-i18n="content">
+        Inhalt
+      </strong>
     </div>
+
+    <div class="segment" id="typeTabs">
+
+      <button
+        class="active"
+        data-type="url"
+        data-i18n="url">
+        URL
+      </button>
+
+      <button
+        data-type="text"
+        data-i18n="text">
+        Text
+      </button>
+
+      <button
+        data-type="wifi"
+        data-i18n="wifi">
+        Wi-Fi
+      </button>
+
+      <button
+        data-type="email"
+        data-i18n="email">
+        E-Mail
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="contentArea"
+    class="section fade-in">
+  </div>
+
+
+  <!-- DESIGN -->
+
+  <div class="section">
+
+    <div class="section-title">
+      <strong data-i18n="design">
+        Design
+      </strong>
+    </div>
+
+
+    <div class="grid2">
+
+      <div>
+
+        <label data-i18n="foreground">
+          Vordergrund
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="fgColor"
+            type="color"
+            value="#111111">
+
+          <input
+            id="fgText"
+            type="text"
+            value="#111111">
+
+        </div>
+
+      </div>
+
+
+      <div>
+
+        <label data-i18n="background">
+          Hintergrund
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="bgColor"
+            type="color"
+            value="#ffffff">
+
+          <input
+            id="bgText"
+            type="text"
+            value="#ffffff">
+
+        </div>
+
+      </div>
+
+    </div>
+
 
     <div style="height:12px"></div>
 
-    <label data-i18n="moduleStyle">Modulstil</label>
-    <div class="segment" id="moduleStyle">
-      <button class="active" data-style="square" data-i18n="square">Quadrat</button>
-      <button data-style="rounded" data-i18n="rounded">Rund</button>
-      <button data-style="dot" data-i18n="dots">Punkte</button>
-      <button data-style="soft" data-i18n="soft">Soft</button>
+
+    <div class="inline">
+
+      <span class="check">
+
+        <input
+          id="gradientEnabled"
+          type="checkbox">
+
+        <span data-i18n="gradient">
+          Farbverlauf
+        </span>
+
+      </span>
+
     </div>
+
+
+    <div
+      id="gradientSettings"
+      class="hidden"
+      style="margin-top:12px">
+
+      <div class="grid2">
+
+        <div>
+
+          <label data-i18n="gradientColor">
+            Verlaufsfarbe
+          </label>
+
+          <input
+            id="gradientColor"
+            type="color"
+            value="#6677ff">
+
+        </div>
+
+
+        <div>
+
+          <label data-i18n="direction">
+            Richtung
+          </label>
+
+          <select id="gradientDirection">
+
+            <option
+              value="horizontal"
+              data-i18n="horizontal">
+              Horizontal
+            </option>
+
+            <option
+              value="vertical"
+              data-i18n="vertical">
+              Vertikal
+            </option>
+
+            <option
+              value="diagonal"
+              data-i18n="diagonal">
+              Diagonal
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div style="height:12px"></div>
+
+
+    <label data-i18n="moduleStyle">
+      Modulstil
+    </label>
+
+    <div
+      class="segment"
+      id="moduleStyle"
+      style="grid-template-columns:repeat(4,1fr)">
+
+      <button
+        class="active"
+        data-style="square"
+        data-i18n="square">
+        Quadrat
+      </button>
+
+      <button
+        data-style="rounded"
+        data-i18n="rounded">
+        Rund
+      </button>
+
+      <button
+        data-style="dot"
+        data-i18n="dots">
+        Punkte
+      </button>
+
+      <button
+        data-style="soft"
+        data-i18n="soft">
+        Soft
+      </button>
+
+    </div>
+
   </div>
 
+
+  <!-- LOGO -->
+
   <div class="section">
+
     <div class="section-title">
-      <strong data-i18n="logo">Logo</strong>
-      <small data-i18n="optional">Optional</small>
+
+      <strong data-i18n="logo">
+        Logo
+      </strong>
+
+      <small data-i18n="optional">
+        Optional
+      </small>
+
     </div>
 
-    <div class="logo-drop" id="logoDrop">
-      <div data-i18n="logoDrop">Logo hier hineinziehen</div>
-      <button id="logoChoose" data-i18n="chooseFile">Datei auswählen</button>
-      <input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+
+    <div
+      class="logo-drop"
+      id="logoDrop">
+
+      <div data-i18n="logoDrop">
+        Logo hier hineinziehen
+      </div>
+
+      <button
+        id="logoChoose"
+        data-i18n="chooseFile">
+        Datei auswählen
+      </button>
+
+      <input
+        id="logoFile"
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/svg+xml">
+
     </div>
 
-    <div class="logo-preview" id="logoPreview">
+
+    <div
+      class="logo-preview"
+      id="logoPreview">
+
       <img id="logoThumb">
-      <div style="flex:1;padding:0 10px">
-        <strong id="logoName" style="font-size:12px"></strong>
+
+      <div
+        class="logo-name"
+        id="logoName">
       </div>
-      <button class="remove-logo" id="removeLogo">×</button>
+
+      <button
+        class="remove-logo"
+        id="removeLogo">
+        ×
+      </button>
+
     </div>
 
-    <div id="logoSettings" class="hidden" style="margin-top:12px">
 
-      <label data-i18n="position">Position</label>
-      <div class="segment" id="logoPosition">
-        <button class="active" data-position="center" data-i18n="center">Mitte</button>
-        <button data-position="bottomLeft" data-i18n="bottomLeft">Unten links</button>
-        <button data-position="bottomRight" data-i18n="bottomRight">Unten rechts</button>
+    <div
+      id="logoSettings"
+      class="hidden"
+      style="margin-top:12px">
+
+      <label data-i18n="position">
+        Position
+      </label>
+
+      <div
+        class="segment"
+        id="logoPosition"
+        style="grid-template-columns:repeat(3,1fr)">
+
+        <button
+          class="active"
+          data-position="center"
+          data-i18n="center">
+          Mitte
+        </button>
+
+        <button
+          data-position="bottomLeft"
+          data-i18n="bottomLeft">
+          Unten links
+        </button>
+
+        <button
+          data-position="bottomRight"
+          data-i18n="bottomRight">
+          Unten rechts
+        </button>
+
       </div>
+
 
       <div style="height:10px"></div>
 
-      <label data-i18n="shape">Form</label>
-      <div class="segment" id="logoShape">
-        <button class="active" data-shape="round" data-i18n="round">Rund</button>
-        <button data-shape="square" data-i18n="square">Quadratisch</button>
+
+      <label data-i18n="shape">
+        Form
+      </label>
+
+      <div
+        class="segment"
+        id="logoShape"
+        style="grid-template-columns:1fr 1fr">
+
+        <button
+          class="active"
+          data-shape="round"
+          data-i18n="round">
+          Rund
+        </button>
+
+        <button
+          data-shape="square"
+          data-i18n="square">
+          Quadratisch
+        </button>
+
       </div>
+
 
       <div style="height:12px"></div>
 
+
       <div class="inline">
-        <label style="margin:0" data-i18n="logoSize">Logo-Größe</label>
-        <strong id="logoSizeValue">18%</strong>
+
+        <label
+          style="margin:0"
+          data-i18n="logoSize">
+          Logo-Größe
+        </label>
+
+        <strong id="logoSizeValue">
+          18%
+        </strong>
+
       </div>
-      <input class="range" id="logoSize" type="range" min="8" max="24" value="18">
+
+      <input
+        class="range"
+        id="logoSize"
+        type="range"
+        min="8"
+        max="24"
+        value="18">
+
 
       <div style="height:10px"></div>
 
-      <div class="inline">
-        <span class="check">
-          <input id="logoWhite" type="checkbox" checked>
-          <span data-i18n="logoBacking">Weiße Sicherheitsfläche</span>
+
+      <label class="check">
+
+        <input
+          id="logoWhite"
+          type="checkbox"
+          checked>
+
+        <span data-i18n="logoBacking">
+          Weiße Sicherheitsfläche
         </span>
-      </div>
+
+      </label>
+
     </div>
+
   </div>
+
+
+  <!-- QR SETTINGS -->
 
   <div class="section">
+
     <div class="section-title">
-      <strong data-i18n="qrSettings">QR-Einstellungen</strong>
+
+      <strong data-i18n="qrSettings">
+        QR-Einstellungen
+      </strong>
+
     </div>
+
 
     <div class="grid2">
-      <div>
-        <label data-i18n="errorCorrection">Fehlerkorrektur</label>
-        <select id="ecc">
-          <option value="L">L — 7%</option>
-          <option value="M" selected>M — 15%</option>
-          <option value="Q">Q — 25%</option>
-          <option value="H">H — 30%</option>
-        </select>
-      </div>
 
       <div>
-        <label data-i18n="margin">Rand</label>
-        <input id="margin" type="range" class="range" min="2" max="8" value="4">
+
+        <label data-i18n="errorCorrection">
+          Fehlerkorrektur
+        </label>
+
+        <select id="ecc">
+
+          <option value="L">
+            L — 7%
+          </option>
+
+          <option
+            value="M"
+            selected>
+            M — 15%
+          </option>
+
+          <option value="Q">
+            Q — 25%
+          </option>
+
+          <option value="H">
+            H — 30%
+          </option>
+
+        </select>
+
       </div>
+
+
+      <div>
+
+        <label data-i18n="margin">
+          Rand
+        </label>
+
+        <input
+          id="margin"
+          type="range"
+          class="range"
+          min="2"
+          max="8"
+          value="4">
+
+      </div>
+
     </div>
+
   </div>
 
-  <button class="primary" id="generate" data-i18n="generate">
+
+  <button
+    class="primary"
+    id="generate"
+    data-i18n="generate">
     QR-Code erstellen
   </button>
 
 </section>
 
+
+<!-- =====================================================
+     PREVIEW
+===================================================== -->
+
 <section class="panel preview">
 
   <div class="tabs">
-    <button class="tab active" data-view="preview" data-i18n="preview">Vorschau</button>
-    <button class="tab" data-view="health" data-i18n="health">QR Health</button>
+
+    <button
+      class="tab active"
+      data-view="preview"
+      data-i18n="preview">
+      Vorschau
+    </button>
+
+    <button
+      class="tab"
+      data-view="health"
+      data-i18n="health">
+      QR Health
+    </button>
+
   </div>
 
-  <div id="previewView" class="qr-area">
+
+  <div
+    id="previewView"
+    class="qr-area">
 
     <div class="qr-stage">
-      <canvas id="qrCanvas" class="hidden"></canvas>
 
-      <div class="empty" id="emptyState">
+      <canvas
+        id="qrCanvas"
+        class="hidden">
+      </canvas>
+
+
+      <div
+        class="empty"
+        id="emptyState">
+
         <div class="empty-inner">
-          <div class="empty-icon">⌗</div>
-          <strong data-i18n="emptyTitle">Dein QR-Code erscheint hier</strong>
-          <div style="margin-top:6px;font-size:12px" data-i18n="emptyText">
+
+          <div class="empty-icon">
+            ⌗
+          </div>
+
+          <strong data-i18n="emptyTitle">
+            Dein QR-Code erscheint hier
+          </strong>
+
+          <div
+            style="margin-top:6px;font-size:12px"
+            data-i18n="emptyText">
             Inhalt eingeben und QR-Code erstellen.
           </div>
+
         </div>
+
       </div>
+
     </div>
 
   </div>
 
-  <div id="healthView" class="qr-area hidden">
+
+  <!-- HEALTH -->
+
+  <div
+    id="healthView"
+    class="qr-area hidden">
+
     <div style="width:min(600px,100%)">
 
-      <div class="health-card" style="margin-bottom:12px">
+      <div
+        class="health-card"
+        style="margin-bottom:12px">
+
         <div class="inline">
-          <strong data-i18n="scanability">Scanbarkeit</strong>
-          <strong id="healthScore">—</strong>
+
+          <strong data-i18n="scanability">
+            Scanbarkeit
+          </strong>
+
+          <strong id="healthScore">
+            —
+          </strong>
+
         </div>
 
-        <div class="health-bar" style="width:100%;margin-top:12px">
-          <div class="health-fill" id="healthFill"></div>
+
+        <div
+          class="health-bar"
+          style="width:100%;margin-top:12px">
+
+          <div
+            class="health-fill"
+            id="healthFill">
+          </div>
+
         </div>
+
       </div>
 
-      <div class="health-list" id="healthList">
+
+      <div
+        class="health-list"
+        id="healthList">
+
         <div class="health-item">
-          <span data-i18n="createFirst">Erstelle zuerst einen QR-Code.</span>
+
+          <span data-i18n="createFirst">
+            Erstelle zuerst einen QR-Code.
+          </span>
+
           <span>—</span>
+
         </div>
+
       </div>
 
     </div>
+
   </div>
+
 
   <div class="preview-bottom">
 
     <div class="health">
+
       <div class="health-bar">
-        <div class="health-fill" id="miniHealth"></div>
+
+        <div
+          class="health-fill"
+          id="miniHealth">
+        </div>
+
       </div>
-      <span id="miniHealthText" style="font-size:12px;color:var(--muted)">
+
+      <span
+        id="miniHealthText"
+        style="font-size:12px;color:var(--muted)">
         —
       </span>
+
     </div>
 
+
     <div class="export-row">
-      <button class="secondary" id="downloadPNG" data-i18n="png">PNG</button>
-      <button class="secondary" id="downloadSVG" data-i18n="svg">SVG</button>
+
+      <button
+        class="secondary"
+        id="downloadPNG"
+        data-i18n="png">
+        PNG herunterladen
+      </button>
+
+      <button
+        class="secondary"
+        id="downloadSVG"
+        data-i18n="svg">
+        SVG herunterladen
+      </button>
+
     </div>
 
   </div>
@@ -788,683 +1570,2473 @@ input[type=color]{
 </main>
 </div>
 
-<script>
-/* =========================================================
-   QRForge 2.0
-   ========================================================= */
 
-const state = {
-  lang: localStorage.getItem("qrforge-language") || "de",
-  type: "url",
-  style: "square",
-  fg: "#111111",
-  bg: "#ffffff",
-  gradient: false,
-  gradientColor: "#6677ff",
-  gradientDirection: "horizontal",
-  ecc: "M",
-  margin: 4,
-  logo: null,
-  logoPosition: "center",
-  logoShape: "round",
-  logoSize: 18,
-  logoWhite: true,
-  lastMatrix: null,
-  matrix: null,
-  qr: null
+<!-- =====================================================
+     ACCOUNT MODAL
+===================================================== -->
+
+<div
+  class="modal-backdrop"
+  id="accountModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 data-i18n="account">
+        Account
+      </h2>
+
+      <button
+        class="close"
+        id="closeAccount">
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- LOGGED OUT -->
+
+    <div id="loggedOut">
+
+      <button
+        class="auth-google"
+        id="googleLogin">
+        Google
+      </button>
+
+
+      <div class="auth-divider">
+        <span data-i18n="or">
+          oder
+        </span>
+      </div>
+
+
+      <label data-i18n="emailAddress">
+        E-Mail-Adresse
+      </label>
+
+      <input
+        id="authEmail"
+        type="email"
+        autocomplete="email">
+
+
+      <div style="height:10px"></div>
+
+
+      <label data-i18n="password">
+        Passwort
+      </label>
+
+      <input
+        id="authPassword"
+        type="password"
+        autocomplete="current-password">
+
+
+      <div class="auth-actions">
+
+        <button
+          class="primary"
+          id="emailLogin"
+          data-i18n="login">
+          Anmelden
+        </button>
+
+        <button
+          class="secondary"
+          id="emailRegister"
+          data-i18n="register">
+          Account erstellen
+        </button>
+
+      </div>
+
+
+      <div
+        class="auth-message"
+        id="authMessage">
+      </div>
+
+    </div>
+
+
+    <!-- LOGGED IN -->
+
+    <div
+      id="loggedIn"
+      class="hidden">
+
+      <div class="account-info">
+
+        <div
+          class="account-email"
+          id="currentEmail">
+        </div>
+
+        <div
+          class="account-provider"
+          id="currentProvider">
+        </div>
+
+      </div>
+
+
+      <div
+        id="passwordSection">
+
+        <label data-i18n="newPassword">
+          Neues Passwort
+        </label>
+
+        <input
+          id="newPassword"
+          type="password"
+          autocomplete="new-password">
+
+
+        <div style="height:8px"></div>
+
+
+        <button
+          class="secondary"
+          style="width:100%"
+          id="changePassword"
+          data-i18n="changePassword">
+          Passwort ändern
+        </button>
+
+      </div>
+
+
+      <div style="height:8px"></div>
+
+
+      <button
+        class="secondary"
+        style="width:100%"
+        id="logout"
+        data-i18n="logout">
+        Abmelden
+      </button>
+
+
+      <div style="height:8px"></div>
+
+
+      <button
+        class="secondary danger"
+        style="width:100%"
+        id="deleteAccount"
+        data-i18n="deleteAccount">
+        Account löschen
+      </button>
+
+
+      <div
+        class="auth-message"
+        id="accountMessage">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updatePassword,
+  deleteUser,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import {
+  getDatabase,
+  ref,
+  get,
+  update,
+  increment
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyChVNM87j58J9SZZ5oo1CRLBAOTvBM8spI",
+
+  authDomain:
+    "qrcode-ac292.firebaseapp.com",
+
+  databaseURL:
+    "https://qrcode-ac292-default-rtdb.firebaseio.com",
+
+  projectId:
+    "qrcode-ac292",
+
+  storageBucket:
+    "qrcode-ac292.firebasestorage.app",
+
+  messagingSenderId:
+    "1077220642671",
+
+  appId:
+    "1:1077220642671:web:9b5bd2e4324d1677a5e29a"
+
 };
 
-const translations = {
-  de: {
-    subtitle:"Professional QR Studio",
-    content:"Inhalt",
-    url:"URL",
-    text:"Text",
-    wifi:"Wi-Fi",
-    email:"E-Mail",
-    design:"Design",
-    foreground:"Vordergrund",
-    background:"Hintergrund",
-    gradient:"Farbverlauf",
-    gradientColor:"Verlaufsfarbe",
-    direction:"Richtung",
-    horizontal:"Horizontal",
-    vertical:"Vertikal",
-    diagonal:"Diagonal",
-    moduleStyle:"Modulstil",
-    square:"Quadrat",
-    rounded:"Rund",
-    dots:"Punkte",
-    soft:"Soft",
-    logo:"Logo",
-    optional:"Optional",
-    logoDrop:"Logo hier hineinziehen",
-    chooseFile:"Datei auswählen",
-    position:"Position",
-    center:"Mitte",
-    bottomLeft:"Unten links",
-    bottomRight:"Unten rechts",
-    shape:"Form",
-    round:"Rund",
-    logoSize:"Logo-Größe",
-    logoBacking:"Weiße Sicherheitsfläche",
-    qrSettings:"QR-Einstellungen",
-    errorCorrection:"Fehlerkorrektur",
-    margin:"Rand",
-    generate:"QR-Code erstellen",
-    preview:"Vorschau",
-    health:"QR Health",
-    emptyTitle:"Dein QR-Code erscheint hier",
-    emptyText:"Inhalt eingeben und QR-Code erstellen.",
-    scanability:"Scanbarkeit",
-    createFirst:"Erstelle zuerst einen QR-Code.",
-    png:"PNG herunterladen",
-    svg:"SVG herunterladen",
-    enterUrl:"https://example.com",
-    enterText:"Dein Text...",
-    wifiName:"Netzwerkname",
-    wifiPassword:"Passwort",
-    wifiSecurity:"Sicherheit",
-    emailAddress:"E-Mail-Adresse",
-    emailSubject:"Betreff",
-    emailBody:"Nachricht",
-    healthGood:"Gut",
-    healthWarn:"Prüfen",
-    healthBad:"Problem",
-    contrast:"Kontrast",
-    quiet:"Quiet Zone",
-    modules:"Modulgröße",
-    logoCoverage:"Logo-Abdeckung",
-    complexity:"Komplexität",
-    correction:"Fehlerkorrektur",
-    noLogo:"Kein Logo",
-    logoSafe:"Logo-Größe sicher",
-    logoLarge:"Logo ist relativ groß",
-    highContrast:"Hoher Kontrast",
-    lowContrast:"Kontrast erhöhen",
-    sufficientMargin:"Rand ausreichend",
-    smallMargin:"Rand vergrößern"
-  },
 
-  en: {
-    subtitle:"Professional QR Studio",
-    content:"Content",
-    url:"URL",
-    text:"Text",
-    wifi:"Wi-Fi",
-    email:"E-mail",
-    design:"Design",
-    foreground:"Foreground",
-    background:"Background",
-    gradient:"Gradient",
-    gradientColor:"Gradient color",
-    direction:"Direction",
-    horizontal:"Horizontal",
-    vertical:"Vertical",
-    diagonal:"Diagonal",
-    moduleStyle:"Module style",
-    square:"Square",
-    rounded:"Rounded",
-    dots:"Dots",
-    soft:"Soft",
-    logo:"Logo",
-    optional:"Optional",
-    logoDrop:"Drop your logo here",
-    chooseFile:"Choose file",
-    position:"Position",
-    center:"Center",
-    bottomLeft:"Bottom left",
-    bottomRight:"Bottom right",
-    shape:"Shape",
-    round:"Round",
-    logoSize:"Logo size",
-    logoBacking:"White safety area",
-    qrSettings:"QR settings",
-    errorCorrection:"Error correction",
-    margin:"Margin",
-    generate:"Create QR code",
-    preview:"Preview",
-    health:"QR Health",
-    emptyTitle:"Your QR code appears here",
-    emptyText:"Enter content and create your QR code.",
-    scanability:"Scanability",
-    createFirst:"Create a QR code first.",
-    png:"Download PNG",
-    svg:"Download SVG",
-    enterUrl:"https://example.com",
-    enterText:"Your text...",
-    wifiName:"Network name",
-    wifiPassword:"Password",
-    wifiSecurity:"Security",
-    emailAddress:"E-mail address",
-    emailSubject:"Subject",
-    emailBody:"Message",
-    healthGood:"Good",
-    healthWarn:"Check",
-    healthBad:"Problem",
-    contrast:"Contrast",
-    quiet:"Quiet zone",
-    modules:"Module size",
-    logoCoverage:"Logo coverage",
-    complexity:"Complexity",
-    correction:"Error correction",
-    noLogo:"No logo",
-    logoSafe:"Logo size is safe",
-    logoLarge:"Logo is relatively large",
-    highContrast:"High contrast",
-    lowContrast:"Increase contrast",
-    sufficientMargin:"Margin sufficient",
-    smallMargin:"Increase margin"
-  }
-};
+const firebaseApp =
+  initializeApp(firebaseConfig);
 
-const $ = id => document.getElementById(id);
+const auth =
+  getAuth(firebaseApp);
 
-function t(key){
-  return translations[state.lang][key] || key;
+const database =
+  getDatabase(firebaseApp);
+
+const googleProvider =
+  new GoogleAuthProvider();
+
+
+/* =====================================================
+   FIREBASE FUNCTIONS
+===================================================== */
+
+async function googleLogin(){
+
+  await signInWithPopup(
+    auth,
+    googleProvider
+  );
+
 }
 
-/* LANGUAGE */
+
+async function emailLogin(
+  email,
+  password
+){
+
+  await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+}
+
+
+async function createAccount(
+  email,
+  password
+){
+
+  await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+}
+
+
+async function changePassword(
+  newPassword
+){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+    throw new Error(
+      "NOT_LOGGED_IN"
+    );
+  }
+
+  await updatePassword(
+    user,
+    newPassword
+  );
+
+}
+
+
+async function removeAccount(){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+    throw new Error(
+      "NOT_LOGGED_IN"
+    );
+  }
+
+  /*
+   * Die eigentlichen QRForge-Accountdaten
+   * können hier später ebenfalls gelöscht werden.
+   */
+
+  await deleteUser(user);
+
+}
+
+
+async function logout(){
+
+  await signOut(auth);
+
+}
+
+
+/* =====================================================
+   AUTH UI
+===================================================== */
+
+const accountButton =
+  document.getElementById(
+    "accountButton"
+  );
+
+const accountModal =
+  document.getElementById(
+    "accountModal"
+  );
+
+const loggedOut =
+  document.getElementById(
+    "loggedOut"
+  );
+
+const loggedIn =
+  document.getElementById(
+    "loggedIn"
+  );
+
+
+function openAccount(){
+
+  accountModal.classList.add(
+    "open"
+  );
+
+}
+
+
+function closeAccount(){
+
+  accountModal.classList.remove(
+    "open"
+  );
+
+}
+
+
+accountButton.onclick =
+  openAccount;
+
+document.getElementById(
+  "closeAccount"
+).onclick =
+  closeAccount;
+
+accountModal.onclick=e=>{
+
+  if(e.target===accountModal){
+    closeAccount();
+  }
+
+};
+
+
+document.getElementById(
+  "googleLogin"
+).onclick =
+  async()=>{
+
+    try{
+
+      await googleLogin();
+
+    }catch(error){
+
+      showAuthError(error);
+
+    }
+
+  };
+
+
+document.getElementById(
+  "emailLogin"
+).onclick =
+  async()=>{
+
+    const email =
+      document.getElementById(
+        "authEmail"
+      ).value.trim();
+
+    const password =
+      document.getElementById(
+        "authPassword"
+      ).value;
+
+    try{
+
+      await emailLogin(
+        email,
+        password
+      );
+
+    }catch(error){
+
+      showAuthError(error);
+
+    }
+
+  };
+
+
+document.getElementById(
+  "emailRegister"
+).onclick =
+  async()=>{
+
+    const email =
+      document.getElementById(
+        "authEmail"
+      ).value.trim();
+
+    const password =
+      document.getElementById(
+        "authPassword"
+      ).value;
+
+    try{
+
+      await createAccount(
+        email,
+        password
+      );
+
+    }catch(error){
+
+      showAuthError(error);
+
+    }
+
+  };
+
+
+function showAuthError(error){
+
+  const el =
+    document.getElementById(
+      "authMessage"
+    );
+
+  const code =
+    error?.code || "";
+
+  const messages = {
+
+    "auth/invalid-email":
+      "Ungültige E-Mail-Adresse.",
+
+    "auth/invalid-credential":
+      "E-Mail oder Passwort ist falsch.",
+
+    "auth/email-already-in-use":
+      "Diese E-Mail-Adresse wird bereits verwendet.",
+
+    "auth/weak-password":
+      "Das Passwort ist zu schwach.",
+
+    "auth/popup-closed-by-user":
+      "Anmeldung abgebrochen."
+
+  };
+
+  el.textContent =
+    messages[code] ||
+    error.message ||
+    "Anmeldung fehlgeschlagen.";
+
+}
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  user=>{
+
+    window.qrUser =
+      user || null;
+
+    if(user){
+
+      loggedOut.classList.add(
+        "hidden"
+      );
+
+      loggedIn.classList.remove(
+        "hidden"
+      );
+
+      accountButton.classList.add(
+        "visible"
+      );
+
+      document.getElementById(
+        "currentEmail"
+      ).textContent =
+        user.email || "Google Account";
+
+      const provider =
+        user.providerData?.[0]?.providerId;
+
+      document.getElementById(
+        "currentProvider"
+      ).textContent =
+        provider === "google.com"
+          ? "Google"
+          : "E-Mail / Passwort";
+
+      /*
+       * Google Accounts haben kein
+       * QRForge-Passwort, das hier geändert
+       * werden könnte.
+       */
+
+      document.getElementById(
+        "passwordSection"
+      ).classList.toggle(
+        "hidden",
+        provider === "google.com"
+      );
+
+    }else{
+
+      loggedOut.classList.remove(
+        "hidden"
+      );
+
+      loggedIn.classList.add(
+        "hidden"
+      );
+
+      accountButton.classList.remove(
+        "visible"
+      );
+
+    }
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "qrforge-auth-change",
+        {
+          detail:{
+            user
+          }
+        }
+      )
+    );
+
+  }
+);
+
+
+/* =====================================================
+   ACCOUNT ACTIONS
+===================================================== */
+
+document.getElementById(
+  "changePassword"
+).onclick =
+  async()=>{
+
+    const password =
+      document.getElementById(
+        "newPassword"
+      ).value;
+
+    if(password.length < 6){
+
+      document.getElementById(
+        "accountMessage"
+      ).textContent =
+        "Das Passwort muss mindestens 6 Zeichen haben.";
+
+      return;
+
+    }
+
+    try{
+
+      await changePassword(
+        password
+      );
+
+      document.getElementById(
+        "newPassword"
+      ).value = "";
+
+      document.getElementById(
+        "accountMessage"
+      ).textContent =
+        "Passwort geändert.";
+
+    }catch(error){
+
+      document.getElementById(
+        "accountMessage"
+      ).textContent =
+        error.message;
+
+    }
+
+  };
+
+
+document.getElementById(
+  "logout"
+).onclick =
+  async()=>{
+
+    await logout();
+
+  };
+
+
+document.getElementById(
+  "deleteAccount"
+).onclick =
+  async()=>{
+
+    const confirmed =
+      confirm(
+        state.lang === "de"
+          ? "Account wirklich löschen?"
+          : "Delete this account?"
+      );
+
+    if(!confirmed) return;
+
+    try{
+
+      await removeAccount();
+
+      closeAccount();
+
+    }catch(error){
+
+      document.getElementById(
+        "accountMessage"
+      ).textContent =
+        error.message;
+
+    }
+
+  };
+
+
+/* =====================================================
+   QRFORGE STATE
+===================================================== */
+
+const state = {
+
+  lang:
+    localStorage.getItem(
+      "qrforge-language"
+    ) || "de",
+
+  type:"url",
+
+  style:"square",
+
+  fg:"#111111",
+
+  bg:"#ffffff",
+
+  gradient:false,
+
+  gradientColor:"#6677ff",
+
+  gradientDirection:"horizontal",
+
+  ecc:"M",
+
+  margin:4,
+
+  logo:null,
+
+  logoPosition:"center",
+
+  logoShape:"round",
+
+  logoSize:18,
+
+  logoWhite:true,
+
+  lastMatrix:null,
+
+  matrix:null,
+
+  qr:null
+
+};
+
+
+/* =====================================================
+   TRANSLATIONS
+===================================================== */
+
+const translations = {
+
+de:{
+
+  subtitle:
+    "Professional QR Studio",
+
+  content:
+    "Inhalt",
+
+  url:
+    "URL",
+
+  text:
+    "Text",
+
+  wifi:
+    "Wi-Fi",
+
+  email:
+    "E-Mail",
+
+  design:
+    "Design",
+
+  foreground:
+    "Vordergrund",
+
+  background:
+    "Hintergrund",
+
+  gradient:
+    "Farbverlauf",
+
+  gradientColor:
+    "Verlaufsfarbe",
+
+  direction:
+    "Richtung",
+
+  horizontal:
+    "Horizontal",
+
+  vertical:
+    "Vertikal",
+
+  diagonal:
+    "Diagonal",
+
+  moduleStyle:
+    "Modulstil",
+
+  square:
+    "Quadrat",
+
+  rounded:
+    "Rund",
+
+  dots:
+    "Punkte",
+
+  soft:
+    "Soft",
+
+  logo:
+    "Logo",
+
+  optional:
+    "Optional",
+
+  logoDrop:
+    "Logo hier hineinziehen",
+
+  chooseFile:
+    "Datei auswählen",
+
+  position:
+    "Position",
+
+  center:
+    "Mitte",
+
+  bottomLeft:
+    "Unten links",
+
+  bottomRight:
+    "Unten rechts",
+
+  shape:
+    "Form",
+
+  round:
+    "Rund",
+
+  logoSize:
+    "Logo-Größe",
+
+  logoBacking:
+    "Weiße Sicherheitsfläche",
+
+  qrSettings:
+    "QR-Einstellungen",
+
+  errorCorrection:
+    "Fehlerkorrektur",
+
+  margin:
+    "Rand",
+
+  generate:
+    "QR-Code erstellen",
+
+  preview:
+    "Vorschau",
+
+  health:
+    "QR Health",
+
+  emptyTitle:
+    "Dein QR-Code erscheint hier",
+
+  emptyText:
+    "Inhalt eingeben und QR-Code erstellen.",
+
+  scanability:
+    "Scanbarkeit",
+
+  createFirst:
+    "Erstelle zuerst einen QR-Code.",
+
+  png:
+    "PNG herunterladen",
+
+  svg:
+    "SVG herunterladen",
+
+  enterUrl:
+    "https://example.com",
+
+  enterText:
+    "Dein Text...",
+
+  wifiName:
+    "Netzwerkname",
+
+  wifiPassword:
+    "Passwort",
+
+  wifiSecurity:
+    "Sicherheit",
+
+  emailAddress:
+    "E-Mail-Adresse",
+
+  emailSubject:
+    "Betreff",
+
+  emailBody:
+    "Nachricht",
+
+  account:
+    "Account",
+
+  or:
+    "oder",
+
+  password:
+    "Passwort",
+
+  login:
+    "Anmelden",
+
+  register:
+    "Account erstellen",
+
+  newPassword:
+    "Neues Passwort",
+
+  changePassword:
+    "Passwort ändern",
+
+  logout:
+    "Abmelden",
+
+  deleteAccount:
+    "Account löschen",
+
+  contrast:
+    "Kontrast",
+
+  quiet:
+    "Quiet Zone",
+
+  modules:
+    "Module",
+
+  logoCoverage:
+    "Logo-Abdeckung",
+
+  complexity:
+    "Komplexität",
+
+  correction:
+    "Fehlerkorrektur"
+
+},
+
+en:{
+
+  subtitle:
+    "Professional QR Studio",
+
+  content:
+    "Content",
+
+  url:
+    "URL",
+
+  text:
+    "Text",
+
+  wifi:
+    "Wi-Fi",
+
+  email:
+    "E-mail",
+
+  design:
+    "Design",
+
+  foreground:
+    "Foreground",
+
+  background:
+    "Background",
+
+  gradient:
+    "Gradient",
+
+  gradientColor:
+    "Gradient color",
+
+  direction:
+    "Direction",
+
+  horizontal:
+    "Horizontal",
+
+  vertical:
+    "Vertical",
+
+  diagonal:
+    "Diagonal",
+
+  moduleStyle:
+    "Module style",
+
+  square:
+    "Square",
+
+  rounded:
+    "Rounded",
+
+  dots:
+    "Dots",
+
+  soft:
+    "Soft",
+
+  logo:
+    "Logo",
+
+  optional:
+    "Optional",
+
+  logoDrop:
+    "Drop your logo here",
+
+  chooseFile:
+    "Choose file",
+
+  position:
+    "Position",
+
+  center:
+    "Center",
+
+  bottomLeft:
+    "Bottom left",
+
+  bottomRight:
+    "Bottom right",
+
+  shape:
+    "Shape",
+
+  round:
+    "Round",
+
+  logoSize:
+    "Logo size",
+
+  logoBacking:
+    "White safety area",
+
+  qrSettings:
+    "QR settings",
+
+  errorCorrection:
+    "Error correction",
+
+  margin:
+    "Margin",
+
+  generate:
+    "Create QR code",
+
+  preview:
+    "Preview",
+
+  health:
+    "QR Health",
+
+  emptyTitle:
+    "Your QR code appears here",
+
+  emptyText:
+    "Enter content and create your QR code.",
+
+  scanability:
+    "Scanability",
+
+  createFirst:
+    "Create a QR code first.",
+
+  png:
+    "Download PNG",
+
+  svg:
+    "Download SVG",
+
+  enterUrl:
+    "https://example.com",
+
+  enterText:
+    "Your text...",
+
+  wifiName:
+    "Network name",
+
+  wifiPassword:
+    "Password",
+
+  wifiSecurity:
+    "Security",
+
+  emailAddress:
+    "E-mail address",
+
+  emailSubject:
+    "Subject",
+
+  emailBody:
+    "Message",
+
+  account:
+    "Account",
+
+  or:
+    "or",
+
+  password:
+    "Password",
+
+  login:
+    "Sign in",
+
+  register:
+    "Create account",
+
+  newPassword:
+    "New password",
+
+  changePassword:
+    "Change password",
+
+  logout:
+    "Sign out",
+
+  deleteAccount:
+    "Delete account",
+
+  contrast:
+    "Contrast",
+
+  quiet:
+    "Quiet zone",
+
+  modules:
+    "Modules",
+
+  logoCoverage:
+    "Logo coverage",
+
+  complexity:
+    "Complexity",
+
+  correction:
+    "Error correction"
+
+}
+
+};
+
+
+function t(key){
+
+  return (
+    translations[state.lang][key]
+    || key
+  );
+
+}
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
 
 function applyLanguage(){
-  document.documentElement.lang = state.lang;
 
-  document.querySelectorAll("[data-i18n]").forEach(el=>{
-    const key = el.dataset.i18n;
-    if(translations[state.lang][key]){
-      el.textContent = translations[state.lang][key];
-    }
-  });
+  document.documentElement.lang =
+    state.lang;
 
-  $("langBtn").innerHTML =
+  document
+    .querySelectorAll(
+      "[data-i18n]"
+    )
+    .forEach(el=>{
+
+      const key =
+        el.dataset.i18n;
+
+      if(
+        translations[state.lang][key]
+      ){
+
+        el.textContent =
+          translations[
+            state.lang
+          ][key];
+
+      }
+
+    });
+
+
+  document.getElementById(
+    "langBtn"
+  ).innerHTML =
     state.lang === "de"
       ? "🇩🇪 <span>Deutsch</span>"
       : "🇬🇧 <span>English</span>";
 
+
   renderContent();
+
   updateHealth();
+
 }
 
-$("langBtn").onclick = ()=>{
-  state.lang = state.lang === "de" ? "en" : "de";
-  localStorage.setItem("qrforge-language",state.lang);
+
+document.getElementById(
+  "langBtn"
+).onclick = ()=>{
+
+  state.lang =
+    state.lang === "de"
+      ? "en"
+      : "de";
+
+  localStorage.setItem(
+    "qrforge-language",
+    state.lang
+  );
+
   applyLanguage();
+
 };
 
-/* CONTENT */
+
+/* =====================================================
+   CONTENT
+===================================================== */
 
 function renderContent(){
 
-  const area = $("contentArea");
+  const area =
+    document.getElementById(
+      "contentArea"
+    );
 
-  if(state.type === "url"){
-    area.innerHTML = `
-      <label>${t("url")}</label>
-      <input id="mainInput" type="url"
+
+  if(state.type==="url"){
+
+    area.innerHTML=`
+
+      <label>
+        ${t("url")}
+      </label>
+
+      <input
+        id="mainInput"
+        type="url"
         placeholder="${t("enterUrl")}"
         value="${state.url || ""}">
+
     `;
+
   }
 
-  if(state.type === "text"){
-    area.innerHTML = `
-      <label>${t("text")}</label>
-      <textarea id="mainInput"
+
+  if(state.type==="text"){
+
+    area.innerHTML=`
+
+      <label>
+        ${t("text")}
+      </label>
+
+      <textarea
+        id="mainInput"
         placeholder="${t("enterText")}">${state.text || ""}</textarea>
+
     `;
+
   }
 
-  if(state.type === "wifi"){
-    area.innerHTML = `
+
+  if(state.type==="wifi"){
+
+    area.innerHTML=`
+
       <div class="grid2">
+
         <div>
-          <label>${t("wifiName")}</label>
-          <input id="wifiSSID" type="text" value="${state.wifiSSID || ""}">
+
+          <label>
+            ${t("wifiName")}
+          </label>
+
+          <input
+            id="wifiSSID"
+            type="text"
+            value="${state.wifiSSID || ""}">
+
         </div>
+
+
         <div>
-          <label>${t("wifiPassword")}</label>
-          <input id="wifiPassword" type="text" value="${state.wifiPassword || ""}">
+
+          <label>
+            ${t("wifiPassword")}
+          </label>
+
+          <input
+            id="wifiPassword"
+            type="text"
+            value="${state.wifiPassword || ""}">
+
         </div>
+
       </div>
+
+
       <div style="height:10px"></div>
-      <label>${t("wifiSecurity")}</label>
+
+
+      <label>
+        ${t("wifiSecurity")}
+      </label>
+
       <select id="wifiSecurity">
-        <option value="WPA">WPA/WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">None</option>
+
+        <option value="WPA">
+          WPA/WPA2
+        </option>
+
+        <option value="WEP">
+          WEP
+        </option>
+
+        <option value="nopass">
+          None
+        </option>
+
       </select>
+
     `;
+
   }
 
-  if(state.type === "email"){
-    area.innerHTML = `
-      <label>${t("emailAddress")}</label>
-      <input id="emailAddress" type="text" value="${state.emailAddress || ""}">
+
+  if(state.type==="email"){
+
+    area.innerHTML=`
+
+      <label>
+        ${t("emailAddress")}
+      </label>
+
+      <input
+        id="emailAddress"
+        type="text"
+        value="${state.emailAddress || ""}">
+
+
       <div style="height:10px"></div>
-      <label>${t("emailSubject")}</label>
-      <input id="emailSubject" type="text" value="${state.emailSubject || ""}">
+
+
+      <label>
+        ${t("emailSubject")}
+      </label>
+
+      <input
+        id="emailSubject"
+        type="text"
+        value="${state.emailSubject || ""}">
+
+
       <div style="height:10px"></div>
-      <label>${t("emailBody")}</label>
-      <textarea id="emailBody">${state.emailBody || ""}</textarea>
+
+
+      <label>
+        ${t("emailBody")}
+      </label>
+
+      <textarea
+        id="emailBody">${state.emailBody || ""}</textarea>
+
     `;
+
   }
+
 }
 
-/* CONTENT TYPE */
 
-document.querySelectorAll("#typeTabs button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("#typeTabs button")
-      .forEach(x=>x.classList.remove("active"));
+/* =====================================================
+   TYPE
+===================================================== */
 
-    btn.classList.add("active");
-    state.type=btn.dataset.type;
-    renderContent();
+document
+  .querySelectorAll(
+    "#typeTabs button"
+  )
+  .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#typeTabs button"
+        )
+        .forEach(x=>
+          x.classList.remove(
+            "active"
+          )
+        );
+
+      btn.classList.add(
+        "active"
+      );
+
+      state.type =
+        btn.dataset.type;
+
+      renderContent();
+
+    };
+
+  });
+
+
+/* =====================================================
+   STYLE
+===================================================== */
+
+document
+  .querySelectorAll(
+    "#moduleStyle button"
+  )
+  .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#moduleStyle button"
+        )
+        .forEach(x=>
+          x.classList.remove(
+            "active"
+          )
+        );
+
+      btn.classList.add(
+        "active"
+      );
+
+      state.style =
+        btn.dataset.style;
+
+    };
+
+  });
+
+
+/* =====================================================
+   LOGO POSITION
+===================================================== */
+
+document
+  .querySelectorAll(
+    "#logoPosition button"
+  )
+  .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#logoPosition button"
+        )
+        .forEach(x=>
+          x.classList.remove(
+            "active"
+          )
+        );
+
+      btn.classList.add(
+        "active"
+      );
+
+      state.logoPosition =
+        btn.dataset.position;
+
+    };
+
+  });
+
+
+/* =====================================================
+   LOGO SHAPE
+===================================================== */
+
+document
+  .querySelectorAll(
+    "#logoShape button"
+  )
+  .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#logoShape button"
+        )
+        .forEach(x=>
+          x.classList.remove(
+            "active"
+          )
+        );
+
+      btn.classList.add(
+        "active"
+      );
+
+      state.logoShape =
+        btn.dataset.shape;
+
+    };
+
+  });
+
+
+/* =====================================================
+   COLORS
+===================================================== */
+
+function bindColor(
+  color,
+  text,
+  key
+){
+
+  document.getElementById(
+    color
+  ).oninput=e=>{
+
+    state[key] =
+      e.target.value;
+
+    document.getElementById(
+      text
+    ).value =
+      e.target.value;
+
   };
-});
 
-/* STYLE */
 
-document.querySelectorAll("#moduleStyle button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("#moduleStyle button")
-      .forEach(x=>x.classList.remove("active"));
+  document.getElementById(
+    text
+  ).onchange=e=>{
 
-    btn.classList.add("active");
-    state.style=btn.dataset.style;
-  };
-});
+    if(
+      /^#[0-9a-f]{6}$/i.test(
+        e.target.value
+      )
+    ){
 
-/* LOGO POSITION */
+      state[key] =
+        e.target.value;
 
-document.querySelectorAll("#logoPosition button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("#logoPosition button")
-      .forEach(x=>x.classList.remove("active"));
+      document.getElementById(
+        color
+      ).value =
+        e.target.value;
 
-    btn.classList.add("active");
-    state.logoPosition=btn.dataset.position;
-  };
-});
-
-/* LOGO SHAPE */
-
-document.querySelectorAll("#logoShape button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("#logoShape button")
-      .forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-    state.logoShape=btn.dataset.shape;
-  };
-});
-
-/* COLORS */
-
-function bindColor(color,text,key){
-  $(color).oninput=e=>{
-    state[key]=e.target.value;
-    $(text).value=e.target.value;
-  };
-
-  $(text).onchange=e=>{
-    if(/^#[0-9a-f]{6}$/i.test(e.target.value)){
-      state[key]=e.target.value;
-      $(color).value=e.target.value;
     }
+
   };
+
 }
 
-bindColor("fgColor","fgText","fg");
-bindColor("bgColor","bgText","bg");
 
-$("gradientEnabled").onchange=e=>{
-  state.gradient=e.target.checked;
-  $("gradientSettings").classList.toggle("hidden",!state.gradient);
+bindColor(
+  "fgColor",
+  "fgText",
+  "fg"
+);
+
+bindColor(
+  "bgColor",
+  "bgText",
+  "bg"
+);
+
+
+document.getElementById(
+  "gradientEnabled"
+).onchange=e=>{
+
+  state.gradient =
+    e.target.checked;
+
+  document.getElementById(
+    "gradientSettings"
+  ).classList.toggle(
+    "hidden",
+    !state.gradient
+  );
+
 };
 
-$("gradientColor").oninput=e=>{
-  state.gradientColor=e.target.value;
+
+document.getElementById(
+  "gradientColor"
+).oninput=e=>{
+
+  state.gradientColor =
+    e.target.value;
+
 };
 
-$("gradientDirection").onchange=e=>{
-  state.gradientDirection=e.target.value;
+
+document.getElementById(
+  "gradientDirection"
+).onchange=e=>{
+
+  state.gradientDirection =
+    e.target.value;
+
 };
 
-$("ecc").onchange=e=>{
-  state.ecc=e.target.value;
+
+document.getElementById(
+  "ecc"
+).onchange=e=>{
+
+  state.ecc =
+    e.target.value;
+
 };
 
-$("margin").oninput=e=>{
-  state.margin=Number(e.target.value);
+
+document.getElementById(
+  "margin"
+).oninput=e=>{
+
+  state.margin =
+    Number(
+      e.target.value
+    );
+
 };
 
-$("logoSize").oninput=e=>{
-  state.logoSize=Number(e.target.value);
-  $("logoSizeValue").textContent=state.logoSize+"%";
+
+document.getElementById(
+  "logoSize"
+).oninput=e=>{
+
+  state.logoSize =
+    Number(
+      e.target.value
+    );
+
+  document.getElementById(
+    "logoSizeValue"
+  ).textContent =
+    state.logoSize+"%";
+
 };
 
-$("logoWhite").onchange=e=>{
-  state.logoWhite=e.target.checked;
+
+document.getElementById(
+  "logoWhite"
+).onchange=e=>{
+
+  state.logoWhite =
+    e.target.checked;
+
 };
 
-/* LOGO UPLOAD */
 
-$("logoChoose").onclick=()=>{
-  $("logoFile").click();
+/* =====================================================
+   LOGO
+===================================================== */
+
+document.getElementById(
+  "logoChoose"
+).onclick=()=>{
+
+  document.getElementById(
+    "logoFile"
+  ).click();
+
 };
 
-$("logoFile").onchange=e=>{
-  if(e.target.files[0]) loadLogo(e.target.files[0]);
-};
 
-$("logoDrop").ondragover=e=>{
-  e.preventDefault();
-  $("logoDrop").classList.add("drag");
-};
+document.getElementById(
+  "logoFile"
+).onchange=e=>{
 
-$("logoDrop").ondragleave=()=>{
-  $("logoDrop").classList.remove("drag");
-};
-
-$("logoDrop").ondrop=e=>{
-  e.preventDefault();
-  $("logoDrop").classList.remove("drag");
-
-  const file=e.dataTransfer.files[0];
-
-  if(file && file.type.startsWith("image/")){
-    loadLogo(file);
+  if(e.target.files[0]){
+    loadLogo(
+      e.target.files[0]
+    );
   }
+
 };
+
+
+const logoDrop =
+  document.getElementById(
+    "logoDrop"
+  );
+
+
+logoDrop.ondragover=e=>{
+
+  e.preventDefault();
+
+  logoDrop.classList.add(
+    "drag"
+  );
+
+};
+
+
+logoDrop.ondragleave=()=>{
+
+  logoDrop.classList.remove(
+    "drag"
+  );
+
+};
+
+
+logoDrop.ondrop=e=>{
+
+  e.preventDefault();
+
+  logoDrop.classList.remove(
+    "drag"
+  );
+
+  const file =
+    e.dataTransfer.files[0];
+
+  if(
+    file &&
+    file.type.startsWith(
+      "image/"
+    )
+  ){
+
+    loadLogo(file);
+
+  }
+
+};
+
 
 function loadLogo(file){
 
-  const reader=new FileReader();
+  const reader =
+    new FileReader();
 
   reader.onload=()=>{
+
     state.logo={
       data:reader.result,
       name:file.name
     };
 
-    $("logoThumb").src=reader.result;
-    $("logoName").textContent=file.name;
-    $("logoPreview").style.display="flex";
-    $("logoSettings").classList.remove("hidden");
+
+    document.getElementById(
+      "logoThumb"
+    ).src =
+      reader.result;
+
+
+    document.getElementById(
+      "logoName"
+    ).textContent =
+      file.name;
+
+
+    document.getElementById(
+      "logoPreview"
+    ).style.display =
+      "flex";
+
+
+    document.getElementById(
+      "logoSettings"
+    ).classList.remove(
+      "hidden"
+    );
+
   };
 
   reader.readAsDataURL(file);
+
 }
 
-$("removeLogo").onclick=()=>{
+
+document.getElementById(
+  "removeLogo"
+).onclick=()=>{
+
   state.logo=null;
-  $("logoFile").value="";
-  $("logoPreview").style.display="none";
-  $("logoSettings").classList.add("hidden");
+
+  document.getElementById(
+    "logoFile"
+  ).value="";
+
+  document.getElementById(
+    "logoPreview"
+  ).style.display =
+    "none";
+
+  document.getElementById(
+    "logoSettings"
+  ).classList.add(
+    "hidden"
+  );
+
 };
 
-/* GET CONTENT */
+
+/* =====================================================
+   CONTENT
+===================================================== */
 
 function getPayload(){
 
   if(state.type==="url"){
-    return $("mainInput")?.value.trim() || "";
+
+    return document
+      .getElementById(
+        "mainInput"
+      )?.value
+      .trim() || "";
+
   }
+
 
   if(state.type==="text"){
-    return $("mainInput")?.value || "";
+
+    return document
+      .getElementById(
+        "mainInput"
+      )?.value || "";
+
   }
+
 
   if(state.type==="wifi"){
-    const ssid=$("wifiSSID")?.value || "";
-    const pass=$("wifiPassword")?.value || "";
-    const sec=$("wifiSecurity")?.value || "WPA";
 
-    return `WIFI:T:${sec};S:${escapeWifi(ssid)};P:${escapeWifi(pass)};;`;
+    const ssid =
+      document.getElementById(
+        "wifiSSID"
+      )?.value || "";
+
+    const pass =
+      document.getElementById(
+        "wifiPassword"
+      )?.value || "";
+
+    const security =
+      document.getElementById(
+        "wifiSecurity"
+      )?.value || "WPA";
+
+
+    return (
+      `WIFI:T:${security};`+
+      `S:${escapeWifi(ssid)};`+
+      `P:${escapeWifi(pass)};;`
+    );
+
   }
+
 
   if(state.type==="email"){
-    const address=$("emailAddress")?.value.trim() || "";
-    const subject=$("emailSubject")?.value || "";
-    const body=$("emailBody")?.value || "";
 
-    return `MATMSG:TO:${address};SUB:${subject};BODY:${body};;`;
+    const address =
+      document.getElementById(
+        "emailAddress"
+      )?.value
+      .trim() || "";
+
+    const subject =
+      document.getElementById(
+        "emailSubject"
+      )?.value || "";
+
+    const body =
+      document.getElementById(
+        "emailBody"
+      )?.value || "";
+
+
+    return (
+      `MATMSG:TO:${address};`+
+      `SUB:${subject};`+
+      `BODY:${body};;`
+    );
+
   }
 
+
   return "";
+
 }
 
-function escapeWifi(v){
-  return v.replace(/([\\;,:"])/g,"\\$1");
+
+function escapeWifi(value){
+
+  return value.replace(
+    /([\\;,:"])/g,
+    "\\$1"
+  );
+
 }
 
-/* GENERATE */
 
-$("generate").onclick=generate;
+/* =====================================================
+   GENERATE
+===================================================== */
+
+document.getElementById(
+  "generate"
+).onclick =
+  generate;
+
 
 function generate(){
 
-  const payload=getPayload();
+  const payload =
+    getPayload();
 
   if(!payload){
     return;
   }
 
-  const oldMatrix=state.matrix;
+
+  /*
+   * Logos brauchen hohe
+   * Fehlerkorrektur.
+   */
+
+  if(
+    state.logo &&
+    state.ecc!=="H"
+  ){
+
+    state.ecc="H";
+
+    document.getElementById(
+      "ecc"
+    ).value="H";
+
+  }
+
 
   try{
 
-    const qr=qrcode(0,state.ecc);
-    qr.addData(payload);
+    const qr =
+      qrcode(
+        0,
+        state.ecc
+      );
+
+    qr.addData(
+      payload
+    );
+
     qr.make();
 
-    state.qr=qr;
 
-    const size=qr.getModuleCount();
+    const oldMatrix =
+      state.matrix;
+
+    const size =
+      qr.getModuleCount();
+
     const matrix=[];
 
-    for(let y=0;y<size;y++){
+
+    for(
+      let y=0;
+      y<size;
+      y++
+    ){
+
       matrix[y]=[];
 
-      for(let x=0;x<size;x++){
-        matrix[y][x]=qr.isDark(y,x);
+      for(
+        let x=0;
+        x<size;
+        x++
+      ){
+
+        matrix[y][x] =
+          qr.isDark(
+            y,
+            x
+          );
+
       }
+
     }
 
-    state.lastMatrix=oldMatrix;
-    state.matrix=matrix;
 
-    drawMorph(oldMatrix,matrix);
+    state.lastMatrix =
+      oldMatrix;
 
-    $("emptyState").classList.add("hidden");
-    $("qrCanvas").classList.remove("hidden");
+    state.matrix =
+      matrix;
+
+    state.qr =
+      qr;
+
+
+    drawMorph(
+      oldMatrix,
+      matrix
+    );
+
+
+    document.getElementById(
+      "emptyState"
+    ).classList.add(
+      "hidden"
+    );
+
+
+    document.getElementById(
+      "qrCanvas"
+    ).classList.remove(
+      "hidden"
+    );
+
 
     updateHealth();
 
-  }catch(err){
-    console.error(err);
+  }catch(error){
+
+    console.error(
+      "QR generation failed:",
+      error
+    );
+
   }
+
 }
 
-/* DRAW */
 
-function drawMorph(oldMatrix,newMatrix){
+/* =====================================================
+   DRAW
+===================================================== */
 
-  const canvas=$("qrCanvas");
-  const ctx=canvas.getContext("2d");
+function drawMorph(
+  oldMatrix,
+  newMatrix
+){
+
+  const canvas =
+    document.getElementById(
+      "qrCanvas"
+    );
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
 
   const SIZE=1000;
 
   canvas.width=SIZE;
   canvas.height=SIZE;
 
-  canvas.classList.remove("morph");
+
+  canvas.classList.remove(
+    "morph"
+  );
+
   void canvas.offsetWidth;
-  canvas.classList.add("morph");
 
-  const target=SIZE;
+  canvas.classList.add(
+    "morph"
+  );
 
-  drawQR(ctx,newMatrix,target);
 
-  /*
-   * Small module morph overlay.
-   * When dimensions differ, we still use a clean transition.
-   */
-  if(oldMatrix && oldMatrix.length===newMatrix.length){
+  drawQR(
+    ctx,
+    newMatrix,
+    SIZE
+  );
 
-    const old=oldMatrix;
+
+  if(
+    oldMatrix &&
+    oldMatrix.length===
+    newMatrix.length
+  ){
 
     setTimeout(()=>{
 
-      const start=performance.now();
-      const duration=560;
+      const start =
+        performance.now();
+
+      const duration =
+        560;
+
 
       function frame(now){
 
-        const p=Math.min(1,(now-start)/duration);
-        const ease=1-Math.pow(1-p,3);
+        const progress =
+          Math.min(
+            1,
+            (now-start)/
+            duration
+          );
 
-        ctx.clearRect(0,0,SIZE,SIZE);
 
-        drawQR(ctx,newMatrix,SIZE,ease,old);
+        const ease =
+          1-
+          Math.pow(
+            1-progress,
+            3
+          );
 
-        if(p<1){
-          requestAnimationFrame(frame);
+
+        ctx.clearRect(
+          0,
+          0,
+          SIZE,
+          SIZE
+        );
+
+
+        drawQR(
+          ctx,
+          newMatrix,
+          SIZE,
+          ease,
+          oldMatrix
+        );
+
+
+        if(progress<1){
+
+          requestAnimationFrame(
+            frame
+          );
+
         }else{
-          drawQR(ctx,newMatrix,SIZE);
+
+          drawQR(
+            ctx,
+            newMatrix,
+            SIZE
+          );
+
         }
+
       }
 
-      requestAnimationFrame(frame);
+
+      requestAnimationFrame(
+        frame
+      );
 
     },80);
+
   }
+
 }
 
-/* QR RENDERER */
 
-function drawQR(ctx,matrix,size,morph=1,oldMatrix=null){
+/* =====================================================
+   QR RENDERER
+===================================================== */
 
-  const n=matrix.length;
-  const margin=state.margin;
+function drawQR(
+  ctx,
+  matrix,
+  size,
+  morph=1,
+  oldMatrix=null
+){
 
-  const cell=size/(n+margin*2);
+  const n =
+    matrix.length;
 
-  ctx.clearRect(0,0,size,size);
+  const margin =
+    state.margin;
 
-  ctx.fillStyle=state.bg;
-  ctx.fillRect(0,0,size,size);
+  const cell =
+    size/
+    (n+margin*2);
+
+
+  ctx.clearRect(
+    0,
+    0,
+    size,
+    size
+  );
+
+
+  ctx.fillStyle =
+    state.bg;
+
+  ctx.fillRect(
+    0,
+    0,
+    size,
+    size
+  );
+
 
   let gradient=null;
 
+
   if(state.gradient){
 
-    if(state.gradientDirection==="vertical"){
-      gradient=ctx.createLinearGradient(0,0,0,size);
-    }else if(state.gradientDirection==="diagonal"){
-      gradient=ctx.createLinearGradient(0,0,size,size);
-    }else{
-      gradient=ctx.createLinearGradient(0,0,size,0);
-    }
+    if(
+      state.gradientDirection===
+      "vertical"
+    ){
 
-    gradient.addColorStop(0,state.fg);
-    gradient.addColorStop(1,state.gradientColor);
-  }
-
-  ctx.fillStyle=gradient || state.fg;
-
-  for(let y=0;y<n;y++){
-
-    for(let x=0;x<n;x++){
-
-      if(!matrix[y][x]) continue;
-
-      if(isFinderArea(x,y,n)){
-
-        drawFinderModule(
-          ctx,
-          x,y,
-          cell,
-          margin,
-          n
+      gradient =
+        ctx.createLinearGradient(
+          0,
+          0,
+          0,
+          size
         );
 
+    }else if(
+      state.gradientDirection===
+      "diagonal"
+    ){
+
+      gradient =
+        ctx.createLinearGradient(
+          0,
+          0,
+          size,
+          size
+        );
+
+    }else{
+
+      gradient =
+        ctx.createLinearGradient(
+          0,
+          0,
+          size,
+          0
+        );
+
+    }
+
+
+    gradient.addColorStop(
+      0,
+      state.fg
+    );
+
+    gradient.addColorStop(
+      1,
+      state.gradientColor
+    );
+
+  }
+
+
+  ctx.fillStyle =
+    gradient ||
+    state.fg;
+
+
+  for(
+    let y=0;
+    y<n;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<n;
+      x++
+    ){
+
+      if(!matrix[y][x]){
         continue;
       }
 
-      const px=(x+margin)*cell;
-      const py=(y+margin)*cell;
+
+      if(
+        isFinderArea(
+          x,
+          y,
+          n
+        )
+      ){
+
+        continue;
+
+      }
+
+
+      const px =
+        (x+margin)*
+        cell;
+
+      const py =
+        (y+margin)*
+        cell;
+
 
       let alpha=1;
 
+
       if(oldMatrix){
-        const was=oldMatrix[y]?.[x] || false;
-        const is=matrix[y][x];
+
+        const was =
+          oldMatrix[y]?.[x] ||
+          false;
+
+        const is =
+          matrix[y][x];
+
 
         if(was!==is){
           alpha=morph;
         }
+
       }
 
-      ctx.globalAlpha=alpha;
 
-      drawModule(ctx,px,py,cell);
+      ctx.globalAlpha =
+        alpha;
+
+
+      drawModule(
+        ctx,
+        px,
+        py,
+        cell
+      );
+
 
       ctx.globalAlpha=1;
+
     }
+
   }
 
-  /*
-   * Draw finder patterns on top using a proper QR finder geometry.
-   */
-  drawFinder(ctx,0,0,cell,margin);
-  drawFinder(ctx,n-7,0,cell,margin);
-  drawFinder(ctx,0,n-7,cell,margin);
+
+  drawFinder(
+    ctx,
+    0,
+    0,
+    cell,
+    margin
+  );
+
+
+  drawFinder(
+    ctx,
+    n-7,
+    0,
+    cell,
+    margin
+  );
+
+
+  drawFinder(
+    ctx,
+    0,
+    n-7,
+    cell,
+    margin
+  );
+
 
   if(state.logo){
-    drawLogo(ctx,size,cell,n,margin);
+
+    drawLogo(
+      ctx,
+      size,
+      cell,
+      n,
+      margin
+    );
+
   }
+
 }
 
-/* FINDER */
 
-function isFinderArea(x,y,n){
+function isFinderArea(
+  x,
+  y,
+  n
+){
 
   const areas=[
+
     [0,0],
+
     [n-7,0],
+
     [0,n-7]
+
   ];
 
-  return areas.some(([ax,ay]) =>
-    x>=ax && x<ax+7 &&
-    y>=ay && y<ay+7
+
+  return areas.some(
+    ([ax,ay])=>
+
+      x>=ax &&
+      x<ax+7 &&
+      y>=ay &&
+      y<ay+7
+
   );
+
 }
 
-function drawFinderModule(ctx,x,y,cell,margin,n){
-  // handled by complete finder rendering
-}
 
-function drawFinder(ctx,x,y,cell,margin){
+function drawFinder(
+  ctx,
+  x,
+  y,
+  cell,
+  margin
+){
 
-  const px=(x+margin)*cell;
-  const py=(y+margin)*cell;
-  const s=7*cell;
+  const px =
+    (x+margin)*
+    cell;
 
-  ctx.save();
+  const py =
+    (y+margin)*
+    cell;
 
-  ctx.fillStyle=state.bg;
-  ctx.fillRect(px,py,s,s);
+  const size =
+    7*cell;
 
-  ctx.fillStyle=state.gradient
-    ? state.fg
-    : state.fg;
 
-  ctx.fillRect(px,py,s,s);
+  ctx.fillStyle =
+    state.fg;
 
-  ctx.fillStyle=state.bg;
+  ctx.fillRect(
+    px,
+    py,
+    size,
+    size
+  );
+
+
+  ctx.fillStyle =
+    state.bg;
+
   ctx.fillRect(
     px+cell,
     py+cell,
@@ -1472,9 +4044,11 @@ function drawFinder(ctx,x,y,cell,margin){
     5*cell
   );
 
-  ctx.fillStyle=state.gradient
-    ? state.fg
-    : state.fg;
+
+  ctx.fillStyle =
+    state.gradient
+      ? state.fg
+      : state.fg;
 
   ctx.fillRect(
     px+2*cell,
@@ -1483,101 +4057,191 @@ function drawFinder(ctx,x,y,cell,margin){
     3*cell
   );
 
-  ctx.restore();
 }
 
-function drawModule(ctx,x,y,s){
 
-  const r =
-    state.style==="rounded" ? s*.25 :
-    state.style==="dot" ? s*.48 :
-    state.style==="soft" ? s*.16 :
-    0;
+function drawModule(
+  ctx,
+  x,
+  y,
+  size
+){
 
-  if(r===0){
-    ctx.fillRect(x,y,s,s);
+  const radius =
+
+    state.style==="rounded"
+      ? size*.25
+
+    : state.style==="dot"
+      ? size*.48
+
+    : state.style==="soft"
+      ? size*.16
+
+    : 0;
+
+
+  if(radius===0){
+
+    ctx.fillRect(
+      x,
+      y,
+      size,
+      size
+    );
+
     return;
+
   }
+
 
   ctx.beginPath();
-  ctx.roundRect(x,y,s,s,r);
+
+  ctx.roundRect(
+    x,
+    y,
+    size,
+    size,
+    radius
+  );
+
   ctx.fill();
+
 }
 
-/* LOGO */
 
-function drawLogo(ctx,size,cell,n,margin){
+/* =====================================================
+   LOGO RENDER
+===================================================== */
 
-  const logoSize=size*(state.logoSize/100);
+function drawLogo(
+  ctx,
+  size,
+  cell,
+  n,
+  margin
+){
 
-  let cx=size/2;
-  let cy=size/2;
+  const logoSize =
+    size*
+    (state.logoSize/100);
 
-  if(state.logoPosition==="bottomLeft"){
-    cx=logoSize*.72;
-    cy=size-logoSize*.72;
-  }
 
-  if(state.logoPosition==="bottomRight"){
-    cx=size-logoSize*.72;
-    cy=size-logoSize*.72;
-  }
+  let cx =
+    size/2;
 
-  /*
-   * Keep logo away from finder patterns.
-   */
-  const minFinder=size*((7+margin)/(n+margin*2));
+  let cy =
+    size/2;
+
 
   if(
-    state.logoPosition!=="center" &&
-    logoSize>minFinder*1.7
+    state.logoPosition===
+    "bottomLeft"
   ){
-    // Conservative placement.
-    const safe=logoSize*.68;
 
-    if(state.logoPosition==="bottomLeft"){
-      cx=Math.max(safe,size*.16);
-      cy=Math.min(size-safe,size*.84);
-    }else{
-      cx=Math.min(size-safe,size*.84);
-      cy=Math.min(size-safe,size*.84);
-    }
+    cx =
+      logoSize*.72;
+
+    cy =
+      size-
+      logoSize*.72;
+
   }
 
-  const safeSize=logoSize*1.24;
+
+  if(
+    state.logoPosition===
+    "bottomRight"
+  ){
+
+    cx =
+      size-
+      logoSize*.72;
+
+    cy =
+      size-
+      logoSize*.72;
+
+  }
+
+
+  const safeSize =
+    logoSize*
+    1.24;
+
 
   ctx.save();
 
-  if(state.logoWhite){
 
-    ctx.fillStyle=state.bg;
+  if(
+    state.logoWhite
+  ){
 
-    if(state.logoShape==="round"){
+    ctx.fillStyle =
+      state.bg;
+
+
+    if(
+      state.logoShape===
+      "round"
+    ){
+
       ctx.beginPath();
-      ctx.arc(cx,cy,safeSize/2,0,Math.PI*2);
+
+      ctx.arc(
+        cx,
+        cy,
+        safeSize/2,
+        0,
+        Math.PI*2
+      );
+
       ctx.fill();
+
     }else{
+
       ctx.fillRect(
         cx-safeSize/2,
         cy-safeSize/2,
         safeSize,
         safeSize
       );
+
     }
+
   }
 
-  const img=new Image();
+
+  const img =
+    new Image();
+
 
   img.onload=()=>{
 
     ctx.save();
 
-    if(state.logoShape==="round"){
+
+    if(
+      state.logoShape===
+      "round"
+    ){
+
       ctx.beginPath();
-      ctx.arc(cx,cy,logoSize/2,0,Math.PI*2);
+
+      ctx.arc(
+        cx,
+        cy,
+        logoSize/2,
+        0,
+        Math.PI*2
+      );
+
       ctx.clip();
+
     }else{
+
       ctx.beginPath();
+
       ctx.roundRect(
         cx-logoSize/2,
         cy-logoSize/2,
@@ -1585,303 +4249,732 @@ function drawLogo(ctx,size,cell,n,margin){
         logoSize,
         logoSize*.14
       );
+
       ctx.clip();
+
     }
 
-    const ratio=Math.min(
-      logoSize/img.width,
-      logoSize/img.height
-    );
 
-    const w=img.width*ratio;
-    const h=img.height*ratio;
+    const ratio =
+      Math.min(
+        logoSize/img.width,
+        logoSize/img.height
+      );
+
+
+    const width =
+      img.width*ratio;
+
+    const height =
+      img.height*ratio;
+
 
     ctx.drawImage(
       img,
-      cx-w/2,
-      cy-h/2,
-      w,
-      h
+      cx-width/2,
+      cy-height/2,
+      width,
+      height
     );
 
+
     ctx.restore();
     ctx.restore();
+
   };
 
-  img.src=state.logo.data;
+
+  img.src =
+    state.logo.data;
+
 }
 
-/* HEALTH */
+
+/* =====================================================
+   HEALTH
+===================================================== */
 
 function updateHealth(){
 
   if(!state.matrix){
-    $("healthScore").textContent="—";
-    $("healthFill").style.width="0";
-    $("miniHealth").style.width="0";
-    $("miniHealthText").textContent="—";
+
+    document.getElementById(
+      "healthScore"
+    ).textContent="—";
+
+    document.getElementById(
+      "healthFill"
+    ).style.width="0";
+
+    document.getElementById(
+      "miniHealth"
+    ).style.width="0";
+
+    document.getElementById(
+      "miniHealthText"
+    ).textContent="—";
+
     return;
+
   }
 
-  const n=state.matrix.length;
+
+  const n =
+    state.matrix.length;
+
 
   let score=100;
 
-  const contrast=contrastRatio(state.fg,state.bg);
 
-  if(contrast<7) score-=15;
-  if(contrast<4.5) score-=25;
+  const contrast =
+    contrastRatio(
+      state.fg,
+      state.bg
+    );
 
-  if(state.margin<4) score-=12;
 
-  if(n>45) score-=7;
-  if(n>60) score-=8;
+  if(
+    contrast<7
+  ){
 
-  if(state.style==="dot") score-=3;
+    score-=15;
 
-  if(state.logo){
-    if(state.logoSize>20) score-=15;
-    if(state.logoSize>23) score-=15;
-    if(state.ecc!=="H") score-=20;
   }
 
-  score=Math.max(0,Math.min(100,score));
 
-  $("healthScore").textContent=score+"/100";
-  $("healthFill").style.width=score+"%";
-  $("miniHealth").style.width=score+"%";
+  if(
+    contrast<4.5
+  ){
 
-  $("miniHealthText").textContent =
-    t("scanability")+" "+score+"/100";
+    score-=25;
+
+  }
+
+
+  if(
+    state.margin<4
+  ){
+
+    score-=12;
+
+  }
+
+
+  if(
+    n>45
+  ){
+
+    score-=7;
+
+  }
+
+
+  if(
+    n>60
+  ){
+
+    score-=8;
+
+  }
+
+
+  if(
+    state.style==="dot"
+  ){
+
+    score-=3;
+
+  }
+
+
+  if(state.logo){
+
+    if(
+      state.logoSize>20
+    ){
+
+      score-=15;
+
+    }
+
+    if(
+      state.logoSize>23
+    ){
+
+      score-=15;
+
+    }
+
+  }
+
+
+  score =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        score
+      )
+    );
+
+
+  document.getElementById(
+    "healthScore"
+  ).textContent =
+    score+"/100";
+
+
+  document.getElementById(
+    "healthFill"
+  ).style.width =
+    score+"%";
+
+
+  document.getElementById(
+    "miniHealth"
+  ).style.width =
+    score+"%";
+
+
+  document.getElementById(
+    "miniHealthText"
+  ).textContent =
+    t("scanability")+
+    " "+
+    score+
+    "/100";
+
 
   const contrastStatus =
-    contrast>=7 ? "good" :
-    contrast>=4.5 ? "warn" : "bad";
+    contrast>=7
+      ? "good"
+      : contrast>=4.5
+        ? "warn"
+        : "bad";
+
 
   const marginStatus =
-    state.margin>=4 ? "good" : "warn";
+    state.margin>=4
+      ? "good"
+      : "warn";
+
 
   const logoStatus =
-    !state.logo ? "good" :
-    state.logoSize<=20 ? "good" :
-    state.logoSize<=23 ? "warn" : "bad";
+    !state.logo
+      ? "good"
+      : state.logoSize<=20
+        ? "good"
+        : state.logoSize<=23
+          ? "warn"
+          : "bad";
+
 
   const items=[
+
     [
       t("contrast"),
       contrast.toFixed(2)+":1",
-      contrastStatus,
-      contrast>=7?t("highContrast"):t("lowContrast")
+      contrastStatus
     ],
+
     [
       t("quiet"),
       state.margin+"×",
-      marginStatus,
-      state.margin>=4?t("sufficientMargin"):t("smallMargin")
+      marginStatus
     ],
+
     [
       t("modules"),
       n+" × "+n,
-      n<50?"good":"warn",
-      n<50?t("healthGood"):t("healthWarn")
+      n<50
+        ? "good"
+        : "warn"
     ],
+
     [
       t("logoCoverage"),
-      state.logo?state.logoSize+"%":t("noLogo"),
-      logoStatus,
-      !state.logo?t("noLogo"):
-        state.logoSize<=20?t("logoSafe"):t("logoLarge")
+      state.logo
+        ? state.logoSize+"%"
+        : "—",
+      logoStatus
     ],
+
     [
       t("complexity"),
-      n<=29?t("healthGood"):
-      n<=49?t("healthWarn"):t("healthBad"),
-      n<=49?"good":"warn",
-      ""
+      n<=29
+        ? "Low"
+        : n<=49
+          ? "Medium"
+          : "High",
+      n<=49
+        ? "good"
+        : "warn"
     ],
+
     [
       t("correction"),
       state.ecc,
-      state.logo && state.ecc!=="H"?"warn":"good",
-      state.logo && state.ecc!=="H"
-        ? "H empfohlen / H recommended"
-        : ""
+      "good"
     ]
+
   ];
 
-  $("healthList").innerHTML=items.map(x=>`
-    <div class="health-item">
-      <span>${x[0]}</span>
-      <span class="${x[2]}">
-        <strong>${x[1]}</strong>
-        ${x[3]?` · ${x[3]}`:""}
-      </span>
-    </div>
-  `).join("");
+
+  document.getElementById(
+    "healthList"
+  ).innerHTML =
+    items.map(item=>`
+
+      <div class="health-item">
+
+        <span>
+          ${item[0]}
+        </span>
+
+        <span class="${item[2]}">
+
+          <strong>
+            ${item[1]}
+          </strong>
+
+        </span>
+
+      </div>
+
+    `).join("");
+
 }
 
-/* CONTRAST */
 
-function contrastRatio(a,b){
+/* =====================================================
+   CONTRAST
+===================================================== */
 
-  const lum=c=>{
+function contrastRatio(
+  foreground,
+  background
+){
+
+  function luminance(
+    color
+  ){
+
     const rgb=[
-      parseInt(c.slice(1,3),16)/255,
-      parseInt(c.slice(3,5),16)/255,
-      parseInt(c.slice(5,7),16)/255
-    ].map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));
 
-    return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];
-  };
+      parseInt(
+        color.slice(1,3),
+        16
+      )/255,
 
-  const l1=lum(a);
-  const l2=lum(b);
+      parseInt(
+        color.slice(3,5),
+        16
+      )/255,
 
-  return (Math.max(l1,l2)+.05)/
-         (Math.min(l1,l2)+.05);
-}
+      parseInt(
+        color.slice(5,7),
+        16
+      )/255
 
-/* VIEW TABS */
+    ].map(
+      value=>
+        value<=.03928
+          ? value/12.92
+          : Math.pow(
+              (value+.055)/
+              1.055,
+              2.4
+            )
+    );
 
-document.querySelectorAll(".tab").forEach(btn=>{
-  btn.onclick=()=>{
 
-    document.querySelectorAll(".tab")
-      .forEach(x=>x.classList.remove("active"));
+    return (
+      .2126*rgb[0]+
+      .7152*rgb[1]+
+      .0722*rgb[2]
+    );
 
-    btn.classList.add("active");
+  }
 
-    if(btn.dataset.view==="preview"){
-      $("previewView").classList.remove("hidden");
-      $("healthView").classList.add("hidden");
-    }else{
-      $("previewView").classList.add("hidden");
-      $("healthView").classList.remove("hidden");
-    }
-  };
-});
 
-/* EXPORT CONFIG */
+  const l1 =
+    luminance(
+      foreground
+    );
 
-function renderExportCanvas(){
+  const l2 =
+    luminance(
+      background
+    );
 
-  if(!state.matrix) return null;
 
-  const c=document.createElement("canvas");
-
-  c.width=1600;
-  c.height=1600;
-
-  drawQR(c.getContext("2d"),state.matrix,1600);
-
-  return c;
-}
-
-/* PNG */
-
-$("downloadPNG").onclick=()=>{
-
-  const c=renderExportCanvas();
-
-  if(!c) return;
-
-  c.toBlob(blob=>{
-
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-
-    a.href=url;
-    a.download="qrforge.png";
-    a.click();
-
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-
-  },"image/png");
-};
-
-/* SVG */
-
-$("downloadSVG").onclick=()=>{
-
-  if(!state.matrix) return;
-
-  const svg=createSVG();
-
-  const blob=new Blob(
-    [svg],
-    {type:"image/svg+xml;charset=utf-8"}
+  return (
+    Math.max(l1,l2)+.05
+  )/
+  (
+    Math.min(l1,l2)+.05
   );
 
-  const url=URL.createObjectURL(blob);
+}
 
-  const a=document.createElement("a");
+
+/* =====================================================
+   PREVIEW / HEALTH TABS
+===================================================== */
+
+document
+  .querySelectorAll(
+    ".tab"
+  )
+  .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          ".tab"
+        )
+        .forEach(x=>
+          x.classList.remove(
+            "active"
+          )
+        );
+
+      btn.classList.add(
+        "active"
+      );
+
+
+      if(
+        btn.dataset.view===
+        "preview"
+      ){
+
+        document
+          .getElementById(
+            "previewView"
+          )
+          .classList.remove(
+            "hidden"
+          );
+
+        document
+          .getElementById(
+            "healthView"
+          )
+          .classList.add(
+            "hidden"
+          );
+
+      }else{
+
+        document
+          .getElementById(
+            "previewView"
+          )
+          .classList.add(
+            "hidden"
+          );
+
+        document
+          .getElementById(
+            "healthView"
+          )
+          .classList.remove(
+            "hidden"
+          );
+
+      }
+
+    };
+
+  });
+
+
+/* =====================================================
+   PNG EXPORT
+===================================================== */
+
+document.getElementById(
+  "downloadPNG"
+).onclick=()=>{
+
+  if(!state.matrix){
+    return;
+  }
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width=1600;
+  canvas.height=1600;
+
+
+  drawQR(
+    canvas.getContext("2d"),
+    state.matrix,
+    1600
+  );
+
+
+  canvas.toBlob(
+    blob=>{
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+      const a =
+        document.createElement(
+          "a"
+        );
+
+      a.href=url;
+      a.download=
+        "qrforge.png";
+
+      a.click();
+
+      setTimeout(
+        ()=>{
+          URL.revokeObjectURL(
+            url
+          );
+        },
+        1000
+      );
+
+    },
+    "image/png"
+  );
+
+};
+
+
+/* =====================================================
+   SVG EXPORT
+===================================================== */
+
+document.getElementById(
+  "downloadSVG"
+).onclick=()=>{
+
+  if(!state.matrix){
+    return;
+  }
+
+
+  const svg =
+    createSVG();
+
+
+  const blob =
+    new Blob(
+      [svg],
+      {
+        type:
+          "image/svg+xml;charset=utf-8"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a =
+    document.createElement(
+      "a"
+    );
+
   a.href=url;
-  a.download="qrforge.svg";
+
+  a.download=
+    "qrforge.svg";
+
   a.click();
 
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+  setTimeout(
+    ()=>{
+      URL.revokeObjectURL(
+        url
+      );
+    },
+    1000
+  );
+
 };
+
 
 function createSVG(){
 
-  const matrix=state.matrix;
-  const n=matrix.length;
-  const margin=state.margin;
+  const matrix =
+    state.matrix;
 
-  const total=n+margin*2;
-  const cell=1000/total;
+  const n =
+    matrix.length;
 
-  const id="qrGradient_"+Date.now();
+  const margin =
+    state.margin;
+
+  const total =
+    n+margin*2;
+
+  const cell =
+    1000/total;
+
+
+  const gradientId =
+    "qrGradient";
+
+
+  const logoClipId =
+    "qrLogoClip";
+
 
   let defs="";
 
+
   if(state.gradient){
 
-    let x1="0%",y1="0%",x2="100%",y2="0%";
+    let x1="0%";
+    let y1="0%";
+    let x2="100%";
+    let y2="0%";
 
-    if(state.gradientDirection==="vertical"){
-      x1="0%";y1="0%";x2="0%";y2="100%";
+
+    if(
+      state.gradientDirection===
+      "vertical"
+    ){
+
+      x2="0%";
+      y2="100%";
+
     }
 
-    if(state.gradientDirection==="diagonal"){
-      x1="0%";y1="0%";x2="100%";y2="100%";
+
+    if(
+      state.gradientDirection===
+      "diagonal"
+    ){
+
+      x2="100%";
+      y2="100%";
+
     }
+
 
     defs+=`
-      <linearGradient id="${id}"
-        x1="${x1}" y1="${y1}"
-        x2="${x2}" y2="${y2}">
-        <stop offset="0%" stop-color="${state.fg}"/>
-        <stop offset="100%" stop-color="${state.gradientColor}"/>
+
+      <linearGradient
+        id="${gradientId}"
+        x1="${x1}"
+        y1="${y1}"
+        x2="${x2}"
+        y2="${y2}">
+
+        <stop
+          offset="0%"
+          stop-color="${state.fg}"/>
+
+        <stop
+          offset="100%"
+          stop-color="${state.gradientColor}"/>
+
       </linearGradient>
+
     `;
+
   }
 
+
   let body=`
-    <rect width="1000" height="1000"
+
+    <rect
+      width="1000"
+      height="1000"
       fill="${state.bg}"/>
+
   `;
 
-  const fill=state.gradient?`url(#${id})`:state.fg;
 
-  for(let y=0;y<n;y++){
+  const fill =
+    state.gradient
+      ? `url(#${gradientId})`
+      : state.fg;
 
-    for(let x=0;x<n;x++){
 
-      if(!matrix[y][x]) continue;
+  for(
+    let y=0;
+    y<n;
+    y++
+  ){
 
-      if(isFinderArea(x,y,n)) continue;
+    for(
+      let x=0;
+      x<n;
+      x++
+    ){
 
-      const px=(x+margin)*cell;
-      const py=(y+margin)*cell;
+      if(
+        !matrix[y][x]
+      ){
+        continue;
+      }
+
+
+      if(
+        isFinderArea(
+          x,
+          y,
+          n
+        )
+      ){
+
+        continue;
+
+      }
+
+
+      const px =
+        (x+margin)*
+        cell;
+
+      const py =
+        (y+margin)*
+        cell;
+
 
       const radius =
-        state.style==="rounded" ? cell*.25 :
-        state.style==="dot" ? cell*.48 :
-        state.style==="soft" ? cell*.16 :
-        0;
+
+        state.style===
+        "rounded"
+
+          ? cell*.25
+
+        : state.style===
+          "dot"
+
+          ? cell*.48
+
+        : state.style===
+          "soft"
+
+          ? cell*.16
+
+        : 0;
+
 
       body+=`
+
         <rect
           x="${px}"
           y="${py}"
@@ -1889,81 +4982,177 @@ function createSVG(){
           height="${cell}"
           rx="${radius}"
           fill="${fill}"/>
+
       `;
+
     }
+
   }
 
-  function finder(x,y){
 
-    const px=(x+margin)*cell;
-    const py=(y+margin)*cell;
-    const s=7*cell;
+  function finder(
+    x,
+    y
+  ){
+
+    const px =
+      (x+margin)*
+      cell;
+
+    const py =
+      (y+margin)*
+      cell;
+
+    const size =
+      7*cell;
+
 
     return `
-      <rect x="${px}" y="${py}"
-        width="${s}" height="${s}"
+
+      <rect
+        x="${px}"
+        y="${py}"
+        width="${size}"
+        height="${size}"
         fill="${state.fg}"/>
 
-      <rect x="${px+cell}" y="${py+cell}"
-        width="${5*cell}" height="${5*cell}"
+      <rect
+        x="${px+cell}"
+        y="${py+cell}"
+        width="${5*cell}"
+        height="${5*cell}"
         fill="${state.bg}"/>
 
-      <rect x="${px+2*cell}" y="${py+2*cell}"
-        width="${3*cell}" height="${3*cell}"
+      <rect
+        x="${px+2*cell}"
+        y="${py+2*cell}"
+        width="${3*cell}"
+        height="${3*cell}"
         fill="${fill}"/>
+
     `;
+
   }
 
-  body+=finder(0,0);
-  body+=finder(n-7,0);
-  body+=finder(0,n-7);
+
+  body+=
+    finder(0,0);
+
+  body+=
+    finder(n-7,0);
+
+  body+=
+    finder(0,n-7);
+
 
   if(state.logo){
 
-    const logoSize=1000*(state.logoSize/100);
+    const logoSize =
+      1000*
+      (state.logoSize/100);
+
 
     let cx=500;
     let cy=500;
 
-    if(state.logoPosition==="bottomLeft"){
-      cx=logoSize*.72;
-      cy=1000-logoSize*.72;
+
+    if(
+      state.logoPosition===
+      "bottomLeft"
+    ){
+
+      cx =
+        logoSize*.72;
+
+      cy =
+        1000-
+        logoSize*.72;
+
     }
 
-    if(state.logoPosition==="bottomRight"){
-      cx=1000-logoSize*.72;
-      cy=1000-logoSize*.72;
+
+    if(
+      state.logoPosition===
+      "bottomRight"
+    ){
+
+      cx =
+        1000-
+        logoSize*.72;
+
+      cy =
+        1000-
+        logoSize*.72;
+
     }
 
-    const safe=logoSize*1.24;
 
-    const clipId="logoClip_"+Date.now();
+    const safe =
+      logoSize*1.24;
+
 
     defs+=`
-      <clipPath id="${clipId}">
+
+      <clipPath
+        id="${logoClipId}">
+
         ${
-          state.logoShape==="round"
-          ? `<circle cx="${cx}" cy="${cy}" r="${logoSize/2}"/>`
-          : `<rect x="${cx-logoSize/2}"
-                   y="${cy-logoSize/2}"
-                   width="${logoSize}"
-                   height="${logoSize}"
-                   rx="${logoSize*.14}"/>`
+          state.logoShape===
+          "round"
+
+            ? `
+              <circle
+                cx="${cx}"
+                cy="${cy}"
+                r="${logoSize/2}"/>
+            `
+
+            : `
+              <rect
+                x="${cx-logoSize/2}"
+                y="${cy-logoSize/2}"
+                width="${logoSize}"
+                height="${logoSize}"
+                rx="${logoSize*.14}"/>
+            `
         }
+
       </clipPath>
+
     `;
 
-    if(state.logoWhite){
+
+    if(
+      state.logoWhite
+    ){
 
       body+=
-        state.logoShape==="round"
-        ? `<circle cx="${cx}" cy="${cy}" r="${safe/2}" fill="${state.bg}"/>`
-        : `<rect x="${cx-safe/2}" y="${cy-safe/2}"
-                 width="${safe}" height="${safe}"
-                 rx="${safe*.14}" fill="${state.bg}"/>`;
+        state.logoShape===
+        "round"
+
+          ? `
+            <circle
+              cx="${cx}"
+              cy="${cy}"
+              r="${safe/2}"
+              fill="${state.bg}"/>
+          `
+
+          : `
+            <rect
+              x="${cx-safe/2}"
+              y="${cy-safe/2}"
+              width="${safe}"
+              height="${safe}"
+              rx="${safe*.14}"
+              fill="${state.bg}"/>
+          `;
+
     }
 
+
     body+=`
+
       <image
         href="${state.logo.data}"
         x="${cx-logoSize/2}"
@@ -1971,26 +5160,112 @@ function createSVG(){
         width="${logoSize}"
         height="${logoSize}"
         preserveAspectRatio="xMidYMid meet"
-        clip-path="url(#${clipId})"/>
+        clip-path="url(#${logoClipId})"/>
+
     `;
+
   }
 
+
   return `
-    <svg xmlns="http://www.w3.org/2000/svg"
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 1000 1000"
       width="1000"
       height="1000">
-      <defs>${defs}</defs>
+
+      <defs>
+        ${defs}
+      </defs>
+
       ${body}
+
     </svg>
+
   `;
+
 }
 
-/* INIT */
+
+/* =====================================================
+   INIT
+===================================================== */
 
 applyLanguage();
+
 renderContent();
+
+
+/* =====================================================
+   GLOBAL QR STATS API
+   Nur vorbereitet.
+   Noch keine Analytics-Oberfläche.
+===================================================== */
+
+window.qrForgeStats = {
+
+  async increment(
+    qrId
+  ){
+
+    if(!qrId){
+      return;
+    }
+
+
+    const statsRef =
+      ref(
+        database,
+        "qrStats/"+qrId
+      );
+
+
+    await update(
+      statsRef,
+      {
+
+        scans:
+          increment(1),
+
+        lastScan:
+          Date.now()
+
+      }
+    );
+
+  },
+
+
+  async get(
+    qrId
+  ){
+
+    if(!qrId){
+      return null;
+    }
+
+
+    const snapshot =
+      await get(
+        ref(
+          database,
+          "qrStats/"+qrId
+        )
+      );
+
+
+    return snapshot.exists()
+      ? snapshot.val()
+      : {
+          scans:0
+        };
+
+  }
+
+};
+
 </script>
 
 </body>
