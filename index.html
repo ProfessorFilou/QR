@@ -2,264 +2,433 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <title>QRForge — QR Design Studio</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
 :root{
-  --bg:#06070a;
-  --panel:rgba(18,20,26,.72);
-  --panel2:rgba(255,255,255,.055);
-  --line:rgba(255,255,255,.09);
-  --text:#f5f7fa;
-  --muted:#9298a5;
-  --accent:#8b7cff;
-  --good:#55d98b;
-  --warn:#ffc857;
-  --bad:#ff6262;
+  --bg:#07080c;
+  --bg2:#0b0d13;
+  --card:rgba(20,22,30,.72);
+  --card2:rgba(255,255,255,.045);
+  --line:rgba(255,255,255,.085);
+  --line2:rgba(255,255,255,.13);
+  --text:#f5f7fb;
+  --muted:#858b99;
+  --muted2:#aeb3bf;
+  --accent:#8174ff;
+  --accent2:#52b8ff;
+  --green:#55dc91;
+  --yellow:#ffca63;
+  --red:#ff6868;
 }
 
-html,body{
+html{
+  background:var(--bg);
+}
+
+body{
   margin:0;
-  min-height:100%;
-  background:
-    radial-gradient(circle at 20% 0%,rgba(112,90,255,.16),transparent 30%),
-    radial-gradient(circle at 100% 20%,rgba(0,190,255,.09),transparent 28%),
-    var(--bg);
+  min-height:100vh;
   color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      900px 500px at 10% -5%,
+      rgba(105,86,255,.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      800px 500px at 95% 10%,
+      rgba(60,170,255,.10),
+      transparent 65%
+    ),
+    linear-gradient(180deg,#07080c,#090b10 60%,#07080c);
 }
 
-body{padding:24px}
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
 
-button,input,select{font:inherit}
+button{
+  color:var(--text);
+}
 
 .app{
-  max-width:1450px;
+  width:min(1420px,100%);
   margin:auto;
+  padding:28px;
 }
 
-header{
+/* HEADER */
+
+.topbar{
+  height:64px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   margin-bottom:22px;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:13px;
 }
 
-.brandMark{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:linear-gradient(135deg,#8b7cff,#4dc7ff);
+.logoMark{
+  width:43px;
+  height:43px;
+  border-radius:14px;
   display:grid;
   place-items:center;
-  box-shadow:0 10px 40px rgba(100,100,255,.28);
+
+  background:
+    linear-gradient(
+      135deg,
+      #8d7cff,
+      #5f9cff 55%,
+      #48d4ff
+    );
+
+  box-shadow:
+    0 12px 35px rgba(104,100,255,.3);
 }
 
-.brandMark:before{
+.logoMarkInner{
+  width:23px;
+  height:23px;
+  position:relative;
+}
+
+.logoMarkInner:before,
+.logoMarkInner:after{
   content:"";
-  width:19px;
-  height:19px;
-  border:4px solid white;
-  border-radius:4px;
-  box-shadow:10px 0 0 -4px white;
+  position:absolute;
+  width:9px;
+  height:9px;
+  border:3px solid white;
+  border-radius:3px;
 }
 
-h1{
-  margin:0;
-  font-size:23px;
-  letter-spacing:-.7px;
+.logoMarkInner:before{
+  left:0;
+  top:0;
 }
 
-.subtitle{
+.logoMarkInner:after{
+  right:0;
+  bottom:0;
+}
+
+.brandText strong{
+  display:block;
+  font-size:19px;
+  letter-spacing:-.5px;
+}
+
+.brandText span{
+  display:block;
+  margin-top:1px;
   color:var(--muted);
-  font-size:13px;
-  margin-top:2px;
+  font-size:11px;
 }
 
-.layout{
+.headerRight{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  border-radius:999px;
+  padding:8px 11px;
+  color:var(--muted2);
+  font-size:11px;
+}
+
+.statusDot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px rgba(85,220,145,.7);
+}
+
+/* MAIN */
+
+.workspace{
   display:grid;
-  grid-template-columns:minmax(430px,1fr) minmax(420px,560px);
-  gap:20px;
+  grid-template-columns:500px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
 }
 
 .panel{
-  background:var(--panel);
   border:1px solid var(--line);
+  background:var(--card);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
   border-radius:24px;
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  box-shadow:0 25px 80px rgba(0,0,0,.25);
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.27),
+    inset 0 1px 0 rgba(255,255,255,.025);
 }
 
-.controls{
-  padding:20px;
-}
+/* LEFT */
 
-.preview{
-  padding:20px;
-  position:sticky;
-  top:20px;
-  height:max-content;
+.editor{
+  padding:18px;
 }
 
 .tabs{
-  display:flex;
-  gap:6px;
-  overflow:auto;
-  padding-bottom:4px;
-  margin-bottom:20px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:4px;
+
+  padding:4px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.17);
+  border-radius:15px;
+
+  margin-bottom:18px;
 }
 
 .tab{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.035);
-  color:#aeb3bd;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 5px;
   border-radius:11px;
-  padding:9px 13px;
+  font-size:11px;
   cursor:pointer;
-  white-space:nowrap;
+  transition:.2s;
+}
+
+.tab:hover{
+  color:#fff;
 }
 
 .tab.active{
-  color:white;
-  background:rgba(139,124,255,.17);
-  border-color:rgba(139,124,255,.5);
+  color:#fff;
+  background:rgba(255,255,255,.075);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 2px 12px rgba(0,0,0,.18);
 }
 
-.section{display:none}
-.section.active{display:block}
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.sectionTitle{
+  margin:2px 0 16px;
+}
+
+.sectionTitle h2{
+  margin:0;
+  font-size:16px;
+  letter-spacing:-.35px;
+}
+
+.sectionTitle p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* FIELDS */
+
+.field{
+  margin-bottom:14px;
+}
 
 label{
   display:block;
-  font-size:12px;
-  color:#aeb3bd;
-  margin-bottom:7px;
+  color:var(--muted2);
+  font-size:11px;
+  margin:0 0 7px 2px;
 }
 
-textarea,input[type=text],input[type=url],input[type=email],input[type=tel],select{
+input[type=text],
+input[type=url],
+input[type=email],
+input[type=tel],
+input[type=password],
+textarea,
+select{
   width:100%;
+  color:#fff;
+  background:rgba(0,0,0,.22);
   border:1px solid var(--line);
   outline:none;
-  color:white;
-  background:rgba(0,0,0,.22);
-  border-radius:13px;
-  padding:12px 13px;
+  border-radius:12px;
+  padding:11px 12px;
+  transition:.18s;
 }
 
 textarea{
-  min-height:135px;
+  min-height:125px;
   resize:vertical;
 }
 
-input:focus,textarea:focus,select:focus{
-  border-color:rgba(139,124,255,.7);
-  box-shadow:0 0 0 3px rgba(139,124,255,.1);
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:rgba(129,116,255,.65);
+  box-shadow:0 0 0 3px rgba(129,116,255,.09);
 }
 
-.field{margin-bottom:16px}
+select{
+  appearance:auto;
+}
 
 .grid2{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
   gap:10px;
 }
 
-button{
+/* BUTTONS */
+
+.btn{
   border:1px solid var(--line);
-  background:rgba(255,255,255,.055);
-  color:white;
-  padding:11px 14px;
+  background:rgba(255,255,255,.045);
   border-radius:12px;
+  padding:11px 13px;
   cursor:pointer;
-  transition:.18s ease;
+  transition:
+    transform .18s,
+    background .18s,
+    border-color .18s;
 }
 
-button:hover{
+.btn:hover{
   transform:translateY(-1px);
-  background:rgba(255,255,255,.09);
+  background:rgba(255,255,255,.075);
+  border-color:var(--line2);
+}
+
+.btn:active{
+  transform:translateY(0);
 }
 
 .primary{
   width:100%;
   border:0;
   padding:14px;
-  margin-top:3px;
-  background:linear-gradient(135deg,#8b7cff,#6577ff);
-  box-shadow:0 12px 35px rgba(104,95,255,.25);
+  border-radius:13px;
   font-weight:700;
+  cursor:pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8275ff,
+      #657cff 55%,
+      #52b9ff
+    );
+
+  box-shadow:
+    0 13px 35px rgba(103,108,255,.25);
 }
 
 .primary:hover{
-  box-shadow:0 15px 45px rgba(104,95,255,.38);
+  box-shadow:
+    0 17px 45px rgba(103,108,255,.38);
+  transform:translateY(-1px);
 }
 
-.colorRow{
+/* DESIGN */
+
+.colorInput{
   display:grid;
-  grid-template-columns:56px 1fr;
-  gap:10px;
+  grid-template-columns:50px 1fr;
+  gap:8px;
 }
 
 input[type=color]{
-  width:56px;
-  height:44px;
+  width:50px;
+  height:42px;
   border:1px solid var(--line);
-  background:none;
-  border-radius:12px;
+  background:rgba(0,0,0,.2);
+  border-radius:11px;
   padding:4px;
+  cursor:pointer;
 }
 
-.range{
-  width:100%;
+.colorInput input[type=text]{
+  height:42px;
 }
 
-.rangeRow{
-  display:flex;
-  justify-content:space-between;
-  color:#aeb3bd;
-  font-size:12px;
-}
-
-.toggle{
+.toggleRow{
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   border:1px solid var(--line);
-  padding:12px 13px;
+  background:rgba(255,255,255,.025);
+  padding:11px 12px;
   border-radius:13px;
-  margin-bottom:12px;
+  margin-bottom:13px;
+}
+
+.toggleText strong{
+  display:block;
+  font-size:12px;
+}
+
+.toggleText span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
 }
 
 .switch{
   width:42px;
-  height:23px;
-  background:#292c34;
-  border-radius:20px;
+  height:24px;
   padding:3px;
+  border-radius:999px;
+  background:#292d35;
   cursor:pointer;
+  transition:.2s;
 }
 
 .switch i{
   display:block;
-  width:17px;
-  height:17px;
+  width:18px;
+  height:18px;
   border-radius:50%;
-  background:#888;
+  background:#888e99;
   transition:.2s;
 }
 
@@ -268,272 +437,579 @@ input[type=color]{
 }
 
 .switch.on i{
-  transform:translateX(19px);
+  transform:translateX(18px);
   background:white;
 }
 
 .palette{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  margin-top:10px;
+  gap:7px;
+  margin-top:9px;
 }
 
 .swatch{
-  height:38px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.14);
+  height:31px;
+  border-radius:9px;
+  border:1px solid rgba(255,255,255,.12);
   cursor:pointer;
+  transition:.18s;
 }
 
-.logoDrop{
-  border:1px dashed rgba(255,255,255,.2);
+.swatch:hover{
+  transform:scale(1.04);
+}
+
+/* RANGE */
+
+.rangeHeader{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted2);
+  margin-bottom:6px;
+}
+
+.rangeValue{
+  color:#fff;
+}
+
+input[type=range]{
+  width:100%;
+  accent-color:var(--accent);
+}
+
+/* BEAUTIFY */
+
+.beautifyBox{
+  margin-top:16px;
+  padding:15px;
   border-radius:16px;
-  padding:20px;
-  text-align:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(129,116,255,.12),
+      rgba(82,184,255,.05)
+    );
+
+  border:1px solid rgba(129,116,255,.19);
+}
+
+.beautifyTop{
+  display:flex;
+  gap:11px;
+  align-items:center;
+}
+
+.spark{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(129,116,255,.16);
+  font-size:16px;
+}
+
+.beautifyBox strong{
+  font-size:12px;
+}
+
+.beautifyBox p{
+  margin:3px 0 0;
   color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+.beautifyBox button{
+  margin-top:12px;
+  width:100%;
+}
+
+/* LOGO */
+
+.drop{
+  border:1px dashed rgba(255,255,255,.16);
+  border-radius:17px;
+  padding:25px 15px;
+  text-align:center;
   cursor:pointer;
+  background:rgba(255,255,255,.018);
+  transition:.2s;
 }
 
-.logoDrop:hover{
-  border-color:var(--accent);
+.drop:hover{
+  border-color:rgba(129,116,255,.6);
+  background:rgba(129,116,255,.035);
 }
 
-.logoPreview{
+.dropIcon{
+  width:44px;
+  height:44px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 10px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+}
+
+.drop strong{
+  display:block;
+  font-size:12px;
+}
+
+.drop span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+#logoPreview{
   display:none;
-  margin:12px auto 0;
-  max-width:100px;
-  max-height:100px;
-  object-fit:contain;
+  max-width:85px;
+  max-height:85px;
+  margin:14px auto 0;
 }
 
 .logoControls{
   display:none;
-  margin-top:14px;
+  margin-top:15px;
 }
 
-.score{
+.optionGrid{
   display:grid;
-  grid-template-columns:110px 1fr;
-  gap:18px;
-  align-items:center;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(255,255,255,.025);
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
 }
 
-.scoreNumber{
-  width:90px;
-  height:90px;
-  border-radius:50%;
+.option{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  border-radius:10px;
+  padding:10px;
+  cursor:pointer;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.option.active{
+  color:#fff;
+  border-color:rgba(129,116,255,.65);
+  background:rgba(129,116,255,.12);
+}
+
+.positions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+}
+
+.positions button{
+  height:38px;
+  padding:0;
+}
+
+/* SCORE */
+
+.healthCard{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.025);
+  border-radius:17px;
+  padding:15px;
+}
+
+.healthTop{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.scoreCircle{
+  width:76px;
+  height:76px;
+  flex:none;
+
   display:grid;
   place-items:center;
-  font-size:24px;
+
+  border-radius:50%;
+  border:6px solid rgba(85,220,145,.22);
+
+  font-size:20px;
   font-weight:800;
-  border:7px solid rgba(85,217,139,.35);
 }
 
-.scoreNumber.warning{
-  border-color:rgba(255,200,87,.35);
+.scoreCircle.warning{
+  border-color:rgba(255,202,99,.25);
 }
 
-.scoreNumber.bad{
-  border-color:rgba(255,98,98,.35);
+.scoreCircle.bad{
+  border-color:rgba(255,104,104,.25);
+}
+
+.healthTitle{
+  font-size:13px;
+  font-weight:700;
+}
+
+.healthSub{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.checks{
+  margin-top:13px;
+  border-top:1px solid var(--line);
+  padding-top:9px;
 }
 
 .check{
   display:flex;
   justify-content:space-between;
-  padding:5px 0;
-  font-size:12px;
-  color:#aeb3bd;
+  padding:4px 0;
+  font-size:10px;
+  color:var(--muted2);
 }
 
-.good{color:var(--good)}
-.warningText{color:var(--warn)}
-.badText{color:var(--bad)}
+.good{
+  color:var(--green);
+}
+
+.warn{
+  color:var(--yellow);
+}
+
+.bad{
+  color:var(--red);
+}
+
+/* PREVIEW */
+
+.preview{
+  padding:18px;
+}
+
+.previewHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.previewTitle strong{
+  font-size:14px;
+}
+
+.previewTitle span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.previewBadge{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  color:var(--muted2);
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:10px;
+}
+
+/* CANVAS AREA */
 
 .previewBox{
-  min-height:580px;
+  min-height:650px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  overflow:hidden;
+  position:relative;
+
   display:grid;
   place-items:center;
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
+
   background:
-    radial-gradient(circle at center,rgba(255,255,255,.035),transparent 50%),
-    repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 1px,transparent 1px 9px);
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255,255,255,.035),
+      transparent 46%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.018),
+      transparent
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.previewGrid{
+  position:absolute;
+  inset:0;
+  opacity:.3;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+
+  background-size:35px 35px;
 }
 
 .empty{
+  position:relative;
+  z-index:2;
   text-align:center;
-  color:#656b77;
+  color:#555b67;
 }
 
 .emptyIcon{
-  width:74px;
-  height:74px;
-  border:2px solid #383d47;
-  border-radius:19px;
+  width:76px;
+  height:76px;
+  border-radius:20px;
   margin:auto auto 15px;
+  border:1px solid #343944;
+  display:grid;
+  place-items:center;
+}
+
+.emptyIconInner{
+  width:34px;
+  height:34px;
+  border:4px solid #444a56;
+  border-radius:6px;
   position:relative;
 }
 
-.emptyIcon:before,
-.emptyIcon:after{
+.emptyIconInner:after{
   content:"";
   position:absolute;
-  width:19px;
-  height:19px;
-  border:4px solid #444955;
+  right:-12px;
+  bottom:-12px;
+  width:14px;
+  height:14px;
+  border:4px solid #444a56;
   border-radius:4px;
 }
 
-.emptyIcon:before{
-  left:11px;
-  top:11px;
+.empty strong{
+  display:block;
+  color:#777d89;
+  font-size:13px;
 }
 
-.emptyIcon:after{
-  right:11px;
-  bottom:11px;
+.empty span{
+  display:block;
+  font-size:10px;
+  margin-top:5px;
 }
 
 #qrCanvas{
   display:none;
-  image-rendering:pixelated;
-  max-width:82%;
-  max-height:520px;
-  border-radius:2px;
   position:relative;
-  z-index:2;
+  z-index:3;
+
+  width:min(520px,82%);
+  height:auto;
+
+  image-rendering:pixelated;
+
+  filter:
+    drop-shadow(0 22px 45px rgba(0,0,0,.22));
 }
 
-.logoOverlay{
-  position:absolute;
+/* LOGO OVERLAY */
+
+#logoOverlay{
   display:none;
+  position:absolute;
   z-index:5;
   object-fit:contain;
-  box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+  box-shadow:
+    0 5px 25px rgba(0,0,0,.18);
 }
 
-.logoOverlay.round{
+.logo-square{
+  border-radius:9px;
+}
+
+.logo-round{
   border-radius:50%;
 }
 
-.logoOverlay.square{
-  border-radius:8px;
-}
-
-.logoOverlay.soft{
+.logo-soft{
   border-radius:25%;
 }
 
+/* SCAN */
+
 .scanLine{
   position:absolute;
-  width:75%;
+  z-index:7;
+  left:15%;
+  width:70%;
   height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  box-shadow:0 0 20px var(--accent);
+
   opacity:0;
-  z-index:6;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(129,116,255,.9),
+      rgba(82,184,255,.9),
+      transparent
+    );
+
+  box-shadow:
+    0 0 22px rgba(129,116,255,.9);
 }
 
-.scanLine.active{
-  animation:scan 1.4s ease-in-out;
+.scanLine.play{
+  animation:scan 1.25s ease-in-out;
 }
 
 @keyframes scan{
-  0%{transform:translateY(-260px);opacity:0}
-  15%{opacity:1}
-  85%{opacity:1}
-  100%{transform:translateY(260px);opacity:0}
+  0%{
+    top:15%;
+    opacity:0;
+  }
+
+  15%{
+    opacity:1;
+  }
+
+  85%{
+    opacity:1;
+  }
+
+  100%{
+    top:85%;
+    opacity:0;
+  }
+}
+
+/* BOTTOM */
+
+.previewBottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.bottomScore{
+  grid-column:1/-1;
 }
 
 .actions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:14px;
-}
-
-.actionWide{
-  grid-column:1/-1;
-}
-
-.health{
-  margin-top:14px;
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  border:1px solid var(--line);
-  border-radius:100px;
-  padding:6px 10px;
-  font-size:11px;
-  color:#aeb3bd;
-}
-
-.presetGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-}
-
-.preset{
-  text-align:left;
-  min-height:70px;
-}
-
-.preset strong{
-  display:block;
-  margin-bottom:4px;
-}
-
-.preset span{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.logoPosition{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-top:9px;
-}
-
-.logoPosition button.active{
-  background:rgba(139,124,255,.2);
-  border-color:var(--accent);
-}
-
-.beautify{
-  padding:16px;
-  border-radius:18px;
-  background:linear-gradient(135deg,rgba(139,124,255,.13),rgba(77,199,255,.07));
-  border:1px solid rgba(139,124,255,.22);
-}
-
-.beautify button{
-  width:100%;
+  gap:8px;
   margin-top:10px;
 }
 
-.hidden{display:none!important}
+.actions button{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.045);
+  padding:11px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:11px;
+}
 
-@media(max-width:950px){
-  body{padding:12px}
-  .layout{grid-template-columns:1fr}
-  .preview{position:relative;top:0}
+.actions button:hover{
+  background:rgba(255,255,255,.075);
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+/* HIDDEN */
+
+.hidden{
+  display:none!important;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+
+  .workspace{
+    grid-template-columns:420px minmax(0,1fr);
+  }
+
+  .previewBox{
+    min-height:560px;
+  }
+}
+
+@media(max-width:850px){
+
+  .app{
+    padding:15px;
+  }
+
+  .workspace{
+    grid-template-columns:1fr;
+  }
+
+  .preview{
+    order:-1;
+  }
+
+  .previewBox{
+    min-height:520px;
+  }
 }
 
 @media(max-width:560px){
-  .grid2,.grid3{grid-template-columns:1fr}
-  .previewBox{min-height:430px}
-  #qrCanvas{max-width:90%;max-height:390px}
+
+  .topbar{
+    margin-bottom:13px;
+  }
+
+  .headerRight .status{
+    display:none;
+  }
+
+  .workspace{
+    gap:12px;
+  }
+
+  .panel{
+    border-radius:19px;
+  }
+
+  .editor,
+  .preview{
+    padding:13px;
+  }
+
+  .tabs{
+    overflow:auto;
+  }
+
+  .tab{
+    min-width:62px;
+  }
+
+  .previewBox{
+    min-height:410px;
+  }
+
+  #qrCanvas{
+    width:86%;
+  }
+
+  .grid2{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -542,365 +1018,639 @@ input[type=color]{
 
 <div class="app">
 
-<header>
-  <div class="brand">
-    <div class="brandMark"></div>
-    <div>
-      <h1>QRForge</h1>
-      <div class="subtitle">QR Design Studio</div>
-    </div>
-  </div>
+  <!-- HEADER -->
 
-  <div class="pill">Local · No Account</div>
-</header>
+  <header class="topbar">
 
-<div class="layout">
+    <div class="brand">
 
-<!-- CONTROLS -->
-<section class="panel controls">
-
-  <div class="tabs">
-    <button class="tab active" data-tab="content">Inhalt</button>
-    <button class="tab" data-tab="design">Design</button>
-    <button class="tab" data-tab="logo">Logo</button>
-    <button class="tab" data-tab="scan">Scan Lab</button>
-    <button class="tab" data-tab="adaptive">Adaptive</button>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="section active" id="content">
-
-    <div class="field">
-      <label>QR-Typ</label>
-      <select id="type">
-        <option value="url">URL</option>
-        <option value="text">Text</option>
-        <option value="wifi">Wi-Fi</option>
-        <option value="email">E-Mail</option>
-        <option value="phone">Telefon</option>
-      </select>
-    </div>
-
-    <div id="contentFields"></div>
-
-    <button class="primary" id="generate">
-      QR-Code erstellen
-    </button>
-
-  </div>
-
-  <!-- DESIGN -->
-  <div class="section" id="design">
-
-    <div class="field">
-      <label>QR-Farbe</label>
-      <div class="colorRow">
-        <input type="color" id="fg" value="#111111">
-        <input type="text" id="fgText" value="#111111">
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Hintergrund</label>
-      <div class="colorRow">
-        <input type="color" id="bgColor" value="#ffffff">
-        <input type="text" id="bgText" value="#ffffff">
-      </div>
-    </div>
-
-    <div class="toggle">
-      <span>Gradient verwenden</span>
-      <div class="switch" id="gradientSwitch"><i></i></div>
-    </div>
-
-    <div id="gradientControls" class="hidden">
-      <div class="field">
-        <label>Gradient-Farbe</label>
-        <div class="colorRow">
-          <input type="color" id="fg2" value="#6677ff">
-          <input type="text" id="fg2Text" value="#6677ff">
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Smart Color</label>
-      <button id="smartColor" style="width:100%">
-        Farben automatisch optimieren
-      </button>
-      <div class="palette" id="palette"></div>
-    </div>
-
-    <div class="grid2">
-
-      <div>
-        <label>Module</label>
-        <select id="moduleStyle">
-          <option value="square">Eckig</option>
-          <option value="round">Rund</option>
-          <option value="dot">Dots</option>
-        </select>
+      <div class="logoMark">
+        <div class="logoMarkInner"></div>
       </div>
 
-      <div>
-        <label>Finder</label>
-        <select id="finderStyle">
-          <option value="square">Eckig</option>
-          <option value="round">Rund</option>
-        </select>
+      <div class="brandText">
+        <strong>QRForge</strong>
+        <span>QR Design Studio</span>
       </div>
 
     </div>
 
-    <div class="field" style="margin-top:15px">
-      <label>Fehlerkorrektur</label>
-      <select id="ecc">
-        <option value="L">L · 7%</option>
-        <option value="M" selected>M · 15%</option>
-        <option value="Q">Q · 25%</option>
-        <option value="H">H · 30%</option>
-      </select>
-    </div>
+    <div class="headerRight">
 
-    <div class="field">
-      <div class="rangeRow">
-        <span>Quiet Zone</span>
-        <span id="marginValue">4</span>
+      <div class="status">
+        <i class="statusDot"></i>
+        Local · No Account
       </div>
-      <input class="range" id="margin" type="range" min="1" max="10" value="4">
-    </div>
-
-    <div class="beautify">
-      <strong>Make it Beautiful</strong>
-      <div style="color:var(--muted);font-size:12px;margin-top:5px">
-        QRForge sucht automatisch nach einer schönen und gut scanbaren Kombination.
-      </div>
-      <button id="beautify">✨ Automatisch optimieren</button>
-    </div>
-
-  </div>
-
-  <!-- LOGO -->
-  <div class="section" id="logo">
-
-    <div class="logoDrop" id="logoDrop">
-      <strong>Logo / Bild hinzufügen</strong>
-      <div style="font-size:12px;margin-top:6px">
-        PNG, JPG oder WebP
-      </div>
-      <input id="logoInput" type="file" accept="image/*" hidden>
-      <img id="logoPreview" class="logoPreview">
-    </div>
-
-    <div class="logoControls" id="logoControls">
-
-      <div class="field">
-        <label>Logo-Form</label>
-        <div class="grid3">
-          <button class="logoShape active" data-shape="square">Eckig</button>
-          <button class="logoShape" data-shape="round">Rund</button>
-          <button class="logoShape" data-shape="soft">Soft</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Position</label>
-        <div class="logoPosition">
-          <button data-position="tl">↖</button>
-          <button data-position="tc">↑</button>
-          <button data-position="tr">↗</button>
-          <button data-position="ml">←</button>
-          <button data-position="center" class="active">●</button>
-          <button data-position="mr">→</button>
-          <button data-position="bl">↙</button>
-          <button data-position="bc">↓</button>
-          <button data-position="br">↘</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <div class="rangeRow">
-          <span>Logo-Größe</span>
-          <span id="logoSizeValue">18%</span>
-        </div>
-        <input class="range" id="logoSize" type="range" min="8" max="30" value="18">
-      </div>
-
-      <button id="logoAutoFit" style="width:100%">
-        Logo automatisch anpassen
-      </button>
 
     </div>
 
-  </div>
+  </header>
 
-  <!-- SCAN LAB -->
-  <div class="section" id="scan">
 
-    <div class="score">
-      <div class="scoreNumber" id="scoreNumber">—</div>
+  <!-- WORKSPACE -->
 
-      <div>
-        <strong>QR Health</strong>
+  <main class="workspace">
 
-        <div class="check">
-          <span>Kontrast</span>
-          <span id="contrastStatus">—</span>
+
+    <!-- EDITOR -->
+
+    <section class="panel editor">
+
+      <nav class="tabs">
+
+        <button class="tab active" data-tab="content">
+          Inhalt
+        </button>
+
+        <button class="tab" data-tab="design">
+          Design
+        </button>
+
+        <button class="tab" data-tab="logo">
+          Logo
+        </button>
+
+        <button class="tab" data-tab="scan">
+          Scan
+        </button>
+
+        <button class="tab" data-tab="adaptive">
+          Einsatz
+        </button>
+
+      </nav>
+
+
+      <!-- CONTENT -->
+
+      <div class="section active" id="content">
+
+        <div class="sectionTitle">
+          <h2>QR-Code erstellen</h2>
+          <p>Wähle einen Inhalt für deinen QR-Code.</p>
         </div>
 
-        <div class="check">
-          <span>Quiet Zone</span>
-          <span id="quietStatus">—</span>
+        <div class="field">
+
+          <label>Typ</label>
+
+          <select id="type">
+
+            <option value="url">
+              Website / URL
+            </option>
+
+            <option value="text">
+              Text
+            </option>
+
+            <option value="wifi">
+              WLAN
+            </option>
+
+            <option value="email">
+              E-Mail
+            </option>
+
+            <option value="phone">
+              Telefonnummer
+            </option>
+
+          </select>
+
         </div>
 
-        <div class="check">
-          <span>Logo</span>
-          <span id="logoStatus">—</span>
+        <div id="contentFields"></div>
+
+        <button class="primary" id="generate">
+          QR-Code erstellen
+        </button>
+
+      </div>
+
+
+      <!-- DESIGN -->
+
+      <div class="section" id="design">
+
+        <div class="sectionTitle">
+          <h2>QR Design</h2>
+          <p>Standard QR-Struktur · individuelle Farben.</p>
         </div>
 
-        <div class="check">
-          <span>Dichte</span>
-          <span id="densityStatus">—</span>
+
+        <div class="field">
+
+          <label>QR-Farbe</label>
+
+          <div class="colorInput">
+
+            <input type="color" id="fg" value="#111111">
+
+            <input type="text" id="fgText" value="#111111">
+
+          </div>
+
         </div>
-      </div>
-    </div>
 
-    <div style="margin-top:16px">
-      <label>Accessibility</label>
-      <button id="accessibility" style="width:100%">
-        Farben prüfen
-      </button>
-      <div id="accessibilityResult"
-           style="font-size:12px;color:var(--muted);margin-top:9px">
-      </div>
-    </div>
 
-    <div style="margin-top:18px">
-      <label>QR Morph</label>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
-        Wenn du den Inhalt änderst, wird die neue Version animiert aus der alten aufgebaut.
-      </div>
-      <button id="morphTest" style="width:100%">
-        Morph erneut abspielen
-      </button>
-    </div>
+        <div class="field">
 
-  </div>
+          <label>Hintergrund</label>
 
-  <!-- ADAPTIVE -->
-  <div class="section" id="adaptive">
+          <div class="colorInput">
 
-    <label>Optimiert für</label>
+            <input type="color" id="bgColor" value="#ffffff">
 
-    <div class="presetGrid">
+            <input type="text" id="bgText" value="#ffffff">
 
-      <button class="preset" data-preset="phone">
-        <strong>Smartphone</strong>
-        <span>kleine Darstellung</span>
-      </button>
+          </div>
 
-      <button class="preset" data-preset="screen">
-        <strong>Bildschirm</strong>
-        <span>Display & Präsentation</span>
-      </button>
-
-      <button class="preset" data-preset="poster">
-        <strong>Poster</strong>
-        <span>große Distanz</span>
-      </button>
-
-      <button class="preset" data-preset="card">
-        <strong>Visitenkarte</strong>
-        <span>kompakt & sauber</span>
-      </button>
-
-      <button class="preset" data-preset="sticker">
-        <strong>Sticker</strong>
-        <span>robust & fehlertolerant</span>
-      </button>
-
-      <button class="preset" data-preset="document">
-        <strong>Dokument</strong>
-        <span>Print optimiert</span>
-      </button>
-
-    </div>
-
-    <div id="presetInfo"
-         style="font-size:12px;color:var(--muted);margin-top:15px">
-      Wähle ein Einsatzgebiet. QRForge passt Größe, Fehlerkorrektur und Quiet Zone an.
-    </div>
-
-  </div>
-
-</section>
-
-<!-- PREVIEW -->
-<section class="panel preview">
-
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <div>
-      <strong>Live Preview</strong>
-      <div style="font-size:11px;color:var(--muted)">
-        Scanability Engine
-      </div>
-    </div>
-
-    <span class="pill" id="statusPill">Noch nicht erstellt</span>
-  </div>
-
-  <div class="previewBox" id="previewBox">
-
-    <div class="empty" id="emptyState">
-      <div class="emptyIcon"></div>
-      <strong>Noch kein QR-Code</strong>
-      <div style="font-size:12px;margin-top:5px">
-        Erstelle deinen ersten QR-Code.
-      </div>
-    </div>
-
-    <canvas id="qrCanvas"></canvas>
-
-    <img id="logoOverlay" class="logoOverlay">
-
-    <div class="scanLine" id="scanLine"></div>
-
-  </div>
-
-  <div class="health">
-    <div class="score">
-      <div class="scoreNumber" id="previewScore">—</div>
-      <div>
-        <strong>Scan Score</strong>
-        <div style="font-size:12px;color:var(--muted);margin-top:5px">
-          QRForge bewertet die aktuelle Konfiguration.
         </div>
+
+
+        <div class="toggleRow">
+
+          <div class="toggleText">
+            <strong>Farbverlauf</strong>
+            <span>Gradient auf der normalen QR-Matrix</span>
+          </div>
+
+          <div class="switch" id="gradientSwitch">
+            <i></i>
+          </div>
+
+        </div>
+
+
+        <div id="gradientControls" class="hidden">
+
+          <div class="field">
+
+            <label>Zweite Gradient-Farbe</label>
+
+            <div class="colorInput">
+
+              <input type="color" id="fg2" value="#6677ff">
+
+              <input type="text" id="fg2Text" value="#6677ff">
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Smart Color</label>
+
+          <button class="btn" id="smartColor" style="width:100%">
+            Sichere Farbkombinationen anzeigen
+          </button>
+
+          <div class="palette" id="palette"></div>
+
+        </div>
+
+
+        <div class="grid2">
+
+          <div class="field">
+
+            <label>Fehlerkorrektur</label>
+
+            <select id="ecc">
+
+              <option value="L">L · 7%</option>
+              <option value="M" selected>M · 15%</option>
+              <option value="Q">Q · 25%</option>
+              <option value="H">H · 30%</option>
+
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label>Quiet Zone</label>
+
+            <select id="margin">
+
+              <option value="4" selected>Standard · 4</option>
+              <option value="5">Groß · 5</option>
+              <option value="6">Extra · 6</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="beautifyBox">
+
+          <div class="beautifyTop">
+
+            <div class="spark">✦</div>
+
+            <div>
+              <strong>Make it Beautiful</strong>
+
+              <p>
+                Findet automatisch eine moderne,
+                kontrastreiche Farbkombination.
+              </p>
+            </div>
+
+          </div>
+
+          <button class="btn" id="beautify">
+            Automatisch optimieren
+          </button>
+
+        </div>
+
       </div>
-    </div>
-  </div>
 
-  <div class="actions">
-    <button id="downloadPNG">PNG exportieren</button>
-    <button id="downloadSVG">SVG exportieren</button>
-    <button class="actionWide" id="copyQR">QR als Bild kopieren</button>
-  </div>
 
-</section>
+      <!-- LOGO -->
+
+      <div class="section" id="logo">
+
+        <div class="sectionTitle">
+          <h2>Logo & Bild</h2>
+          <p>Platziere dein eigenes Bild auf dem QR-Code.</p>
+        </div>
+
+        <div class="drop" id="logoDrop">
+
+          <div class="dropIcon">
+            +
+          </div>
+
+          <strong>Bild hinzufügen</strong>
+
+          <span>
+            PNG · JPG · WebP
+          </span>
+
+          <input
+            id="logoInput"
+            type="file"
+            accept="image/*"
+            hidden
+          >
+
+          <img id="logoPreview">
+
+        </div>
+
+
+        <div class="logoControls" id="logoControls">
+
+          <div class="field">
+
+            <label>Form</label>
+
+            <div class="optionGrid">
+
+              <button
+                class="option active logoShape"
+                data-shape="square">
+                Eckig
+              </button>
+
+              <button
+                class="option logoShape"
+                data-shape="round">
+                Rund
+              </button>
+
+              <button
+                class="option logoShape"
+                data-shape="soft">
+                Soft
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Position</label>
+
+            <div class="positions">
+
+              <button class="option" data-position="tl">↖</button>
+              <button class="option" data-position="tc">↑</button>
+              <button class="option" data-position="tr">↗</button>
+
+              <button class="option" data-position="ml">←</button>
+              <button class="option active" data-position="center">●</button>
+              <button class="option" data-position="mr">→</button>
+
+              <button class="option" data-position="bl">↙</button>
+              <button class="option" data-position="bc">↓</button>
+              <button class="option" data-position="br">↘</button>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <div class="rangeHeader">
+              <span>Logo-Größe</span>
+              <span class="rangeValue" id="logoSizeValue">
+                18%
+              </span>
+            </div>
+
+            <input
+              type="range"
+              id="logoSize"
+              min="8"
+              max="24"
+              value="18"
+            >
+
+          </div>
+
+
+          <button class="btn" id="logoAutoFit" style="width:100%">
+            Logo automatisch anpassen
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- SCAN -->
+
+      <div class="section" id="scan">
+
+        <div class="sectionTitle">
+          <h2>Scan Lab</h2>
+          <p>Prüfe deine aktuelle QR-Konfiguration.</p>
+        </div>
+
+
+        <div class="healthCard">
+
+          <div class="healthTop">
+
+            <div class="scoreCircle" id="scoreNumber">
+              —
+            </div>
+
+            <div>
+
+              <div class="healthTitle">
+                QR Health
+              </div>
+
+              <div class="healthSub">
+                Automatische Scanbarkeitsanalyse
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="checks">
+
+            <div class="check">
+              <span>Kontrast</span>
+              <span id="contrastStatus">—</span>
+            </div>
+
+            <div class="check">
+              <span>Quiet Zone</span>
+              <span id="quietStatus">—</span>
+            </div>
+
+            <div class="check">
+              <span>Logo</span>
+              <span id="logoStatus">—</span>
+            </div>
+
+            <div class="check">
+              <span>QR-Dichte</span>
+              <span id="densityStatus">—</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div style="margin-top:14px">
+
+          <button class="btn" id="accessibility" style="width:100%">
+            Farbkontrast prüfen
+          </button>
+
+          <div
+            id="accessibilityResult"
+            style="
+              color:var(--muted);
+              font-size:10px;
+              line-height:1.5;
+              margin-top:8px;
+            ">
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn"
+          id="morphTest"
+          style="width:100%;margin-top:10px">
+          QR-Animation erneut abspielen
+        </button>
+
+      </div>
+
+
+      <!-- ADAPTIVE -->
+
+      <div class="section" id="adaptive">
+
+        <div class="sectionTitle">
+          <h2>Optimiert für</h2>
+          <p>QRForge passt Fehlerkorrektur und Rand an.</p>
+        </div>
+
+
+        <div class="optionGrid" style="grid-template-columns:1fr 1fr">
+
+          <button class="option preset" data-preset="phone">
+            Smartphone
+          </button>
+
+          <button class="option preset" data-preset="screen">
+            Bildschirm
+          </button>
+
+          <button class="option preset" data-preset="poster">
+            Poster
+          </button>
+
+          <button class="option preset" data-preset="card">
+            Visitenkarte
+          </button>
+
+          <button class="option preset" data-preset="sticker">
+            Sticker
+          </button>
+
+          <button class="option preset" data-preset="document">
+            Dokument
+          </button>
+
+        </div>
+
+
+        <div
+          id="presetInfo"
+          style="
+            color:var(--muted);
+            font-size:10px;
+            line-height:1.5;
+            margin-top:12px;
+          ">
+          Wähle ein Einsatzgebiet.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREVIEW -->
+
+    <section class="panel preview">
+
+      <div class="previewHeader">
+
+        <div class="previewTitle">
+
+          <strong>Live Preview</strong>
+
+          <span>
+            Standard QR-Matrix · Gradient Design
+          </span>
+
+        </div>
+
+        <div class="previewBadge" id="statusPill">
+          Noch nicht erstellt
+        </div>
+
+      </div>
+
+
+      <div class="previewBox">
+
+        <div class="previewGrid"></div>
+
+
+        <div class="empty" id="emptyState">
+
+          <div class="emptyIcon">
+
+            <div class="emptyIconInner"></div>
+
+          </div>
+
+          <strong>Noch kein QR-Code</strong>
+
+          <span>
+            Dein QR-Code erscheint hier.
+          </span>
+
+        </div>
+
+
+        <canvas id="qrCanvas"></canvas>
+
+        <img id="logoOverlay">
+
+        <div class="scanLine" id="scanLine"></div>
+
+      </div>
+
+
+      <div class="previewBottom">
+
+        <div class="healthCard bottomScore">
+
+          <div class="healthTop">
+
+            <div class="scoreCircle" id="previewScore">
+              —
+            </div>
+
+            <div>
+
+              <div class="healthTitle">
+                Scan Score
+              </div>
+
+              <div class="healthSub">
+                Kontrast · Rand · Dichte · Logo
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="actions">
+
+          <button id="downloadPNG">
+            PNG exportieren
+          </button>
+
+          <button id="downloadSVG">
+            SVG exportieren
+          </button>
+
+          <button class="full" id="copyQR">
+            QR als Bild kopieren
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
-</div>
+
 
 <script>
-/* =========================================================
+/* ============================================================
    QRFORGE
-========================================================= */
+============================================================ */
 
 const $ = id => document.getElementById(id);
 
-let state = {
+const state = {
   generated:false,
-  previousMatrix:null,
-  currentMatrix:null,
+  current:null,
   logo:null,
   logoShape:"square",
   logoPosition:"center",
@@ -908,177 +1658,269 @@ let state = {
   gradient:false
 };
 
-/* ---------- CONTENT ---------- */
 
-const contentFields = $("contentFields");
+/* ============================================================
+   CONTENT
+============================================================ */
 
-function renderFields(){
-  const type = $("type").value;
+function renderContentFields(){
+
+  const type=$("type").value;
 
   if(type==="url"){
-    contentFields.innerHTML = `
+
+    $("contentFields").innerHTML=`
       <div class="field">
-        <label>URL</label>
-        <input id="value" type="url" placeholder="https://example.com">
-      </div>`;
+        <label>Website / URL</label>
+        <input
+          id="value"
+          type="url"
+          placeholder="https://example.com">
+      </div>
+    `;
   }
 
   if(type==="text"){
-    contentFields.innerHTML = `
+
+    $("contentFields").innerHTML=`
       <div class="field">
         <label>Text</label>
-        <textarea id="value" placeholder="Dein Text..."></textarea>
-      </div>`;
+        <textarea
+          id="value"
+          placeholder="Dein Text..."></textarea>
+      </div>
+    `;
   }
 
   if(type==="wifi"){
-    contentFields.innerHTML = `
+
+    $("contentFields").innerHTML=`
+
       <div class="grid2">
+
         <div class="field">
           <label>Netzwerkname</label>
           <input id="ssid" type="text" placeholder="WLAN">
         </div>
+
         <div class="field">
           <label>Passwort</label>
-          <input id="password" type="text" placeholder="Passwort">
+          <input id="password" type="password" placeholder="Passwort">
         </div>
+
       </div>
 
       <div class="field">
+
         <label>Verschlüsselung</label>
+
         <select id="encryption">
           <option value="WPA">WPA / WPA2 / WPA3</option>
           <option value="WEP">WEP</option>
           <option value="nopass">Keine</option>
         </select>
-      </div>`;
+
+      </div>
+
+    `;
   }
 
   if(type==="email"){
-    contentFields.innerHTML = `
+
+    $("contentFields").innerHTML=`
+
       <div class="field">
         <label>E-Mail-Adresse</label>
-        <input id="value" type="email" placeholder="name@example.com">
+        <input
+          id="value"
+          type="email"
+          placeholder="name@example.com">
       </div>
 
       <div class="field">
         <label>Betreff</label>
         <input id="subject" type="text" placeholder="Betreff">
-      </div>`;
+      </div>
+
+    `;
   }
 
   if(type==="phone"){
-    contentFields.innerHTML = `
+
+    $("contentFields").innerHTML=`
+
       <div class="field">
         <label>Telefonnummer</label>
-        <input id="value" type="tel" placeholder="+49 123 456789">
-      </div>`;
+        <input
+          id="value"
+          type="tel"
+          placeholder="+49 123 456789">
+      </div>
+
+    `;
   }
 }
 
-renderFields();
-$("type").addEventListener("change",renderFields);
+renderContentFields();
+
+$("type").addEventListener(
+  "change",
+  renderContentFields
+);
+
 
 function getPayload(){
 
-  const type = $("type").value;
+  const type=$("type").value;
 
-  if(type==="url" || type==="text" || type==="phone"){
+  if(
+    type==="url" ||
+    type==="text" ||
+    type==="phone"
+  ){
     return $("value")?.value || "";
   }
 
   if(type==="email"){
-    const email = $("value")?.value || "";
-    const subject = $("subject")?.value || "";
+
+    const email=$("value")?.value || "";
+    const subject=$("subject")?.value || "";
+
     return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
   }
 
   if(type==="wifi"){
-    const ssid = $("ssid")?.value || "";
-    const pass = $("password")?.value || "";
-    const enc = $("encryption")?.value || "WPA";
 
-    return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+    const ssid=$("ssid")?.value || "";
+    const pass=$("password")?.value || "";
+    const encryption=$("encryption")?.value || "WPA";
+
+    return `WIFI:T:${encryption};S:${ssid};P:${pass};;`;
   }
 
   return "";
 }
 
-/* ---------- TABS ---------- */
 
-document.querySelectorAll(".tab").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+/* ============================================================
+   TABS
+============================================================ */
 
-    btn.classList.add("active");
-    $(""+btn.dataset.tab).classList.add("active");
+document.querySelectorAll(".tab").forEach(tab=>{
+
+  tab.addEventListener("click",()=>{
+
+    document
+      .querySelectorAll(".tab")
+      .forEach(x=>x.classList.remove("active"));
+
+    document
+      .querySelectorAll(".section")
+      .forEach(x=>x.classList.remove("active"));
+
+    tab.classList.add("active");
+
+    $(tab.dataset.tab)
+      .classList.add("active");
+
   });
+
 });
 
-/* ---------- COLORS ---------- */
+
+/* ============================================================
+   COLORS
+============================================================ */
 
 function bindColor(color,text){
+
   $(color).addEventListener("input",()=>{
+
     $(text).value=$(color).value;
-    if(state.generated) renderQR(true);
+
+    if(state.generated){
+      renderQR(true);
+    }
+
   });
 
   $(text).addEventListener("change",()=>{
-    let v=$(text).value.trim();
 
-    if(/^#[0-9a-fA-F]{6}$/.test(v)){
-      $(color).value=v;
-      if(state.generated) renderQR(true);
+    const value=$(text).value.trim();
+
+    if(/^#[0-9a-fA-F]{6}$/.test(value)){
+
+      $(color).value=value;
+
+      if(state.generated){
+        renderQR(true);
+      }
+
     }
+
   });
+
 }
 
 bindColor("fg","fgText");
 bindColor("bgColor","bgText");
 bindColor("fg2","fg2Text");
 
+
 $("gradientSwitch").onclick=()=>{
+
   state.gradient=!state.gradient;
-  $("gradientSwitch").classList.toggle("on",state.gradient);
-  $("gradientControls").classList.toggle("hidden",!state.gradient);
 
-  if(state.generated) renderQR(true);
+  $("gradientSwitch")
+    .classList.toggle("on",state.gradient);
+
+  $("gradientControls")
+    .classList.toggle("hidden",!state.gradient);
+
+  if(state.generated){
+    renderQR(true);
+  }
+
 };
 
-/* ---------- SLIDERS ---------- */
 
-$("margin").oninput=()=>{
-  $("marginValue").textContent=$("margin").value;
-  if(state.generated) renderQR(true);
-};
+/* ============================================================
+   QR CREATION
+============================================================ */
 
-$("logoSize").oninput=()=>{
-  state.logoSize=Number($("logoSize").value);
-  $("logoSizeValue").textContent=state.logoSize+"%";
-  updateLogoOverlay();
-  updateHealth();
-};
+function createMatrix(){
 
-/* ---------- QR MATRIX ---------- */
+  const payload=getPayload();
 
-function makeQR(text){
+  if(!payload.trim()){
 
-  const ecc=$("ecc").value;
+    alert("Bitte zuerst Inhalt eingeben.");
 
-  const qr=qrcode(0,ecc);
-  qr.addData(text);
+    return null;
+  }
+
+  const qr=qrcode(
+    0,
+    $("ecc").value
+  );
+
+  qr.addData(payload);
   qr.make();
 
   const count=qr.getModuleCount();
+
   const matrix=[];
 
   for(let y=0;y<count;y++){
+
     matrix[y]=[];
 
     for(let x=0;x<count;x++){
+
       matrix[y][x]=qr.isDark(y,x);
+
     }
+
   }
 
   return {
@@ -1087,494 +1929,878 @@ function makeQR(text){
   };
 }
 
-/* ---------- QR RENDER ---------- */
 
-function renderQR(animated=false){
+/* ============================================================
+   DRAW STANDARD QR
+============================================================ */
 
-  const payload=getPayload();
-
-  if(!payload.trim()){
-    alert("Bitte zuerst Inhalt eingeben.");
-    return;
-  }
-
-  const result=makeQR(payload);
-
-  state.previousMatrix=state.currentMatrix;
-  state.currentMatrix=result;
-
-  state.generated=true;
-
-  $("emptyState").style.display="none";
-  $("qrCanvas").style.display="block";
-  $("statusPill").textContent="Erstellt";
-
-  drawQR(result,animated);
-
-  updateLogoOverlay();
-  updateHealth();
-}
-
-function drawQR(result,animated=false){
+function drawQR(result,animated=true){
 
   const canvas=$("qrCanvas");
   const ctx=canvas.getContext("2d");
 
   const matrix=result.matrix;
-  const n=result.count;
+  const count=result.count;
 
   const margin=Number($("margin").value);
-  const total=n+margin*2;
 
-  const size=700;
+  /*
+    WICHTIG:
 
-  canvas.width=size;
-  canvas.height=size;
+    Der QR wird NICHT verzerrt.
+    Jedes Modul bleibt exakt gleich groß.
+  */
 
-  const cell=size/total;
+  const canvasSize=800;
+
+  canvas.width=canvasSize;
+  canvas.height=canvasSize;
+
+  const total=count+(margin*2);
+
+  /*
+    Ganzzahliges Modul.
+    Dadurch gibt es keine halben Pixel.
+  */
+
+  const cell=Math.floor(
+    canvasSize/total
+  );
+
+  const qrSize=cell*total;
+
+  const offset=Math.floor(
+    (canvasSize-qrSize)/2
+  );
 
   const fg=$("fg").value;
   const bg=$("bgColor").value;
 
-  ctx.clearRect(0,0,size,size);
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,size,size);
+  function makeFill(){
 
-  let gradient=null;
+    if(!state.gradient){
+      return fg;
+    }
 
-  if(state.gradient){
-    gradient=ctx.createLinearGradient(0,0,size,size);
-    gradient.addColorStop(0,fg);
-    gradient.addColorStop(1,$("fg2").value);
+    const gradient=ctx.createLinearGradient(
+      0,
+      0,
+      canvasSize,
+      canvasSize
+    );
+
+    gradient.addColorStop(
+      0,
+      fg
+    );
+
+    gradient.addColorStop(
+      1,
+      $("fg2").value
+    );
+
+    return gradient;
   }
 
-  const moduleStyle=$("moduleStyle").value;
-  const finderStyle=$("finderStyle").value;
+
+  function clear(){
+
+    ctx.clearRect(
+      0,
+      0,
+      canvasSize,
+      canvasSize
+    );
+
+    ctx.fillStyle=bg;
+
+    ctx.fillRect(
+      0,
+      0,
+      canvasSize,
+      canvasSize
+    );
+  }
+
+
+  function paintModule(
+    x,
+    y,
+    progress=1
+  ){
+
+    const px=
+      offset+
+      (x+margin)*cell;
+
+    const py=
+      offset+
+      (y+margin)*cell;
+
+    /*
+      Kein Gap.
+      Kein Radius.
+      Kein Stretch.
+      Exakt quadratisch.
+    */
+
+    const s=
+      Math.max(
+        1,
+        Math.round(cell*progress)
+      );
+
+    const dx=
+      Math.round(
+        px+(cell-s)/2
+      );
+
+    const dy=
+      Math.round(
+        py+(cell-s)/2
+      );
+
+    ctx.fillStyle=makeFill();
+
+    ctx.fillRect(
+      dx,
+      dy,
+      s,
+      s
+    );
+  }
+
 
   const modules=[];
 
-  for(let y=0;y<n;y++){
-    for(let x=0;x<n;x++){
+  for(let y=0;y<count;y++){
 
-      if(!matrix[y][x]) continue;
+    for(let x=0;x<count;x++){
 
-      modules.push({
-        x,
-        y,
-        delay:animated ? Math.random()*600 : 0
-      });
+      if(matrix[y][x]){
+
+        modules.push({
+          x,
+          y,
+          delay:
+            animated
+              ? Math.random()*300
+              : 0
+        });
+
+      }
+
     }
+
   }
 
-  function paint(m,progress=1){
 
-    const px=(m.x+margin)*cell;
-    const py=(m.y+margin)*cell;
+  clear();
 
-    let w=cell*progress;
-    let h=cell*progress;
-
-    const cx=px+cell/2;
-    const cy=py+cell/2;
-
-    ctx.fillStyle=gradient || fg;
-
-    const finder=isFinder(m.x,m.y,n);
-
-    let radius=0;
-
-    if(finder && finderStyle==="round") radius=cell*.35;
-    else if(moduleStyle==="round") radius=cell*.45;
-    else if(moduleStyle==="dot") radius=cell*.5;
-
-    if(radius>0){
-      ctx.beginPath();
-      roundRect(ctx,cx-w/2,cy-h/2,w,h,radius);
-      ctx.fill();
-    }else{
-      ctx.fillRect(cx-w/2,cy-h/2,w,h);
-    }
-  }
 
   if(!animated){
 
-    modules.forEach(m=>paint(m,1));
+    modules.forEach(m=>{
+      paintModule(m.x,m.y,1);
+    });
 
-  }else{
+    return;
+  }
 
-    const start=performance.now();
 
-    function frame(now){
+  const start=performance.now();
 
-      const elapsed=now-start;
+  function frame(now){
 
-      ctx.clearRect(0,0,size,size);
-      ctx.fillStyle=bg;
-      ctx.fillRect(0,0,size,size);
+    const elapsed=
+      now-start;
 
-      let finished=true;
+    clear();
+
+    let finished=true;
+
+    modules.forEach(m=>{
+
+      const progress=
+        Math.max(
+          0,
+          Math.min(
+            1,
+            (elapsed-m.delay)/380
+          )
+        );
+
+      if(progress<1){
+        finished=false;
+      }
+
+      /*
+        smooth ease-out
+      */
+
+      const eased=
+        1-Math.pow(
+          1-progress,
+          3
+        );
+
+      paintModule(
+        m.x,
+        m.y,
+        eased
+      );
+
+    });
+
+
+    if(finished){
+
+      /*
+        Finaler sauberer Standard-QR.
+      */
+
+      clear();
 
       modules.forEach(m=>{
-
-        const p=Math.max(0,Math.min(1,(elapsed-m.delay)/650));
-
-        if(p<1) finished=false;
-
-        const eased=1-Math.pow(1-p,3);
-
-        paint(m,eased);
+        paintModule(
+          m.x,
+          m.y,
+          1
+        );
       });
 
-      if(!finished){
-        requestAnimationFrame(frame);
-      }else{
-        finalPulse();
-      }
+      playScan();
+
+      return;
     }
 
     requestAnimationFrame(frame);
   }
+
+  requestAnimationFrame(frame);
 }
 
-function roundRect(ctx,x,y,w,h,r){
-  r=Math.min(r,w/2,h/2);
 
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
-}
+/* ============================================================
+   GENERATE
+============================================================ */
 
-function isFinder(x,y,n){
+function renderQR(animated=true){
 
-  return (
-    (x<7 && y<7) ||
-    (x>=n-7 && y<7) ||
-    (x<7 && y>=n-7)
+  const result=createMatrix();
+
+  if(!result){
+    return;
+  }
+
+  state.current=result;
+  state.generated=true;
+
+  $("emptyState").style.display="none";
+  $("qrCanvas").style.display="block";
+
+  $("statusPill").textContent="Bereit";
+
+  drawQR(
+    result,
+    animated
   );
+
+  updateLogo();
+
+  updateHealth();
+
 }
 
-function finalPulse(){
+
+/* ============================================================
+   SCAN ANIMATION
+============================================================ */
+
+function playScan(){
 
   const line=$("scanLine");
 
-  line.classList.remove("active");
-  void line.offsetWidth;
-  line.classList.add("active");
+  line.classList.remove("play");
 
-  setTimeout(()=>{
-    updateLogoOverlay();
-  },500);
+  void line.offsetWidth;
+
+  line.classList.add("play");
+
 }
 
-/* ---------- LOGO ---------- */
+
+/* ============================================================
+   LOGO
+============================================================ */
 
 $("logoDrop").onclick=()=>{
   $("logoInput").click();
 };
 
-$("logoInput").onchange=e=>{
 
-  const file=e.target.files[0];
-  if(!file) return;
+$("logoInput").addEventListener(
+  "change",
+  e=>{
 
-  const reader=new FileReader();
+    const file=e.target.files[0];
 
-  reader.onload=ev=>{
+    if(!file){
+      return;
+    }
 
-    state.logo=ev.target.result;
+    const reader=new FileReader();
 
-    $("logoPreview").src=state.logo;
-    $("logoPreview").style.display="block";
-    $("logoControls").style.display="block";
+    reader.onload=event=>{
 
-    updateLogoOverlay();
-    updateHealth();
-  };
+      state.logo=
+        event.target.result;
 
-  reader.readAsDataURL(file);
-};
+      $("logoPreview").src=
+        state.logo;
 
-document.querySelectorAll(".logoShape").forEach(btn=>{
-  btn.onclick=()=>{
+      $("logoPreview").style.display=
+        "block";
 
-    document.querySelectorAll(".logoShape")
-      .forEach(x=>x.classList.remove("active"));
+      $("logoControls").style.display=
+        "block";
+
+      updateLogo();
+      updateHealth();
+
+    };
+
+    reader.readAsDataURL(file);
+
+  }
+);
+
+
+/* LOGO SHAPE */
+
+document
+.querySelectorAll(".logoShape")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    document
+      .querySelectorAll(".logoShape")
+      .forEach(x=>
+        x.classList.remove("active")
+      );
 
     btn.classList.add("active");
 
-    state.logoShape=btn.dataset.shape;
+    state.logoShape=
+      btn.dataset.shape;
 
-    updateLogoOverlay();
-    updateHealth();
-  };
+    updateLogo();
+
+  });
+
 });
 
-document.querySelectorAll(".logoPosition button").forEach(btn=>{
-  btn.onclick=()=>{
 
-    document.querySelectorAll(".logoPosition button")
-      .forEach(x=>x.classList.remove("active"));
+/* LOGO POSITION */
+
+document
+.querySelectorAll("[data-position]")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    document
+      .querySelectorAll("[data-position]")
+      .forEach(x=>
+        x.classList.remove("active")
+      );
 
     btn.classList.add("active");
 
-    state.logoPosition=btn.dataset.position;
+    state.logoPosition=
+      btn.dataset.position;
 
-    updateLogoOverlay();
-    updateHealth();
-  };
+    updateLogo();
+
+  });
+
 });
 
-function updateLogoOverlay(){
 
-  const img=$("logoOverlay");
+$("logoSize").addEventListener(
+  "input",
+  ()=>{
 
-  if(!state.logo || !state.generated){
-    img.style.display="none";
+    state.logoSize=
+      Number($("logoSize").value);
+
+    $("logoSizeValue").textContent=
+      state.logoSize+"%";
+
+    updateLogo();
+    updateHealth();
+
+  }
+);
+
+
+function updateLogo(){
+
+  const logo=$("logoOverlay");
+
+  if(
+    !state.logo ||
+    !state.generated
+  ){
+
+    logo.style.display="none";
+
     return;
   }
 
-  img.src=state.logo;
-  img.style.display="block";
+  logo.src=state.logo;
 
-  const box=$("previewBox");
+  logo.style.display="block";
 
-  const size=Math.min(
-    box.clientWidth,
-    box.clientHeight
-  )*(state.logoSize/100);
+  const box=
+    document.querySelector(".previewBox");
 
-  img.style.width=size+"px";
-  img.style.height=size+"px";
+  const boxSize=
+    Math.min(
+      box.clientWidth,
+      box.clientHeight
+    );
 
-  img.className="logoOverlay "+state.logoShape;
+  const size=
+    boxSize*
+    (state.logoSize/100);
+
+  logo.style.width=
+    size+"px";
+
+  logo.style.height=
+    size+"px";
+
+
+  logo.className="";
+
+  if(state.logoShape==="round"){
+    logo.classList.add("logo-round");
+  }
+
+  if(state.logoShape==="square"){
+    logo.classList.add("logo-square");
+  }
+
+  if(state.logoShape==="soft"){
+    logo.classList.add("logo-soft");
+  }
+
 
   const gap=20;
 
   if(state.logoPosition==="center"){
-    img.style.left="50%";
-    img.style.top="50%";
-    img.style.transform="translate(-50%,-50%)";
-  }else{
 
-    img.style.transform="none";
+    logo.style.left="50%";
+    logo.style.top="50%";
+    logo.style.transform=
+      "translate(-50%,-50%)";
 
-    const map={
-      tl:[gap,gap],
-      tc:["50%",gap],
-      tr:[`calc(100% - ${size+gap}px)`,gap],
-
-      ml:[gap,"50%"],
-      mr:[`calc(100% - ${size+gap}px)`,"50%"],
-
-      bl:[gap,`calc(100% - ${size+gap}px)`],
-      bc:["50%",`calc(100% - ${size+gap}px)`],
-      br:[`calc(100% - ${size+gap}px)`,`calc(100% - ${size+gap}px)`]
-    };
-
-    const p=map[state.logoPosition];
-
-    img.style.left=typeof p[0]==="number"
-      ? p[0]+"px"
-      : p[0];
-
-    img.style.top=typeof p[1]==="number"
-      ? p[1]+"px"
-      : p[1];
-
-    if(state.logoPosition==="tc" ||
-       state.logoPosition==="bc"){
-      img.style.transform="translateX(-50%)";
-    }
-
-    if(state.logoPosition==="ml" ||
-       state.logoPosition==="mr"){
-      img.style.transform="translateY(-50%)";
-    }
+    return;
   }
+
+
+  const positions={
+
+    tl:[gap,gap],
+    tc:["50%",gap],
+    tr:[`calc(100% - ${size+gap}px)`,gap],
+
+    ml:[gap,"50%"],
+    mr:[`calc(100% - ${size+gap}px)`,"50%"],
+
+    bl:[gap,`calc(100% - ${size+gap}px)`],
+    bc:["50%",`calc(100% - ${size+gap}px)`],
+    br:[`calc(100% - ${size+gap}px)`,`calc(100% - ${size+gap}px)`]
+
+  };
+
+  const pos=
+    positions[state.logoPosition];
+
+  logo.style.left=
+    typeof pos[0]==="number"
+      ? pos[0]+"px"
+      : pos[0];
+
+  logo.style.top=
+    typeof pos[1]==="number"
+      ? pos[1]+"px"
+      : pos[1];
+
+  logo.style.transform="none";
+
+  if(
+    state.logoPosition==="tc" ||
+    state.logoPosition==="bc"
+  ){
+    logo.style.transform=
+      "translateX(-50%)";
+  }
+
+  if(
+    state.logoPosition==="ml" ||
+    state.logoPosition==="mr"
+  ){
+    logo.style.transform=
+      "translateY(-50%)";
+  }
+
 }
+
+
+/* ============================================================
+   LOGO AUTOFIT
+============================================================ */
 
 $("logoAutoFit").onclick=()=>{
 
-  let max=18;
+  let size=18;
 
-  const score=getHealthScore(max);
+  const score=calculateScore(size);
 
-  if(score<85) max=15;
-  if(score<75) max=12;
-  if(score<65) max=9;
+  if(score<90) size=15;
+  if(score<80) size=13;
+  if(score<70) size=11;
 
-  state.logoSize=max;
-  $("logoSize").value=max;
-  $("logoSizeValue").textContent=max+"%";
+  state.logoSize=size;
 
-  updateLogoOverlay();
+  $("logoSize").value=size;
+  $("logoSizeValue").textContent=
+    size+"%";
+
+  updateLogo();
   updateHealth();
+
 };
 
-/* ---------- HEALTH ---------- */
+
+/* ============================================================
+   CONTRAST
+============================================================ */
 
 function luminance(hex){
 
-  const rgb=hex.match(/\w\w/g).map(x=>parseInt(x,16)/255);
+  const rgb=
+    hex
+      .replace("#","")
+      .match(/.{2}/g)
+      .map(v=>
+        parseInt(v,16)/255
+      );
 
-  return rgb.map(c=>
-    c<=.03928 ? c/12.92 : Math.pow((c+.055)/1.055,2.4)
-  ).reduce((a,c,i)=>a+[0.2126,0.7152,0.0722][i]*c,0);
+  const linear=
+    rgb.map(c=>
+      c<=.03928
+        ? c/12.92
+        : Math.pow(
+            (c+.055)/1.055,
+            2.4
+          )
+    );
+
+  return(
+    linear[0]*.2126+
+    linear[1]*.7152+
+    linear[2]*.0722
+  );
+
 }
 
-function contrastRatio(a,b){
 
-  const l1=luminance(a);
-  const l2=luminance(b);
+function contrast(a,b){
 
-  const light=Math.max(l1,l2);
-  const dark=Math.min(l1,l2);
+  const x=luminance(a);
+  const y=luminance(b);
 
-  return (light+.05)/(dark+.05);
+  const light=
+    Math.max(x,y);
+
+  const dark=
+    Math.min(x,y);
+
+  return(
+    (light+.05)/
+    (dark+.05)
+  );
+
 }
 
-function getHealthScore(logoSize=state.logoSize){
 
-  if(!state.generated) return 0;
+/* ============================================================
+   HEALTH
+============================================================ */
+
+function calculateScore(logoSize=state.logoSize){
+
+  if(!state.generated){
+    return 0;
+  }
 
   let score=100;
 
-  const ratio=contrastRatio(
-    $("fg").value,
-    $("bgColor").value
-  );
+  const ratio=
+    contrast(
+      $("fg").value,
+      $("bgColor").value
+    );
 
-  if(ratio<3) score-=45;
-  else if(ratio<4.5) score-=25;
-  else if(ratio<7) score-=8;
-
-  const margin=Number($("margin").value);
-
-  if(margin<2) score-=15;
-  else if(margin<4) score-=5;
-
-  if(state.currentMatrix){
-
-    const density=
-      state.currentMatrix.matrix.flat().filter(Boolean).length /
-      (state.currentMatrix.count**2);
-
-    if(density>.65) score-=12;
-    if(density>.75) score-=15;
+  if(ratio<3){
+    score-=45;
+  }
+  else if(ratio<4.5){
+    score-=22;
+  }
+  else if(ratio<7){
+    score-=6;
   }
 
-  if(state.logo){
 
-    if(logoSize>25) score-=25;
-    else if(logoSize>20) score-=12;
-    else if(logoSize>16) score-=5;
-  }
+  const margin=
+    Number($("margin").value);
 
-  if($("ecc").value==="L" && state.logo){
+  if(margin<4){
     score-=10;
   }
 
-  return Math.max(0,Math.min(100,Math.round(score)));
+
+  if(state.current){
+
+    const dark=
+      state.current.matrix
+        .flat()
+        .filter(Boolean)
+        .length;
+
+    const total=
+      state.current.count**
+      2;
+
+    const density=
+      dark/total;
+
+    if(density>.70){
+      score-=8;
+    }
+
+    if(density>.80){
+      score-=12;
+    }
+
+  }
+
+
+  if(state.logo){
+
+    if(logoSize>22){
+      score-=25;
+    }
+    else if(logoSize>18){
+      score-=10;
+    }
+
+  }
+
+
+  if(
+    state.logo &&
+    $("ecc").value==="L"
+  ){
+    score-=10;
+  }
+
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Math.round(score)
+    )
+  );
+
 }
+
+
+function setScore(element,score){
+
+  element.textContent=
+    score;
+
+  element.classList.remove(
+    "warning",
+    "bad"
+  );
+
+  if(score<70){
+    element.classList.add("bad");
+  }
+  else if(score<85){
+    element.classList.add("warning");
+  }
+
+}
+
 
 function updateHealth(){
 
-  if(!state.generated) return;
-
-  const score=getHealthScore();
-
-  const numbers=[
-    $("scoreNumber"),
-    $("previewScore")
-  ];
-
-  numbers.forEach(el=>{
-    el.textContent=score;
-
-    el.classList.remove("warning","bad");
-
-    if(score<70) el.classList.add("bad");
-    else if(score<85) el.classList.add("warning");
-  });
-
-  const ratio=contrastRatio(
-    $("fg").value,
-    $("bgColor").value
-  );
-
-  $("contrastStatus").textContent=
-    ratio>=4.5 ? "Sehr gut" :
-    ratio>=3 ? "Okay" : "Zu niedrig";
-
-  $("contrastStatus").className=
-    ratio>=4.5 ? "good" :
-    ratio>=3 ? "warningText" : "badText";
-
-  const margin=Number($("margin").value);
-
-  $("quietStatus").textContent=
-    margin>=4 ? "Gut" :
-    margin>=2 ? "Okay" : "Klein";
-
-  $("quietStatus").className=
-    margin>=4 ? "good" :
-    margin>=2 ? "warningText" : "badText";
-
-  $("logoStatus").textContent=
-    !state.logo ? "Kein Logo" :
-    state.logoSize<=18 ? "Sicher" :
-    state.logoSize<=23 ? "Grenzwertig" : "Zu groß";
-
-  $("logoStatus").className=
-    !state.logo || state.logoSize<=18 ? "good" :
-    state.logoSize<=23 ? "warningText" : "badText";
-
-  let density=0;
-
-  if(state.currentMatrix){
-    density=
-      state.currentMatrix.matrix.flat().filter(Boolean).length /
-      (state.currentMatrix.count**2);
+  if(!state.generated){
+    return;
   }
 
-  $("densityStatus").textContent=
-    density<.55 ? "Niedrig" :
-    density<.7 ? "Normal" : "Hoch";
+  const score=
+    calculateScore();
 
-  $("densityStatus").className=
-    density<.7 ? "good" : "warningText";
+  setScore(
+    $("scoreNumber"),
+    score
+  );
+
+  setScore(
+    $("previewScore"),
+    score
+  );
+
+
+  const ratio=
+    contrast(
+      $("fg").value,
+      $("bgColor").value
+    );
+
+
+  $("contrastStatus").textContent=
+    ratio>=4.5
+      ? "Sehr gut"
+      : ratio>=3
+        ? "Okay"
+        : "Zu niedrig";
+
+  $("contrastStatus").className=
+    ratio>=4.5
+      ? "good"
+      : ratio>=3
+        ? "warn"
+        : "bad";
+
+
+  const margin=
+    Number($("margin").value);
+
+  $("quietStatus").textContent=
+    margin>=4
+      ? "Standard"
+      : "Klein";
+
+  $("quietStatus").className=
+    margin>=4
+      ? "good"
+      : "warn";
+
+
+  if(!state.logo){
+
+    $("logoStatus").textContent=
+      "Kein Logo";
+
+    $("logoStatus").className=
+      "good";
+
+  }
+  else{
+
+    $("logoStatus").textContent=
+      state.logoSize<=18
+        ? "Sicher"
+        : state.logoSize<=22
+          ? "Grenzwertig"
+          : "Zu groß";
+
+    $("logoStatus").className=
+      state.logoSize<=18
+        ? "good"
+        : state.logoSize<=22
+          ? "warn"
+          : "bad";
+
+  }
+
+
+  if(state.current){
+
+    const dark=
+      state.current.matrix
+        .flat()
+        .filter(Boolean)
+        .length;
+
+    const total=
+      state.current.count**2;
+
+    const density=
+      dark/total;
+
+    $("densityStatus").textContent=
+      density<.7
+        ? "Normal"
+        : "Hoch";
+
+    $("densityStatus").className=
+      density<.7
+        ? "good"
+        : "warn";
+
+  }
+
 }
 
-/* ---------- SMART COLOR ---------- */
 
-function smartColors(){
+/* ============================================================
+   SMART COLORS
+============================================================ */
 
-  const base=$("fg").value;
+const palettes=[
+  ["#111111","#ffffff","#6677ff"],
+  ["#162033","#f8fbff","#52b8ff"],
+  ["#27163b","#fffaff","#b46cff"],
+  ["#102b20","#f5fff9","#3bd58d"],
+  ["#29200c","#fffdf4","#e6a52e"]
+];
 
-  const palettes=[
-    ["#111111","#ffffff","#5c6cff","#e8ebff","#242936"],
-    ["#15202b","#f7f9fb","#00a8ff","#dff4ff","#283747"],
-    ["#241526","#fff8ff","#b65cff","#f1dcff","#38243d"],
-    ["#0d261d","#f4fff9","#28c982","#d8f7e8","#193c2e"],
-    ["#241a0b","#fffaf0","#e4a62a","#fff0c7","#493817"]
-  ];
+
+function renderPalettes(){
 
   $("palette").innerHTML="";
 
   palettes.forEach(colors=>{
 
-    const sw=document.createElement("div");
-    sw.className="swatch";
+    const el=
+      document.createElement("div");
 
-    sw.style.background=
-      `linear-gradient(90deg,${colors[0]} 0 20%,${colors[1]} 20% 40%,${colors[2]} 40% 60%,${colors[3]} 60% 80%,${colors[4]} 80%)`;
+    el.className="swatch";
 
-    sw.title="Palette anwenden";
+    el.style.background=
+      `linear-gradient(
+        90deg,
+        ${colors[0]} 0 33.33%,
+        ${colors[1]} 33.33% 66.66%,
+        ${colors[2]} 66.66%
+      )`;
 
-    sw.onclick=()=>{
+    el.title=
+      "Palette verwenden";
+
+    el.onclick=()=>{
 
       $("fg").value=colors[0];
       $("fgText").value=colors[0];
@@ -1585,161 +2811,135 @@ function smartColors(){
       $("fg2").value=colors[2];
       $("fg2Text").value=colors[2];
 
-      if(state.generated) renderQR(true);
+      state.gradient=true;
+
+      $("gradientSwitch")
+        .classList.add("on");
+
+      $("gradientControls")
+        .classList.remove("hidden");
+
+      if(state.generated){
+        renderQR(true);
+      }
+
     };
 
-    $("palette").appendChild(sw);
+    $("palette")
+      .appendChild(el);
+
   });
+
 }
 
-smartColors();
+renderPalettes();
+
 
 $("smartColor").onclick=()=>{
 
-  const candidates=[
-    ["#111111","#ffffff"],
-    ["#172033","#f7fbff"],
-    ["#241438","#fffaff"],
-    ["#123327","#f5fff9"],
-    ["#25200f","#fffdf3"]
-  ];
+  renderPalettes();
 
-  let best=candidates[0];
-  let bestRatio=0;
-
-  candidates.forEach(c=>{
-    const ratio=contrastRatio(c[0],c[1]);
-
-    if(ratio>bestRatio){
-      best=c;
-      bestRatio=ratio;
-    }
-  });
-
-  $("fg").value=best[0];
-  $("fgText").value=best[0];
-
-  $("bgColor").value=best[1];
-  $("bgText").value=best[1];
-
-  if(state.generated) renderQR(true);
 };
 
-/* ---------- ACCESSIBILITY ---------- */
 
-$("accessibility").onclick=()=>{
-
-  const ratio=contrastRatio(
-    $("fg").value,
-    $("bgColor").value
-  );
-
-  let message="";
-
-  if(ratio>=7){
-    message="Sehr hoher Kontrast. Gute Lesbarkeit auch bei eingeschränkter Farbwahrnehmung.";
-  }else if(ratio>=4.5){
-    message="Guter Kontrast. Für QR-Codes normalerweise eine solide Ausgangsbasis.";
-  }else if(ratio>=3){
-    message="Mittlerer Kontrast. Eine dunklere QR-Farbe oder hellere Fläche wäre sicherer.";
-  }else{
-    message="Niedriger Kontrast. Verwende eine deutlich hellere Hintergrundfarbe.";
-  }
-
-  $("accessibilityResult").textContent=message;
-};
-
-/* ---------- ADAPTIVE PRESETS ---------- */
-
-const presets={
-  phone:{
-    ecc:"M",
-    margin:4,
-    info:"Smartphone: kompakte Darstellung mit ausgewogener Scanbarkeit."
-  },
-  screen:{
-    ecc:"M",
-    margin:5,
-    info:"Bildschirm: etwas mehr Quiet Zone für Displays und Präsentationen."
-  },
-  poster:{
-    ecc:"H",
-    margin:6,
-    info:"Poster: hohe Fehlerkorrektur und größere Quiet Zone."
-  },
-  card:{
-    ecc:"Q",
-    margin:5,
-    info:"Visitenkarte: kompakt, aber mit zusätzlicher Fehlertoleranz."
-  },
-  sticker:{
-    ecc:"H",
-    margin:6,
-    info:"Sticker: hohe Fehlerkorrektur für Kratzer und Verschmutzungen."
-  },
-  document:{
-    ecc:"Q",
-    margin:5,
-    info:"Dokument: auf sauberen Druck und zuverlässiges Scannen ausgelegt."
-  }
-};
-
-document.querySelectorAll(".preset").forEach(btn=>{
-  btn.onclick=()=>{
-
-    const p=presets[btn.dataset.preset];
-
-    $("ecc").value=p.ecc;
-    $("margin").value=p.margin;
-    $("marginValue").textContent=p.margin;
-
-    $("presetInfo").textContent=p.info;
-
-    if(state.generated) renderQR(true);
-  };
-});
-
-/* ---------- BEAUTIFY ---------- */
+/* ============================================================
+   BEAUTIFY
+============================================================ */
 
 $("beautify").onclick=()=>{
 
   if(!state.generated){
-    alert("Erstelle zuerst einen QR-Code.");
+
+    alert(
+      "Erstelle zuerst einen QR-Code."
+    );
+
     return;
   }
 
+
   const candidates=[
-    {fg:"#111111",bg:"#ffffff",ecc:"M",margin:4,module:"square"},
-    {fg:"#172033",bg:"#f7fbff",ecc:"Q",margin:5,module:"round"},
-    {fg:"#241438",bg:"#fffaff",ecc:"Q",margin:5,module:"dot"},
-    {fg:"#123327",bg:"#f5fff9",ecc:"Q",margin:5,module:"round"},
-    {fg:"#25200f",bg:"#fffdf3",ecc:"H",margin:6,module:"square"}
+    {
+      fg:"#111111",
+      bg:"#ffffff",
+      fg2:"#6677ff",
+      ecc:"M",
+      margin:"4"
+    },
+
+    {
+      fg:"#162033",
+      bg:"#f8fbff",
+      fg2:"#52b8ff",
+      ecc:"Q",
+      margin:"5"
+    },
+
+    {
+      fg:"#27163b",
+      bg:"#fffaff",
+      fg2:"#b46cff",
+      ecc:"Q",
+      margin:"5"
+    },
+
+    {
+      fg:"#102b20",
+      bg:"#f5fff9",
+      fg2:"#3bd58d",
+      ecc:"Q",
+      margin:"5"
+    }
   ];
 
-  let best=null;
-  let bestScore=-Infinity;
 
-  candidates.forEach(c=>{
+  let best=
+    candidates[0];
 
-    $("fg").value=c.fg;
-    $("bgColor").value=c.bg;
-    $("ecc").value=c.ecc;
-    $("margin").value=c.margin;
-    $("moduleStyle").value=c.module;
+  let bestScore=-1;
 
-    const s=getHealthScore();
 
-    const aestheticBonus=
-      c.module==="round" ? 4 :
-      c.module==="dot" ? 3 : 1;
+  candidates.forEach(candidate=>{
 
-    const total=s+aestheticBonus;
+    $("fg").value=
+      candidate.fg;
 
-    if(total>bestScore){
-      bestScore=total;
-      best={...c};
+    $("bgColor").value=
+      candidate.bg;
+
+    $("fg2").value=
+      candidate.fg2;
+
+    $("ecc").value=
+      candidate.ecc;
+
+    $("margin").value=
+      candidate.margin;
+
+    const ratio=
+      contrast(
+        candidate.fg,
+        candidate.bg
+      );
+
+    let score=
+      ratio*10;
+
+    if(
+      candidate.ecc==="Q"
+    ){
+      score+=5;
     }
+
+    if(score>bestScore){
+
+      bestScore=score;
+      best=candidate;
+
+    }
+
   });
+
 
   $("fg").value=best.fg;
   $("fgText").value=best.fg;
@@ -1747,155 +2947,418 @@ $("beautify").onclick=()=>{
   $("bgColor").value=best.bg;
   $("bgText").value=best.bg;
 
+  $("fg2").value=best.fg2;
+  $("fg2Text").value=best.fg2;
+
   $("ecc").value=best.ecc;
   $("margin").value=best.margin;
-  $("marginValue").textContent=best.margin;
-  $("moduleStyle").value=best.module;
+
+  state.gradient=true;
+
+  $("gradientSwitch")
+    .classList.add("on");
+
+  $("gradientControls")
+    .classList.remove("hidden");
 
   renderQR(true);
+
 };
 
-/* ---------- MORPH ---------- */
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+
+$("accessibility").onclick=()=>{
+
+  const ratio=
+    contrast(
+      $("fg").value,
+      $("bgColor").value
+    );
+
+  if(ratio>=7){
+
+    $("accessibilityResult").textContent=
+      "Sehr hoher Kontrast. Gute Ausgangsbasis.";
+
+  }
+  else if(ratio>=4.5){
+
+    $("accessibilityResult").textContent=
+      "Guter Kontrast. Für einen QR-Code gut geeignet.";
+
+  }
+  else if(ratio>=3){
+
+    $("accessibilityResult").textContent=
+      "Mittlerer Kontrast. Eine stärkere Farbdifferenz wäre besser.";
+
+  }
+  else{
+
+    $("accessibilityResult").textContent=
+      "Zu wenig Kontrast. Wähle eine deutlich hellere Hintergrundfarbe.";
+
+  }
+
+};
+
+
+/* ============================================================
+   ADAPTIVE
+============================================================ */
+
+const presets={
+
+  phone:{
+    ecc:"M",
+    margin:"4",
+    text:"Smartphone: kompakt und ausgewogen."
+  },
+
+  screen:{
+    ecc:"M",
+    margin:"5",
+    text:"Bildschirm: etwas mehr Rand für Displays."
+  },
+
+  poster:{
+    ecc:"H",
+    margin:"6",
+    text:"Poster: hohe Fehlertoleranz und großer Rand."
+  },
+
+  card:{
+    ecc:"Q",
+    margin:"5",
+    text:"Visitenkarte: kompakt mit zusätzlicher Fehlertoleranz."
+  },
+
+  sticker:{
+    ecc:"H",
+    margin:"6",
+    text:"Sticker: robust gegen Verschmutzung und Beschädigung."
+  },
+
+  document:{
+    ecc:"Q",
+    margin:"5",
+    text:"Dokument: für sauberen Druck optimiert."
+  }
+
+};
+
+
+document
+.querySelectorAll(".preset")
+.forEach(button=>{
+
+  button.onclick=()=>{
+
+    const preset=
+      presets[button.dataset.preset];
+
+    $("ecc").value=
+      preset.ecc;
+
+    $("margin").value=
+      preset.margin;
+
+    $("presetInfo").textContent=
+      preset.text;
+
+    if(state.generated){
+      renderQR(true);
+    }
+
+  };
+
+});
+
+
+/* ============================================================
+   MORPH / REPLAY
+============================================================ */
 
 $("morphTest").onclick=()=>{
 
   if(!state.generated){
-    alert("Erstelle zuerst einen QR-Code.");
+
+    alert(
+      "Erstelle zuerst einen QR-Code."
+    );
+
     return;
   }
 
   renderQR(true);
+
 };
 
-/* ---------- GENERATE ---------- */
+
+/* ============================================================
+   GENERATE
+============================================================ */
 
 $("generate").onclick=()=>{
+
   renderQR(true);
+
 };
 
-/* ---------- LIVE UPDATE ---------- */
 
-document.addEventListener("input",e=>{
-
-  if(!state.generated) return;
-
-  if(
-    e.target.matches("input") ||
-    e.target.matches("textarea") ||
-    e.target.matches("select")
-  ){
-    if(
-      e.target.id!=="logoInput" &&
-      e.target.id!=="fg" &&
-      e.target.id!=="bgColor" &&
-      e.target.id!=="fg2"
-    ){
-      renderQR(true);
-    }
-  }
-});
-
-/* ---------- EXPORT PNG ---------- */
+/* ============================================================
+   EXPORT PNG
+============================================================ */
 
 $("downloadPNG").onclick=()=>{
 
-  if(!state.generated) return;
+  if(!state.generated){
+    return;
+  }
 
-  const link=document.createElement("a");
+  const a=
+    document.createElement("a");
 
-  link.download="qrforge.png";
-  link.href=$("qrCanvas").toDataURL("image/png");
-  link.click();
+  a.download=
+    "qrforge.png";
+
+  a.href=
+    $("qrCanvas")
+      .toDataURL("image/png");
+
+  a.click();
+
 };
 
-/* ---------- EXPORT SVG ---------- */
+
+/* ============================================================
+   EXPORT SVG
+============================================================ */
 
 $("downloadSVG").onclick=()=>{
 
-  if(!state.generated) return;
+  if(!state.generated){
+    return;
+  }
 
-  const result=state.currentMatrix;
-  const n=result.count;
-  const margin=Number($("margin").value);
-  const total=n+margin*2;
+  const matrix=
+    state.current.matrix;
 
-  const fg=$("fg").value;
-  const bg=$("bgColor").value;
+  const count=
+    state.current.count;
+
+  const margin=
+    Number($("margin").value);
+
+  const total=
+    count+(margin*2);
+
+  const fg=
+    $("fg").value;
+
+  const bg=
+    $("bgColor").value;
 
   let modules="";
 
-  for(let y=0;y<n;y++){
-    for(let x=0;x<n;x++){
 
-      if(!result.matrix[y][x]) continue;
+  for(
+    let y=0;
+    y<count;
+    y++
+  ){
 
-      modules+=
-        `<rect x="${x+margin}" y="${y+margin}" width="1" height="1"/>`;
+    for(
+      let x=0;
+      x<count;
+      x++
+    ){
+
+      if(matrix[y][x]){
+
+        modules+=
+          `<rect
+            x="${x+margin}"
+            y="${y+margin}"
+            width="1"
+            height="1"/>`;
+
+      }
+
     }
+
   }
 
+
+  let defs="";
+
+  let fill=fg;
+
+  if(state.gradient){
+
+    defs=`
+      <defs>
+        <linearGradient
+          id="qrGradient"
+          x1="0"
+          y1="0"
+          x2="1"
+          y2="1">
+
+          <stop
+            offset="0%"
+            stop-color="${fg}"/>
+
+          <stop
+            offset="100%"
+            stop-color="${$("fg2").value}"/>
+
+        </linearGradient>
+      </defs>
+    `;
+
+    fill="url(#qrGradient)";
+  }
+
+
   const svg=`
-<svg xmlns="http://www.w3.org/2000/svg"
+<svg
+ xmlns="http://www.w3.org/2000/svg"
  viewBox="0 0 ${total} ${total}"
  shape-rendering="crispEdges">
 
-<rect width="100%" height="100%" fill="${bg}"/>
+ ${defs}
 
-<g fill="${fg}">
-${modules}
-</g>
+ <rect
+   width="100%"
+   height="100%"
+   fill="${bg}"/>
+
+ <g fill="${fill}">
+   ${modules}
+ </g>
 
 </svg>`;
 
-  const blob=new Blob([svg],{type:"image/svg+xml"});
-  const url=URL.createObjectURL(blob);
 
-  const a=document.createElement("a");
+  const blob=
+    new Blob(
+      [svg],
+      {type:"image/svg+xml"}
+    );
+
+  const url=
+    URL.createObjectURL(blob);
+
+  const a=
+    document.createElement("a");
+
   a.href=url;
-  a.download="qrforge.svg";
+  a.download=
+    "qrforge.svg";
+
   a.click();
 
   URL.revokeObjectURL(url);
+
 };
 
-/* ---------- COPY ---------- */
 
-$("copyQR").onclick=async()=>{
+/* ============================================================
+   COPY
+============================================================ */
 
-  if(!state.generated) return;
+$("copyQR").onclick=()=>{
 
-  $("qrCanvas").toBlob(async blob=>{
+  if(!state.generated){
+    return;
+  }
 
-    try{
+  $("qrCanvas").toBlob(
+    async blob=>{
 
-      await navigator.clipboard.write([
-        new ClipboardItem({"image/png":blob})
-      ]);
+      try{
 
-      $("copyQR").textContent="Kopiert ✓";
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png":blob
+          })
+        ]);
 
-      setTimeout(()=>{
-        $("copyQR").textContent="QR als Bild kopieren";
-      },1400);
+        $("copyQR").textContent=
+          "Kopiert ✓";
 
-    }catch{
+        setTimeout(()=>{
 
-      alert("Das Kopieren von Bildern wird von diesem Browser nicht unterstützt.");
+          $("copyQR").textContent=
+            "QR als Bild kopieren";
+
+        },1400);
+
+      }
+      catch{
+
+        alert(
+          "Das Kopieren wird von diesem Browser nicht unterstützt."
+        );
+
+      }
+
+    },
+    "image/png"
+  );
+
+};
+
+
+/* ============================================================
+   LIVE SETTINGS
+============================================================ */
+
+$("ecc").addEventListener(
+  "change",
+  ()=>{
+    if(state.generated){
+      renderQR(true);
     }
+  }
+);
 
-  });
-};
 
-/* ---------- RESIZE ---------- */
+$("margin").addEventListener(
+  "change",
+  ()=>{
+    if(state.generated){
+      renderQR(true);
+    }
+  }
+);
 
-window.addEventListener("resize",()=>{
-  updateLogoOverlay();
-});
 
-/* ---------- INITIAL ---------- */
+/* ============================================================
+   RESIZE
+============================================================ */
 
-updateHealth();
+window.addEventListener(
+  "resize",
+  ()=>{
+    updateLogo();
+  }
+);
+
+
+/* ============================================================
+   START
+============================================================ */
+
+/*
+  Absichtlich KEIN QR beim Laden.
+*/
 
 </script>
+
 </body>
 </html>
