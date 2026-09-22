@@ -2,632 +2,538 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QRForge — QR Code Generator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QRForge — QR Design Studio</title>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-
+*{box-sizing:border-box}
 :root{
-  --bg:#05060a;
-  --panel:rgba(18,20,28,.72);
+  --bg:#06070a;
+  --panel:rgba(18,20,26,.72);
   --panel2:rgba(255,255,255,.055);
-  --border:rgba(255,255,255,.10);
-  --text:#f7f8fb;
-  --muted:#9196a5;
-  --accent:#ffffff;
-  --danger:#ff5d6c;
-  --good:#5ee7a4;
+  --line:rgba(255,255,255,.09);
+  --text:#f5f7fa;
+  --muted:#9298a5;
+  --accent:#8b7cff;
+  --good:#55d98b;
   --warn:#ffc857;
-  --radius:26px;
+  --bad:#ff6262;
 }
 
-*{
-  box-sizing:border-box;
-}
-
-html{
-  min-height:100%;
-  background:var(--bg);
-}
-
-body{
+html,body{
   margin:0;
-  min-height:100vh;
-  color:var(--text);
-  font-family:Inter,system-ui,sans-serif;
+  min-height:100%;
   background:
-    radial-gradient(circle at 15% 5%,rgba(120,120,255,.12),transparent 28%),
-    radial-gradient(circle at 85% 15%,rgba(0,220,255,.07),transparent 25%),
-    radial-gradient(circle at 50% 100%,rgba(150,70,255,.08),transparent 32%),
+    radial-gradient(circle at 20% 0%,rgba(112,90,255,.16),transparent 30%),
+    radial-gradient(circle at 100% 20%,rgba(0,190,255,.09),transparent 28%),
     var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
 }
 
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
+body{padding:24px}
 
-button{
-  cursor:pointer;
-}
+button,input,select{font:inherit}
 
 .app{
-  width:min(1400px,100%);
+  max-width:1450px;
   margin:auto;
-  padding:28px;
 }
 
 header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:20px;
-  margin-bottom:28px;
+  align-items:center;
+  margin-bottom:22px;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:13px;
+  gap:12px;
 }
 
-.logo{
-  width:44px;
-  height:44px;
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:14px;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.035));
+.brandMark{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#8b7cff,#4dc7ff);
   display:grid;
   place-items:center;
-  box-shadow:0 12px 35px rgba(0,0,0,.3);
+  box-shadow:0 10px 40px rgba(100,100,255,.28);
 }
 
-.logo-grid{
-  width:22px;
-  height:22px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:2px;
+.brandMark:before{
+  content:"";
+  width:19px;
+  height:19px;
+  border:4px solid white;
+  border-radius:4px;
+  box-shadow:10px 0 0 -4px white;
 }
 
-.logo-grid i{
-  background:#fff;
-  border-radius:1px;
+h1{
+  margin:0;
+  font-size:23px;
+  letter-spacing:-.7px;
 }
 
-.logo-grid i:nth-child(2),
-.logo-grid i:nth-child(4),
-.logo-grid i:nth-child(8),
-.logo-grid i:nth-child(13),
-.logo-grid i:nth-child(17),
-.logo-grid i:nth-child(21){
-  opacity:.35;
-}
-
-.brand-title{
-  font-family:"Space Grotesk",sans-serif;
-  font-weight:700;
-  font-size:20px;
-  letter-spacing:-.04em;
-}
-
-.brand-sub{
+.subtitle{
   color:var(--muted);
-  font-size:12px;
+  font-size:13px;
   margin-top:2px;
-}
-
-.badge{
-  padding:8px 12px;
-  border:1px solid var(--border);
-  border-radius:999px;
-  color:#aeb3c2;
-  font-size:12px;
-  background:rgba(255,255,255,.035);
 }
 
 .layout{
   display:grid;
-  grid-template-columns:minmax(360px,500px) minmax(0,1fr);
+  grid-template-columns:minmax(430px,1fr) minmax(420px,560px);
   gap:20px;
-  align-items:start;
 }
 
 .panel{
-  border:1px solid var(--border);
-  background:linear-gradient(
-    145deg,
-    rgba(255,255,255,.065),
-    rgba(255,255,255,.025)
-  );
-  backdrop-filter:blur(28px);
-  -webkit-backdrop-filter:blur(28px);
-  border-radius:var(--radius);
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.32),
-    inset 0 1px 0 rgba(255,255,255,.045);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  box-shadow:0 25px 80px rgba(0,0,0,.25);
 }
 
 .controls{
-  padding:22px;
+  padding:20px;
 }
 
-.section{
-  padding-bottom:20px;
-  margin-bottom:20px;
-  border-bottom:1px solid rgba(255,255,255,.075);
-}
-
-.section:last-child{
-  border-bottom:0;
-  margin-bottom:0;
-  padding-bottom:0;
-}
-
-.section-title{
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  color:#858b9b;
-  font-weight:700;
-  margin-bottom:13px;
+.preview{
+  padding:20px;
+  position:sticky;
+  top:20px;
+  height:max-content;
 }
 
 .tabs{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:5px;
-  padding:5px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.18);
-  border-radius:15px;
+  display:flex;
+  gap:6px;
+  overflow:auto;
+  padding-bottom:4px;
+  margin-bottom:20px;
 }
 
 .tab{
-  border:0;
-  background:transparent;
-  color:#858b99;
-  padding:10px 5px;
-  border-radius:10px;
-  font-size:11px;
-  transition:.2s;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  color:#aeb3bd;
+  border-radius:11px;
+  padding:9px 13px;
+  cursor:pointer;
+  white-space:nowrap;
 }
 
 .tab.active{
-  color:#fff;
-  background:rgba(255,255,255,.10);
-  box-shadow:0 5px 20px rgba(0,0,0,.2);
+  color:white;
+  background:rgba(139,124,255,.17);
+  border-color:rgba(139,124,255,.5);
 }
 
-.field{
-  margin-top:13px;
-}
+.section{display:none}
+.section.active{display:block}
 
 label{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  color:#b8bdc9;
+  display:block;
   font-size:12px;
+  color:#aeb3bd;
   margin-bottom:7px;
 }
 
-textarea,
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="url"],
-input[type="number"],
-select{
+textarea,input[type=text],input[type=url],input[type=email],input[type=tel],select{
   width:100%;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.10);
+  border:1px solid var(--line);
   outline:none;
+  color:white;
   background:rgba(0,0,0,.22);
   border-radius:13px;
   padding:12px 13px;
-  transition:.2s;
 }
 
 textarea{
-  min-height:105px;
+  min-height:135px;
   resize:vertical;
 }
 
-textarea:focus,
-input:focus,
-select:focus{
-  border-color:rgba(255,255,255,.30);
-  background:rgba(0,0,0,.3);
+input:focus,textarea:focus,select:focus{
+  border-color:rgba(139,124,255,.7);
+  box-shadow:0 0 0 3px rgba(139,124,255,.1);
 }
+
+.field{margin-bottom:16px}
 
 .grid2{
   display:grid;
   grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
 }
 
-.color-row{
-  display:grid;
-  grid-template-columns:52px 1fr;
-  gap:9px;
-  align-items:center;
-}
-
-.color-picker{
-  width:52px;
-  height:45px;
-  padding:4px;
+button{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.055);
+  color:white;
+  padding:11px 14px;
   border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.25);
-}
-
-.color-picker input{
-  width:100%;
-  height:100%;
-  padding:0;
-  border:0;
-  border-radius:8px;
-  overflow:hidden;
   cursor:pointer;
-  background:transparent;
+  transition:.18s ease;
 }
 
-input[type=color]::-webkit-color-swatch-wrapper{
-  padding:0;
+button:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.09);
 }
 
-input[type=color]::-webkit-color-swatch{
+.primary{
+  width:100%;
   border:0;
-  border-radius:7px;
+  padding:14px;
+  margin-top:3px;
+  background:linear-gradient(135deg,#8b7cff,#6577ff);
+  box-shadow:0 12px 35px rgba(104,95,255,.25);
+  font-weight:700;
 }
 
-.contrast{
-  margin-top:11px;
-  padding:12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.16);
+.primary:hover{
+  box-shadow:0 15px 45px rgba(104,95,255,.38);
+}
+
+.colorRow{
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:10px;
+}
+
+input[type=color]{
+  width:56px;
+  height:44px;
+  border:1px solid var(--line);
+  background:none;
+  border-radius:12px;
+  padding:4px;
+}
+
+.range{
+  width:100%;
+}
+
+.rangeRow{
   display:flex;
-  gap:11px;
-  align-items:flex-start;
-}
-
-.contrast-dot{
-  width:9px;
-  height:9px;
-  margin-top:4px;
-  border-radius:50%;
-  flex:none;
-  background:var(--warn);
-  box-shadow:0 0 12px currentColor;
-}
-
-.contrast.good .contrast-dot{
-  background:var(--good);
-  color:var(--good);
-}
-
-.contrast.bad .contrast-dot{
-  background:var(--danger);
-  color:var(--danger);
-}
-
-.contrast strong{
+  justify-content:space-between;
+  color:#aeb3bd;
   font-size:12px;
-  display:block;
-  margin-bottom:3px;
 }
 
-.contrast span{
-  font-size:11px;
-  line-height:1.45;
-  color:#969baa;
-}
-
-.gradient-toggle{
+.toggle{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-top:12px;
-  padding:11px 12px;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid var(--line);
+  padding:12px 13px;
   border-radius:13px;
-  background:rgba(255,255,255,.025);
+  margin-bottom:12px;
 }
 
 .switch{
   width:42px;
-  height:24px;
-  border-radius:999px;
-  background:#252833;
-  position:relative;
-  border:1px solid rgba(255,255,255,.08);
-  transition:.2s;
+  height:23px;
+  background:#292c34;
+  border-radius:20px;
+  padding:3px;
+  cursor:pointer;
 }
 
-.switch::after{
-  content:"";
-  position:absolute;
-  width:18px;
-  height:18px;
-  left:2px;
-  top:2px;
+.switch i{
+  display:block;
+  width:17px;
+  height:17px;
   border-radius:50%;
-  background:#777b87;
+  background:#888;
   transition:.2s;
 }
 
 .switch.on{
-  background:#fff;
+  background:var(--accent);
 }
 
-.switch.on::after{
-  left:20px;
-  background:#111;
+.switch.on i{
+  transform:translateX(19px);
+  background:white;
 }
 
-.slider{
-  width:100%;
-  accent-color:#fff;
+.palette{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-top:10px;
 }
 
-.range-value{
-  color:#fff;
-  font-variant-numeric:tabular-nums;
+.swatch{
+  height:38px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  cursor:pointer;
 }
 
-.generate{
-  width:100%;
-  border:0;
+.logoDrop{
+  border:1px dashed rgba(255,255,255,.2);
   border-radius:16px;
-  padding:15px 18px;
-  font-weight:700;
-  color:#08090d;
-  background:#fff;
-  box-shadow:
-    0 12px 35px rgba(255,255,255,.08),
-    0 4px 10px rgba(0,0,0,.25);
-  transition:.2s;
+  padding:20px;
+  text-align:center;
+  color:var(--muted);
+  cursor:pointer;
 }
 
-.generate:hover{
-  transform:translateY(-1px);
-  box-shadow:0 18px 42px rgba(255,255,255,.13);
+.logoDrop:hover{
+  border-color:var(--accent);
 }
 
-.generate:active{
-  transform:translateY(1px) scale(.995);
+.logoPreview{
+  display:none;
+  margin:12px auto 0;
+  max-width:100px;
+  max-height:100px;
+  object-fit:contain;
 }
 
-.preview{
-  min-height:700px;
-  padding:22px;
-  display:flex;
-  flex-direction:column;
+.logoControls{
+  display:none;
+  margin-top:14px;
 }
 
-.preview-head{
-  display:flex;
+.score{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:18px;
   align-items:center;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+
+.scoreNumber{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  font-weight:800;
+  border:7px solid rgba(85,217,139,.35);
+}
+
+.scoreNumber.warning{
+  border-color:rgba(255,200,87,.35);
+}
+
+.scoreNumber.bad{
+  border-color:rgba(255,98,98,.35);
+}
+
+.check{
+  display:flex;
   justify-content:space-between;
-  gap:10px;
-  margin-bottom:18px;
+  padding:5px 0;
+  font-size:12px;
+  color:#aeb3bd;
 }
 
-.preview-title{
-  font-family:"Space Grotesk",sans-serif;
-  font-weight:700;
-  font-size:18px;
-}
+.good{color:var(--good)}
+.warningText{color:var(--warn)}
+.badText{color:var(--bad)}
 
-.preview-status{
-  color:#777d8d;
-  font-size:11px;
-}
-
-.qr-stage{
-  flex:1;
-  min-height:560px;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.07);
-  background:
-    radial-gradient(circle at 50% 45%,rgba(255,255,255,.045),transparent 45%),
-    rgba(0,0,0,.17);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
+.previewBox{
+  min-height:580px;
+  display:grid;
+  place-items:center;
   position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.035),transparent 50%),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 1px,transparent 1px 9px);
 }
 
 .empty{
   text-align:center;
-  color:#676d7c;
-  padding:30px;
+  color:#656b77;
 }
 
-.empty-icon{
-  width:70px;
-  height:70px;
-  margin:0 auto 18px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:21px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.025);
-}
-
-.empty-icon::before{
-  content:"";
-  width:30px;
-  height:30px;
-  border:4px solid rgba(255,255,255,.16);
-  border-radius:4px;
-  box-shadow:
-    0 0 0 4px rgba(255,255,255,.025),
-    inset 0 0 0 4px rgba(255,255,255,.025);
-}
-
-.empty strong{
-  display:block;
-  color:#a3a8b5;
-  margin-bottom:5px;
-  font-size:14px;
-}
-
-.empty span{
-  font-size:12px;
-}
-
-.qr-wrap{
+.emptyIcon{
+  width:74px;
+  height:74px;
+  border:2px solid #383d47;
+  border-radius:19px;
+  margin:auto auto 15px;
   position:relative;
-  display:none;
-  padding:18px;
-  border-radius:20px;
-  background:#fff;
-  box-shadow:
-    0 35px 90px rgba(0,0,0,.45),
-    0 0 0 1px rgba(255,255,255,.15);
 }
 
-.qr-wrap.visible{
-  display:block;
-}
-
-#qrCanvas,
-#animationCanvas{
+.emptyIcon:before,
+.emptyIcon:after{
+  content:"";
   position:absolute;
-  inset:18px;
-  width:calc(100% - 36px);
-  height:calc(100% - 36px);
+  width:19px;
+  height:19px;
+  border:4px solid #444955;
+  border-radius:4px;
+}
+
+.emptyIcon:before{
+  left:11px;
+  top:11px;
+}
+
+.emptyIcon:after{
+  right:11px;
+  bottom:11px;
 }
 
 #qrCanvas{
-  display:block;
+  display:none;
+  image-rendering:pixelated;
+  max-width:82%;
+  max-height:520px;
+  border-radius:2px;
+  position:relative;
+  z-index:2;
 }
 
-#animationCanvas{
-  pointer-events:none;
+.logoOverlay{
+  position:absolute;
+  display:none;
+  z-index:5;
+  object-fit:contain;
+  box-shadow:0 5px 20px rgba(0,0,0,.15);
 }
 
-.qr-wrap{
-  width:min(520px,72%);
-  aspect-ratio:1;
+.logoOverlay.round{
+  border-radius:50%;
 }
 
-.export-row{
+.logoOverlay.square{
+  border-radius:8px;
+}
+
+.logoOverlay.soft{
+  border-radius:25%;
+}
+
+.scanLine{
+  position:absolute;
+  width:75%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  box-shadow:0 0 20px var(--accent);
+  opacity:0;
+  z-index:6;
+}
+
+.scanLine.active{
+  animation:scan 1.4s ease-in-out;
+}
+
+@keyframes scan{
+  0%{transform:translateY(-260px);opacity:0}
+  15%{opacity:1}
+  85%{opacity:1}
+  100%{transform:translateY(260px);opacity:0}
+}
+
+.actions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:18px;
+  gap:9px;
+  margin-top:14px;
 }
 
-.export{
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.055);
-  color:#fff;
-  border-radius:14px;
-  padding:12px;
-  font-size:12px;
-  transition:.2s;
+.actionWide{
+  grid-column:1/-1;
 }
 
-.export:hover{
-  background:rgba(255,255,255,.09);
+.health{
+  margin-top:14px;
 }
 
-.history{
-  margin-top:18px;
-}
-
-.history-title{
-  color:#737989;
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  padding:6px 10px;
   font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  margin-bottom:9px;
+  color:#aeb3bd;
 }
 
-.history-list{
-  display:flex;
+.presetGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.preset{
+  text-align:left;
+  min-height:70px;
+}
+
+.preset strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.preset span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.logoPosition{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
   gap:7px;
-  overflow:auto;
-  padding-bottom:3px;
+  margin-top:9px;
 }
 
-.history-item{
-  flex:none;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.035);
-  color:#aab0bd;
-  border-radius:11px;
-  padding:8px 10px;
-  font-size:10px;
-  max-width:150px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  cursor:pointer;
+.logoPosition button.active{
+  background:rgba(139,124,255,.2);
+  border-color:var(--accent);
 }
 
-.history-item:hover{
-  background:rgba(255,255,255,.07);
+.beautify{
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(139,124,255,.13),rgba(77,199,255,.07));
+  border:1px solid rgba(139,124,255,.22);
 }
 
-@media(max-width:900px){
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .preview{
-    min-height:600px;
-  }
-
-  .qr-stage{
-    min-height:500px;
-  }
+.beautify button{
+  width:100%;
+  margin-top:10px;
 }
 
-@media(max-width:550px){
-  .app{
-    padding:14px;
-  }
+.hidden{display:none!important}
 
-  header{
-    margin-bottom:16px;
-  }
+@media(max-width:950px){
+  body{padding:12px}
+  .layout{grid-template-columns:1fr}
+  .preview{position:relative;top:0}
+}
 
-  .badge{
-    display:none;
-  }
-
-  .controls{
-    padding:16px;
-  }
-
-  .tabs{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .preview{
-    padding:14px;
-  }
-
-  .qr-stage{
-    min-height:430px;
-  }
-
-  .qr-wrap{
-    width:82%;
-  }
+@media(max-width:560px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .previewBox{min-height:430px}
+  #qrCanvas{max-width:90%;max-height:390px}
 }
 </style>
 </head>
@@ -638,1519 +544,1358 @@ input[type=color]::-webkit-color-swatch{
 
 <header>
   <div class="brand">
-    <div class="logo">
-      <div class="logo-grid">
-        <i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i>
-      </div>
-    </div>
+    <div class="brandMark"></div>
     <div>
-      <div class="brand-title">QRForge</div>
-      <div class="brand-sub">Beautiful QR codes. Built locally.</div>
+      <h1>QRForge</h1>
+      <div class="subtitle">QR Design Studio</div>
     </div>
   </div>
 
-  <div class="badge">No account required</div>
+  <div class="pill">Local · No Account</div>
 </header>
-
 
 <div class="layout">
 
-  <!-- CONTROLS -->
-  <section class="panel controls">
+<!-- CONTROLS -->
+<section class="panel controls">
 
-    <div class="section">
+  <div class="tabs">
+    <button class="tab active" data-tab="content">Inhalt</button>
+    <button class="tab" data-tab="design">Design</button>
+    <button class="tab" data-tab="logo">Logo</button>
+    <button class="tab" data-tab="scan">Scan Lab</button>
+    <button class="tab" data-tab="adaptive">Adaptive</button>
+  </div>
 
-      <div class="section-title">Content</div>
+  <!-- CONTENT -->
+  <div class="section active" id="content">
 
-      <div class="tabs">
-        <button class="tab active" data-type="url">URL</button>
-        <button class="tab" data-type="text">Text</button>
-        <button class="tab" data-type="wifi">WiFi</button>
-        <button class="tab" data-type="email">E-Mail</button>
-        <button class="tab" data-type="phone">Telefon</button>
-      </div>
-
-      <div id="fields"></div>
-
+    <div class="field">
+      <label>QR-Typ</label>
+      <select id="type">
+        <option value="url">URL</option>
+        <option value="text">Text</option>
+        <option value="wifi">Wi-Fi</option>
+        <option value="email">E-Mail</option>
+        <option value="phone">Telefon</option>
+      </select>
     </div>
 
+    <div id="contentFields"></div>
 
-    <div class="section">
-
-      <div class="section-title">Design</div>
-
-      <div class="grid2">
-
-        <div>
-          <label>QR-Farbe</label>
-
-          <div class="color-row">
-            <div class="color-picker">
-              <input id="fgColor" type="color" value="#000000">
-            </div>
-
-            <input id="fgHex" type="text" value="#000000" maxlength="7">
-          </div>
-        </div>
-
-        <div>
-          <label>Hintergrund</label>
-
-          <div class="color-row">
-            <div class="color-picker">
-              <input id="bgColor" type="color" value="#ffffff">
-            </div>
-
-            <input id="bgHex" type="text" value="#ffffff" maxlength="7">
-          </div>
-        </div>
-
-      </div>
-
-      <div class="gradient-toggle">
-        <div>
-          <strong style="font-size:12px">Farbverlauf</strong>
-          <div style="font-size:10px;color:#777d8a;margin-top:2px">
-            Verlauf für die QR-Module
-          </div>
-        </div>
-
-        <div id="gradientSwitch" class="switch"></div>
-      </div>
-
-      <div id="gradientControls" style="display:none;margin-top:12px">
-
-        <div class="grid2">
-
-          <div>
-            <label>Verlauf bis</label>
-            <div class="color-row">
-              <div class="color-picker">
-                <input id="gradientColor" type="color" value="#5b5fff">
-              </div>
-              <input id="gradientHex" type="text" value="#5b5fff" maxlength="7">
-            </div>
-          </div>
-
-          <div>
-            <label>Richtung</label>
-            <select id="gradientDirection">
-              <option value="horizontal">Horizontal</option>
-              <option value="vertical">Vertikal</option>
-              <option value="diagonal">Diagonal</option>
-              <option value="radial">Radial</option>
-            </select>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div id="contrastBox" class="contrast good">
-        <div class="contrast-dot"></div>
-        <div>
-          <strong id="contrastTitle">Guter Kontrast</strong>
-          <span id="contrastText">Die Farbkombination ist gut für QR-Codes geeignet.</span>
-        </div>
-      </div>
-
-      <div class="field">
-
-        <label>
-          Modul-Style
-        </label>
-
-        <select id="moduleStyle">
-          <option value="square">Quadratisch</option>
-          <option value="rounded">Abgerundet</option>
-          <option value="dot">Punkte</option>
-        </select>
-
-      </div>
-
-      <div class="field">
-
-        <label>
-          Finder-Style
-        </label>
-
-        <select id="finderStyle">
-          <option value="square">Quadratisch</option>
-          <option value="rounded">Abgerundet</option>
-        </select>
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <div class="section-title">QR Einstellungen</div>
-
-      <div class="field">
-        <label>
-          Fehlerkorrektur
-        </label>
-
-        <select id="ecc">
-          <option value="L">L — 7%</option>
-          <option value="M" selected>M — 15%</option>
-          <option value="Q">Q — 25%</option>
-          <option value="H">H — 30%</option>
-        </select>
-      </div>
-
-      <div class="field">
-
-        <label>
-          Rand
-          <span class="range-value" id="marginValue">4</span>
-        </label>
-
-        <input
-          class="slider"
-          id="margin"
-          type="range"
-          min="1"
-          max="8"
-          value="4"
-        >
-
-      </div>
-
-      <div class="field">
-
-        <label>
-          Größe
-          <span class="range-value" id="sizeValue">512 px</span>
-        </label>
-
-        <input
-          class="slider"
-          id="size"
-          type="range"
-          min="256"
-          max="1024"
-          step="32"
-          value="512"
-        >
-
-      </div>
-
-    </div>
-
-
-    <button id="generate" class="generate">
+    <button class="primary" id="generate">
       QR-Code erstellen
     </button>
 
-  </section>
+  </div>
 
+  <!-- DESIGN -->
+  <div class="section" id="design">
 
-  <!-- PREVIEW -->
-  <section class="panel preview">
-
-    <div class="preview-head">
-      <div class="preview-title">Preview</div>
-      <div id="status" class="preview-status">Noch kein QR-Code</div>
+    <div class="field">
+      <label>QR-Farbe</label>
+      <div class="colorRow">
+        <input type="color" id="fg" value="#111111">
+        <input type="text" id="fgText" value="#111111">
+      </div>
     </div>
 
-    <div class="qr-stage">
+    <div class="field">
+      <label>Hintergrund</label>
+      <div class="colorRow">
+        <input type="color" id="bgColor" value="#ffffff">
+        <input type="text" id="bgText" value="#ffffff">
+      </div>
+    </div>
 
-      <div id="emptyState" class="empty">
+    <div class="toggle">
+      <span>Gradient verwenden</span>
+      <div class="switch" id="gradientSwitch"><i></i></div>
+    </div>
 
-        <div class="empty-icon"></div>
+    <div id="gradientControls" class="hidden">
+      <div class="field">
+        <label>Gradient-Farbe</label>
+        <div class="colorRow">
+          <input type="color" id="fg2" value="#6677ff">
+          <input type="text" id="fg2Text" value="#6677ff">
+        </div>
+      </div>
+    </div>
 
-        <strong>Dein QR-Code erscheint hier</strong>
+    <div class="field">
+      <label>Smart Color</label>
+      <button id="smartColor" style="width:100%">
+        Farben automatisch optimieren
+      </button>
+      <div class="palette" id="palette"></div>
+    </div>
 
-        <span>
-          Gib zuerst einen Inhalt ein und klicke auf „QR-Code erstellen“.
-        </span>
+    <div class="grid2">
 
+      <div>
+        <label>Module</label>
+        <select id="moduleStyle">
+          <option value="square">Eckig</option>
+          <option value="round">Rund</option>
+          <option value="dot">Dots</option>
+        </select>
       </div>
 
-      <div id="qrWrap" class="qr-wrap">
-
-        <canvas id="qrCanvas"></canvas>
-        <canvas id="animationCanvas"></canvas>
-
+      <div>
+        <label>Finder</label>
+        <select id="finderStyle">
+          <option value="square">Eckig</option>
+          <option value="round">Rund</option>
+        </select>
       </div>
 
     </div>
 
+    <div class="field" style="margin-top:15px">
+      <label>Fehlerkorrektur</label>
+      <select id="ecc">
+        <option value="L">L · 7%</option>
+        <option value="M" selected>M · 15%</option>
+        <option value="Q">Q · 25%</option>
+        <option value="H">H · 30%</option>
+      </select>
+    </div>
 
-    <div id="exportRow" class="export-row" style="display:none">
+    <div class="field">
+      <div class="rangeRow">
+        <span>Quiet Zone</span>
+        <span id="marginValue">4</span>
+      </div>
+      <input class="range" id="margin" type="range" min="1" max="10" value="4">
+    </div>
 
-      <button id="downloadPng" class="export">
-        PNG exportieren
-      </button>
+    <div class="beautify">
+      <strong>Make it Beautiful</strong>
+      <div style="color:var(--muted);font-size:12px;margin-top:5px">
+        QRForge sucht automatisch nach einer schönen und gut scanbaren Kombination.
+      </div>
+      <button id="beautify">✨ Automatisch optimieren</button>
+    </div>
 
-      <button id="downloadSvg" class="export">
-        SVG exportieren
+  </div>
+
+  <!-- LOGO -->
+  <div class="section" id="logo">
+
+    <div class="logoDrop" id="logoDrop">
+      <strong>Logo / Bild hinzufügen</strong>
+      <div style="font-size:12px;margin-top:6px">
+        PNG, JPG oder WebP
+      </div>
+      <input id="logoInput" type="file" accept="image/*" hidden>
+      <img id="logoPreview" class="logoPreview">
+    </div>
+
+    <div class="logoControls" id="logoControls">
+
+      <div class="field">
+        <label>Logo-Form</label>
+        <div class="grid3">
+          <button class="logoShape active" data-shape="square">Eckig</button>
+          <button class="logoShape" data-shape="round">Rund</button>
+          <button class="logoShape" data-shape="soft">Soft</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Position</label>
+        <div class="logoPosition">
+          <button data-position="tl">↖</button>
+          <button data-position="tc">↑</button>
+          <button data-position="tr">↗</button>
+          <button data-position="ml">←</button>
+          <button data-position="center" class="active">●</button>
+          <button data-position="mr">→</button>
+          <button data-position="bl">↙</button>
+          <button data-position="bc">↓</button>
+          <button data-position="br">↘</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="rangeRow">
+          <span>Logo-Größe</span>
+          <span id="logoSizeValue">18%</span>
+        </div>
+        <input class="range" id="logoSize" type="range" min="8" max="30" value="18">
+      </div>
+
+      <button id="logoAutoFit" style="width:100%">
+        Logo automatisch anpassen
       </button>
 
     </div>
 
+  </div>
 
-    <div class="history">
+  <!-- SCAN LAB -->
+  <div class="section" id="scan">
 
-      <div class="history-title">Zuletzt erstellt</div>
+    <div class="score">
+      <div class="scoreNumber" id="scoreNumber">—</div>
 
-      <div id="historyList" class="history-list"></div>
+      <div>
+        <strong>QR Health</strong>
+
+        <div class="check">
+          <span>Kontrast</span>
+          <span id="contrastStatus">—</span>
+        </div>
+
+        <div class="check">
+          <span>Quiet Zone</span>
+          <span id="quietStatus">—</span>
+        </div>
+
+        <div class="check">
+          <span>Logo</span>
+          <span id="logoStatus">—</span>
+        </div>
+
+        <div class="check">
+          <span>Dichte</span>
+          <span id="densityStatus">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px">
+      <label>Accessibility</label>
+      <button id="accessibility" style="width:100%">
+        Farben prüfen
+      </button>
+      <div id="accessibilityResult"
+           style="font-size:12px;color:var(--muted);margin-top:9px">
+      </div>
+    </div>
+
+    <div style="margin-top:18px">
+      <label>QR Morph</label>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+        Wenn du den Inhalt änderst, wird die neue Version animiert aus der alten aufgebaut.
+      </div>
+      <button id="morphTest" style="width:100%">
+        Morph erneut abspielen
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ADAPTIVE -->
+  <div class="section" id="adaptive">
+
+    <label>Optimiert für</label>
+
+    <div class="presetGrid">
+
+      <button class="preset" data-preset="phone">
+        <strong>Smartphone</strong>
+        <span>kleine Darstellung</span>
+      </button>
+
+      <button class="preset" data-preset="screen">
+        <strong>Bildschirm</strong>
+        <span>Display & Präsentation</span>
+      </button>
+
+      <button class="preset" data-preset="poster">
+        <strong>Poster</strong>
+        <span>große Distanz</span>
+      </button>
+
+      <button class="preset" data-preset="card">
+        <strong>Visitenkarte</strong>
+        <span>kompakt & sauber</span>
+      </button>
+
+      <button class="preset" data-preset="sticker">
+        <strong>Sticker</strong>
+        <span>robust & fehlertolerant</span>
+      </button>
+
+      <button class="preset" data-preset="document">
+        <strong>Dokument</strong>
+        <span>Print optimiert</span>
+      </button>
 
     </div>
 
-  </section>
+    <div id="presetInfo"
+         style="font-size:12px;color:var(--muted);margin-top:15px">
+      Wähle ein Einsatzgebiet. QRForge passt Größe, Fehlerkorrektur und Quiet Zone an.
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PREVIEW -->
+<section class="panel preview">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div>
+      <strong>Live Preview</strong>
+      <div style="font-size:11px;color:var(--muted)">
+        Scanability Engine
+      </div>
+    </div>
+
+    <span class="pill" id="statusPill">Noch nicht erstellt</span>
+  </div>
+
+  <div class="previewBox" id="previewBox">
+
+    <div class="empty" id="emptyState">
+      <div class="emptyIcon"></div>
+      <strong>Noch kein QR-Code</strong>
+      <div style="font-size:12px;margin-top:5px">
+        Erstelle deinen ersten QR-Code.
+      </div>
+    </div>
+
+    <canvas id="qrCanvas"></canvas>
+
+    <img id="logoOverlay" class="logoOverlay">
+
+    <div class="scanLine" id="scanLine"></div>
+
+  </div>
+
+  <div class="health">
+    <div class="score">
+      <div class="scoreNumber" id="previewScore">—</div>
+      <div>
+        <strong>Scan Score</strong>
+        <div style="font-size:12px;color:var(--muted);margin-top:5px">
+          QRForge bewertet die aktuelle Konfiguration.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="downloadPNG">PNG exportieren</button>
+    <button id="downloadSVG">SVG exportieren</button>
+    <button class="actionWide" id="copyQR">QR als Bild kopieren</button>
+  </div>
+
+</section>
 
 </div>
-
 </div>
-
 
 <script>
 /* =========================================================
-   STATE
+   QRFORGE
 ========================================================= */
-
-let currentType = "url";
-let currentMatrix = null;
-let currentQrText = "";
-let currentQr = null;
 
 const $ = id => document.getElementById(id);
 
-
-/* =========================================================
-   CONTENT FIELDS
-========================================================= */
-
-const fields = $("fields");
-
-const fieldTemplates = {
-
-  url: `
-    <div class="field">
-      <label>Website</label>
-      <input id="inputMain" type="url"
-        placeholder="https://professorfilou.de">
-    </div>
-  `,
-
-  text: `
-    <div class="field">
-      <label>Text</label>
-      <textarea id="inputMain"
-        placeholder="Dein Text..."></textarea>
-    </div>
-  `,
-
-  wifi: `
-    <div class="field">
-      <label>WLAN Name</label>
-      <input id="wifiSsid" type="text" placeholder="Mein WLAN">
-    </div>
-
-    <div class="field">
-      <label>Passwort</label>
-      <input id="wifiPassword" type="text" placeholder="Passwort">
-    </div>
-
-    <div class="field">
-      <label>Sicherheit</label>
-      <select id="wifiSecurity">
-        <option value="WPA">WPA / WPA2 / WPA3</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">Keine</option>
-      </select>
-    </div>
-  `,
-
-  email: `
-    <div class="field">
-      <label>E-Mail-Adresse</label>
-      <input id="emailAddress" type="email"
-        placeholder="name@example.com">
-    </div>
-
-    <div class="field">
-      <label>Betreff</label>
-      <input id="emailSubject" type="text"
-        placeholder="Betreff">
-    </div>
-
-    <div class="field">
-      <label>Nachricht</label>
-      <textarea id="emailBody"
-        placeholder="Nachricht..."></textarea>
-    </div>
-  `,
-
-  phone: `
-    <div class="field">
-      <label>Telefonnummer</label>
-      <input id="inputMain" type="tel"
-        placeholder="+49 123 456789">
-    </div>
-  `
+let state = {
+  generated:false,
+  previousMatrix:null,
+  currentMatrix:null,
+  logo:null,
+  logoShape:"square",
+  logoPosition:"center",
+  logoSize:18,
+  gradient:false
 };
 
+/* ---------- CONTENT ---------- */
+
+const contentFields = $("contentFields");
 
 function renderFields(){
-  fields.innerHTML = fieldTemplates[currentType];
+  const type = $("type").value;
+
+  if(type==="url"){
+    contentFields.innerHTML = `
+      <div class="field">
+        <label>URL</label>
+        <input id="value" type="url" placeholder="https://example.com">
+      </div>`;
+  }
+
+  if(type==="text"){
+    contentFields.innerHTML = `
+      <div class="field">
+        <label>Text</label>
+        <textarea id="value" placeholder="Dein Text..."></textarea>
+      </div>`;
+  }
+
+  if(type==="wifi"){
+    contentFields.innerHTML = `
+      <div class="grid2">
+        <div class="field">
+          <label>Netzwerkname</label>
+          <input id="ssid" type="text" placeholder="WLAN">
+        </div>
+        <div class="field">
+          <label>Passwort</label>
+          <input id="password" type="text" placeholder="Passwort">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Verschlüsselung</label>
+        <select id="encryption">
+          <option value="WPA">WPA / WPA2 / WPA3</option>
+          <option value="WEP">WEP</option>
+          <option value="nopass">Keine</option>
+        </select>
+      </div>`;
+  }
+
+  if(type==="email"){
+    contentFields.innerHTML = `
+      <div class="field">
+        <label>E-Mail-Adresse</label>
+        <input id="value" type="email" placeholder="name@example.com">
+      </div>
+
+      <div class="field">
+        <label>Betreff</label>
+        <input id="subject" type="text" placeholder="Betreff">
+      </div>`;
+  }
+
+  if(type==="phone"){
+    contentFields.innerHTML = `
+      <div class="field">
+        <label>Telefonnummer</label>
+        <input id="value" type="tel" placeholder="+49 123 456789">
+      </div>`;
+  }
 }
 
 renderFields();
+$("type").addEventListener("change",renderFields);
 
+function getPayload(){
 
-document.querySelectorAll(".tab").forEach(tab => {
+  const type = $("type").value;
 
-  tab.addEventListener("click", () => {
+  if(type==="url" || type==="text" || type==="phone"){
+    return $("value")?.value || "";
+  }
 
-    document.querySelectorAll(".tab")
-      .forEach(x => x.classList.remove("active"));
+  if(type==="email"){
+    const email = $("value")?.value || "";
+    const subject = $("subject")?.value || "";
+    return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+  }
 
-    tab.classList.add("active");
+  if(type==="wifi"){
+    const ssid = $("ssid")?.value || "";
+    const pass = $("password")?.value || "";
+    const enc = $("encryption")?.value || "WPA";
 
-    currentType = tab.dataset.type;
+    return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+  }
 
-    renderFields();
+  return "";
+}
 
+/* ---------- TABS ---------- */
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+
+    btn.classList.add("active");
+    $(""+btn.dataset.tab).classList.add("active");
   });
-
 });
 
+/* ---------- COLORS ---------- */
 
-/* =========================================================
-   COLOR INPUTS
-========================================================= */
-
-function connectColors(colorId, hexId){
-
-  const color = $(colorId);
-  const hex = $(hexId);
-
-  color.addEventListener("input", () => {
-    hex.value = color.value.toUpperCase();
-    updateContrast();
+function bindColor(color,text){
+  $(color).addEventListener("input",()=>{
+    $(text).value=$(color).value;
+    if(state.generated) renderQR(true);
   });
 
-  hex.addEventListener("input", () => {
+  $(text).addEventListener("change",()=>{
+    let v=$(text).value.trim();
 
-    let value = hex.value.trim();
-
-    if(!value.startsWith("#"))
-      value = "#" + value;
-
-    if(/^#[0-9a-fA-F]{6}$/.test(value)){
-      color.value = value;
-      updateContrast();
+    if(/^#[0-9a-fA-F]{6}$/.test(v)){
+      $(color).value=v;
+      if(state.generated) renderQR(true);
     }
-
   });
-
 }
 
-connectColors("fgColor","fgHex");
-connectColors("bgColor","bgHex");
-connectColors("gradientColor","gradientHex");
+bindColor("fg","fgText");
+bindColor("bgColor","bgText");
+bindColor("fg2","fg2Text");
 
+$("gradientSwitch").onclick=()=>{
+  state.gradient=!state.gradient;
+  $("gradientSwitch").classList.toggle("on",state.gradient);
+  $("gradientControls").classList.toggle("hidden",!state.gradient);
 
-/* =========================================================
-   COLOR MATH
-========================================================= */
+  if(state.generated) renderQR(true);
+};
 
-function hexToRgb(hex){
+/* ---------- SLIDERS ---------- */
 
-  hex = hex.replace("#","");
+$("margin").oninput=()=>{
+  $("marginValue").textContent=$("margin").value;
+  if(state.generated) renderQR(true);
+};
 
-  return {
-    r:parseInt(hex.slice(0,2),16),
-    g:parseInt(hex.slice(2,4),16),
-    b:parseInt(hex.slice(4,6),16)
-  };
+$("logoSize").oninput=()=>{
+  state.logoSize=Number($("logoSize").value);
+  $("logoSizeValue").textContent=state.logoSize+"%";
+  updateLogoOverlay();
+  updateHealth();
+};
 
-}
+/* ---------- QR MATRIX ---------- */
 
+function makeQR(text){
 
-function luminance(hex){
+  const ecc=$("ecc").value;
 
-  const {r,g,b} = hexToRgb(hex);
-
-  const values = [r,g,b].map(v => {
-
-    v /= 255;
-
-    return v <= .03928
-      ? v / 12.92
-      : Math.pow((v + .055) / 1.055,2.4);
-
-  });
-
-  return .2126*values[0] +
-         .7152*values[1] +
-         .0722*values[2];
-
-}
-
-
-function contrastRatio(a,b){
-
-  const l1 = luminance(a);
-  const l2 = luminance(b);
-
-  const light = Math.max(l1,l2);
-  const dark = Math.min(l1,l2);
-
-  return (light+.05)/(dark+.05);
-
-}
-
-
-function recommendedColor(background){
-
-  const bg = luminance(background);
-
-  return bg > .5 ? "#000000" : "#FFFFFF";
-
-}
-
-
-function updateContrast(){
-
-  const fg = $("fgColor").value;
-  const bg = $("bgColor").value;
-
-  const ratio = contrastRatio(fg,bg);
-
-  const box = $("contrastBox");
-  const title = $("contrastTitle");
-  const text = $("contrastText");
-
-  box.classList.remove("good","bad");
-
-  if(ratio >= 7){
-
-    box.classList.add("good");
-
-    title.textContent = "Sehr guter Kontrast";
-
-    text.textContent =
-      `Kontrast ${ratio.toFixed(1)}:1 · Sehr gut für QR-Codes geeignet.`;
-
-  }
-  else if(ratio >= 4.5){
-
-    box.classList.add("good");
-
-    title.textContent = "Guter Kontrast";
-
-    text.textContent =
-      `Kontrast ${ratio.toFixed(1)}:1 · Die Kombination ist gut scanbar.`;
-
-  }
-  else {
-
-    box.classList.add("bad");
-
-    const recommendation = recommendedColor(bg);
-
-    title.textContent = "Kontrast zu niedrig";
-
-    text.textContent =
-      `Nur ${ratio.toFixed(1)}:1. Empfohlen wird ${recommendation}, damit der QR-Code zuverlässiger scanbar bleibt.`;
-
-  }
-
-}
-
-
-/* =========================================================
-   GRADIENT
-========================================================= */
-
-let gradientEnabled = false;
-
-$("gradientSwitch").addEventListener("click", () => {
-
-  gradientEnabled = !gradientEnabled;
-
-  $("gradientSwitch").classList.toggle(
-    "on",
-    gradientEnabled
-  );
-
-  $("gradientControls").style.display =
-    gradientEnabled ? "block" : "none";
-
-});
-
-
-/* =========================================================
-   RANGE
-========================================================= */
-
-$("margin").addEventListener("input", () => {
-  $("marginValue").textContent = $("margin").value;
-});
-
-$("size").addEventListener("input", () => {
-  $("sizeValue").textContent = $("size").value + " px";
-});
-
-
-/* =========================================================
-   GET DATA
-========================================================= */
-
-function getData(){
-
-  if(currentType === "url"){
-    return $("inputMain").value.trim();
-  }
-
-  if(currentType === "text"){
-    return $("inputMain").value;
-  }
-
-  if(currentType === "phone"){
-    return "tel:" + $("inputMain").value.trim();
-  }
-
-  if(currentType === "email"){
-
-    const address = $("emailAddress").value.trim();
-    const subject = $("emailSubject").value;
-    const body = $("emailBody").value;
-
-    return `mailto:${address}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-  }
-
-  if(currentType === "wifi"){
-
-    const ssid = $("wifiSsid").value;
-    const password = $("wifiPassword").value;
-    const security = $("wifiSecurity").value;
-
-    return `WIFI:T:${security};S:${escapeWifi(ssid)};P:${escapeWifi(password)};;`;
-
-  }
-
-}
-
-
-function escapeWifi(value){
-
-  return value
-    .replace(/\\/g,"\\\\")
-    .replace(/;/g,"\\;")
-    .replace(/,/g,"\\,")
-    .replace(/:/g,"\\:");
-
-}
-
-
-/* =========================================================
-   QR MATRIX
-========================================================= */
-
-function createMatrix(text){
-
-  const ecc = $("ecc").value;
-
-  const qr = qrcode(0,ecc);
-
+  const qr=qrcode(0,ecc);
   qr.addData(text);
   qr.make();
 
-  const count = qr.getModuleCount();
+  const count=qr.getModuleCount();
+  const matrix=[];
 
-  const matrix = [];
+  for(let y=0;y<count;y++){
+    matrix[y]=[];
 
-  for(let row=0; row<count; row++){
-
-    matrix[row] = [];
-
-    for(let col=0; col<count; col++){
-
-      matrix[row][col] =
-        qr.isDark(row,col);
-
+    for(let x=0;x<count;x++){
+      matrix[y][x]=qr.isDark(y,x);
     }
-
   }
 
-  currentQr = qr;
-
-  return matrix;
-
+  return {
+    matrix,
+    count
+  };
 }
 
+/* ---------- QR RENDER ---------- */
 
-/* =========================================================
-   DRAW HELPERS
-========================================================= */
+function renderQR(animated=false){
 
-function roundedRect(ctx,x,y,w,h,r){
+  const payload=getPayload();
 
-  r = Math.min(r,w/2,h/2);
+  if(!payload.trim()){
+    alert("Bitte zuerst Inhalt eingeben.");
+    return;
+  }
 
-  ctx.beginPath();
+  const result=makeQR(payload);
+
+  state.previousMatrix=state.currentMatrix;
+  state.currentMatrix=result;
+
+  state.generated=true;
+
+  $("emptyState").style.display="none";
+  $("qrCanvas").style.display="block";
+  $("statusPill").textContent="Erstellt";
+
+  drawQR(result,animated);
+
+  updateLogoOverlay();
+  updateHealth();
+}
+
+function drawQR(result,animated=false){
+
+  const canvas=$("qrCanvas");
+  const ctx=canvas.getContext("2d");
+
+  const matrix=result.matrix;
+  const n=result.count;
+
+  const margin=Number($("margin").value);
+  const total=n+margin*2;
+
+  const size=700;
+
+  canvas.width=size;
+  canvas.height=size;
+
+  const cell=size/total;
+
+  const fg=$("fg").value;
+  const bg=$("bgColor").value;
+
+  ctx.clearRect(0,0,size,size);
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,size,size);
+
+  let gradient=null;
+
+  if(state.gradient){
+    gradient=ctx.createLinearGradient(0,0,size,size);
+    gradient.addColorStop(0,fg);
+    gradient.addColorStop(1,$("fg2").value);
+  }
+
+  const moduleStyle=$("moduleStyle").value;
+  const finderStyle=$("finderStyle").value;
+
+  const modules=[];
+
+  for(let y=0;y<n;y++){
+    for(let x=0;x<n;x++){
+
+      if(!matrix[y][x]) continue;
+
+      modules.push({
+        x,
+        y,
+        delay:animated ? Math.random()*600 : 0
+      });
+    }
+  }
+
+  function paint(m,progress=1){
+
+    const px=(m.x+margin)*cell;
+    const py=(m.y+margin)*cell;
+
+    let w=cell*progress;
+    let h=cell*progress;
+
+    const cx=px+cell/2;
+    const cy=py+cell/2;
+
+    ctx.fillStyle=gradient || fg;
+
+    const finder=isFinder(m.x,m.y,n);
+
+    let radius=0;
+
+    if(finder && finderStyle==="round") radius=cell*.35;
+    else if(moduleStyle==="round") radius=cell*.45;
+    else if(moduleStyle==="dot") radius=cell*.5;
+
+    if(radius>0){
+      ctx.beginPath();
+      roundRect(ctx,cx-w/2,cy-h/2,w,h,radius);
+      ctx.fill();
+    }else{
+      ctx.fillRect(cx-w/2,cy-h/2,w,h);
+    }
+  }
+
+  if(!animated){
+
+    modules.forEach(m=>paint(m,1));
+
+  }else{
+
+    const start=performance.now();
+
+    function frame(now){
+
+      const elapsed=now-start;
+
+      ctx.clearRect(0,0,size,size);
+      ctx.fillStyle=bg;
+      ctx.fillRect(0,0,size,size);
+
+      let finished=true;
+
+      modules.forEach(m=>{
+
+        const p=Math.max(0,Math.min(1,(elapsed-m.delay)/650));
+
+        if(p<1) finished=false;
+
+        const eased=1-Math.pow(1-p,3);
+
+        paint(m,eased);
+      });
+
+      if(!finished){
+        requestAnimationFrame(frame);
+      }else{
+        finalPulse();
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  r=Math.min(r,w/2,h/2);
 
   ctx.moveTo(x+r,y);
   ctx.arcTo(x+w,y,x+w,y+h,r);
   ctx.arcTo(x+w,y+h,x,y+h,r);
   ctx.arcTo(x,y+h,x,y,r);
   ctx.arcTo(x,y,x+w,y,r);
-
   ctx.closePath();
-
 }
 
+function isFinder(x,y,n){
 
-function isFinderModule(row,col,n){
-
-  const areas = [
-    [0,0],
-    [0,n-7],
-    [n-7,0]
-  ];
-
-  for(const [r,c] of areas){
-
-    if(
-      row >= r &&
-      row < r+7 &&
-      col >= c &&
-      col < c+7
-    ){
-      return true;
-    }
-
-  }
-
-  return false;
-
+  return (
+    (x<7 && y<7) ||
+    (x>=n-7 && y<7) ||
+    (x<7 && y>=n-7)
+  );
 }
 
+function finalPulse(){
 
-function finderDistance(row,col,n){
+  const line=$("scanLine");
 
-  const centers = [
-    [3,3],
-    [3,n-4],
-    [n-4,3]
-  ];
+  line.classList.remove("active");
+  void line.offsetWidth;
+  line.classList.add("active");
 
-  let min = Infinity;
-
-  for(const [r,c] of centers){
-
-    min = Math.min(
-      min,
-      Math.hypot(row-r,col-c)
-    );
-
-  }
-
-  return min;
-
+  setTimeout(()=>{
+    updateLogoOverlay();
+  },500);
 }
 
+/* ---------- LOGO ---------- */
 
-/* =========================================================
-   QR RENDER
-========================================================= */
+$("logoDrop").onclick=()=>{
+  $("logoInput").click();
+};
 
-function drawQR(canvas,matrix,animated=false){
+$("logoInput").onchange=e=>{
 
-  const size = Number($("size").value);
+  const file=e.target.files[0];
+  if(!file) return;
 
-  canvas.width = size;
-  canvas.height = size;
+  const reader=new FileReader();
 
-  const ctx = canvas.getContext("2d");
+  reader.onload=ev=>{
 
-  const bg = $("bgColor").value;
-  const fg = $("fgColor").value;
+    state.logo=ev.target.result;
 
-  ctx.clearRect(0,0,size,size);
+    $("logoPreview").src=state.logo;
+    $("logoPreview").style.display="block";
+    $("logoControls").style.display="block";
 
-  ctx.fillStyle = bg;
-  ctx.fillRect(0,0,size,size);
+    updateLogoOverlay();
+    updateHealth();
+  };
 
-  const margin = Number($("margin").value);
+  reader.readAsDataURL(file);
+};
 
-  const n = matrix.length;
+document.querySelectorAll(".logoShape").forEach(btn=>{
+  btn.onclick=()=>{
 
-  const cell = size/(n + margin*2);
+    document.querySelectorAll(".logoShape")
+      .forEach(x=>x.classList.remove("active"));
 
-  const offset = margin*cell;
+    btn.classList.add("active");
 
-  let fill = fg;
+    state.logoShape=btn.dataset.shape;
 
-  if(gradientEnabled){
+    updateLogoOverlay();
+    updateHealth();
+  };
+});
 
-    const direction = $("gradientDirection").value;
+document.querySelectorAll(".logoPosition button").forEach(btn=>{
+  btn.onclick=()=>{
 
-    if(direction === "horizontal"){
-      fill = ctx.createLinearGradient(0,0,size,0);
-    }
-    else if(direction === "vertical"){
-      fill = ctx.createLinearGradient(0,0,0,size);
-    }
-    else if(direction === "radial"){
-      fill = ctx.createRadialGradient(
-        size/2,size/2,0,
-        size/2,size/2,size*.75
-      );
-    }
-    else{
-      fill = ctx.createLinearGradient(
-        0,0,size,size
-      );
-    }
+    document.querySelectorAll(".logoPosition button")
+      .forEach(x=>x.classList.remove("active"));
 
-    fill.addColorStop(0,fg);
-    fill.addColorStop(1,$("gradientColor").value);
+    btn.classList.add("active");
 
-  }
+    state.logoPosition=btn.dataset.position;
 
-  ctx.fillStyle = fill;
+    updateLogoOverlay();
+    updateHealth();
+  };
+});
 
-  const style = $("moduleStyle").value;
-  const finderStyle = $("finderStyle").value;
+function updateLogoOverlay(){
 
-  for(let row=0;row<n;row++){
+  const img=$("logoOverlay");
 
-    for(let col=0;col<n;col++){
-
-      if(!matrix[row][col]) continue;
-
-      const x = offset + col*cell;
-      const y = offset + row*cell;
-
-      const finder = isFinderModule(row,col,n);
-
-      const s = finder ? finderStyle : style;
-
-      if(s === "square"){
-
-        ctx.fillRect(
-          x,
-          y,
-          Math.ceil(cell+.25),
-          Math.ceil(cell+.25)
-        );
-
-      }
-      else if(s === "rounded"){
-
-        roundedRect(
-          ctx,
-          x+.15*cell,
-          y+.15*cell,
-          cell*.7,
-          cell*.7,
-          cell*.18
-        );
-
-        ctx.fill();
-
-      }
-      else{
-
-        ctx.beginPath();
-
-        ctx.arc(
-          x+cell/2,
-          y+cell/2,
-          cell*.38,
-          0,
-          Math.PI*2
-        );
-
-        ctx.fill();
-
-      }
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   PROFESSIONAL BUILD ANIMATION
-========================================================= */
-
-function animateBuild(matrix){
-
-  const canvas = $("animationCanvas");
-
-  const size = Number($("size").value);
-
-  canvas.width = size;
-  canvas.height = size;
-
-  const ctx = canvas.getContext("2d");
-
-  const bg = $("bgColor").value;
-  const fg = $("fgColor").value;
-
-  const n = matrix.length;
-
-  const margin = Number($("margin").value);
-
-  const cell = size/(n + margin*2);
-  const offset = margin*cell;
-
-  const modules = [];
-
-  for(let row=0;row<n;row++){
-
-    for(let col=0;col<n;col++){
-
-      if(!matrix[row][col]) continue;
-
-      const finder = isFinderModule(row,col,n);
-
-      let delay;
-
-      if(finder){
-
-        delay =
-          finderDistance(row,col,n)*8;
-
-      }else{
-
-        const distance =
-          Math.hypot(
-            row-n*.5,
-            col-n*.5
-          );
-
-        const diagonal =
-          (row+col)*1.5;
-
-        delay =
-          170 +
-          distance*4.5 +
-          diagonal*.55;
-
-      }
-
-      modules.push({
-        row,
-        col,
-        finder,
-        delay,
-        seed:Math.random()
-      });
-
-    }
-
-  }
-
-  modules.sort((a,b)=>a.delay-b.delay);
-
-  const start = performance.now();
-
-  const duration =
-    Math.max(
-      1150,
-      Math.max(...modules.map(m=>m.delay))+650
-    );
-
-  function ease(t){
-
-    return 1-Math.pow(1-t,4);
-  }
-
-
-  function frame(now){
-
-    const elapsed = now-start;
-
-    ctx.clearRect(0,0,size,size);
-
-    for(const m of modules){
-
-      const local =
-        Math.max(
-          0,
-          Math.min(
-            1,
-            (elapsed-m.delay)/430
-          )
-        );
-
-      const p = ease(local);
-
-      if(local <= 0) continue;
-
-      const x =
-        offset +
-        m.col*cell;
-
-      const y =
-        offset +
-        m.row*cell;
-
-      /*
-        Jede Zelle kommt aus einer leicht
-        anderen Richtung.
-      */
-
-      const angle =
-        m.seed*Math.PI*2;
-
-      const distance =
-        cell*(1.5 + m.seed*3);
-
-      const startX =
-        x + Math.cos(angle)*distance;
-
-      const startY =
-        y + Math.sin(angle)*distance;
-
-      const drawX =
-        startX + (x-startX)*p;
-
-      const drawY =
-        startY + (y-startY)*p;
-
-      const scale =
-        .2 + .8*p;
-
-      const alpha =
-        Math.min(
-          1,
-          p*1.35
-        );
-
-      ctx.save();
-
-      ctx.globalAlpha = alpha;
-
-      ctx.translate(
-        drawX+cell/2,
-        drawY+cell/2
-      );
-
-      ctx.scale(scale,scale);
-
-      ctx.translate(
-        -cell/2,
-        -cell/2
-      );
-
-      drawAnimatedModule(
-        ctx,
-        cell,
-        $("moduleStyle").value,
-        m.finder
-          ? $("finderStyle").value
-          : $("moduleStyle").value,
-        fg
-      );
-
-      ctx.restore();
-
-    }
-
-
-    if(elapsed < duration){
-
-      requestAnimationFrame(frame);
-
-    }
-    else{
-
-      finishAnimation();
-
-    }
-
-  }
-
-  requestAnimationFrame(frame);
-
-}
-
-
-/* =========================================================
-   ANIMATED MODULE
-========================================================= */
-
-function drawAnimatedModule(
-  ctx,
-  cell,
-  normalStyle,
-  finderStyle,
-  color
-){
-
-  ctx.fillStyle = color;
-
-  const style = normalStyle;
-
-  if(style === "square"){
-
-    ctx.fillRect(
-      0,
-      0,
-      cell,
-      cell
-    );
-
-  }
-  else if(style === "rounded"){
-
-    roundedRect(
-      ctx,
-      cell*.08,
-      cell*.08,
-      cell*.84,
-      cell*.84,
-      cell*.2
-    );
-
-    ctx.fill();
-
-  }
-  else{
-
-    ctx.beginPath();
-
-    ctx.arc(
-      cell/2,
-      cell/2,
-      cell*.39,
-      0,
-      Math.PI*2
-    );
-
-    ctx.fill();
-
-  }
-
-}
-
-
-/* =========================================================
-   FINAL LIGHT PULSE
-========================================================= */
-
-function finishAnimation(){
-
-  const canvas = $("animationCanvas");
-
-  const ctx = canvas.getContext("2d");
-
-  const size = canvas.width;
-
-  const start = performance.now();
-
-  function pulse(now){
-
-    const t =
-      Math.min(
-        1,
-        (now-start)/650
-      );
-
-    ctx.clearRect(
-      0,
-      0,
-      size,
-      size
-    );
-
-    const alpha =
-      Math.sin(t*Math.PI)*.42;
-
-    if(alpha > 0){
-
-      const gradient =
-        ctx.createLinearGradient(
-          -size,
-          0,
-          size*2,
-          size
-        );
-
-      gradient.addColorStop(
-        Math.max(0,t-.22),
-        `rgba(255,255,255,0)`
-      );
-
-      gradient.addColorStop(
-        t,
-        `rgba(255,255,255,${alpha})`
-      );
-
-      gradient.addColorStop(
-        Math.min(1,t+.22),
-        `rgba(255,255,255,0)`
-      );
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0,0,size,size);
-
-    }
-
-    if(t<1){
-
-      requestAnimationFrame(pulse);
-
-    }
-    else{
-
-      ctx.clearRect(
-        0,
-        0,
-        size,
-        size
-      );
-
-      $("status").textContent =
-        "Bereit · QR-Code erstellt";
-
-    }
-
-  }
-
-  requestAnimationFrame(pulse);
-
-}
-
-
-/* =========================================================
-   GENERATE
-========================================================= */
-
-$("generate").addEventListener("click",generate);
-
-
-function generate(){
-
-  const data = getData();
-
-  if(!data || !data.trim()){
-
-    $("status").textContent =
-      "Bitte zuerst Inhalt eingeben.";
-
+  if(!state.logo || !state.generated){
+    img.style.display="none";
     return;
-
   }
 
-  const fg = $("fgColor").value;
-  const bg = $("bgColor").value;
+  img.src=state.logo;
+  img.style.display="block";
 
-  const ratio = contrastRatio(fg,bg);
+  const box=$("previewBox");
 
-  if(ratio < 2.5){
+  const size=Math.min(
+    box.clientWidth,
+    box.clientHeight
+  )*(state.logoSize/100);
 
-    const recommendation =
-      recommendedColor(bg);
+  img.style.width=size+"px";
+  img.style.height=size+"px";
 
-    $("status").textContent =
-      `Kontrast zu niedrig · ${recommendation} empfohlen`;
+  img.className="logoOverlay "+state.logoShape;
 
-    return;
+  const gap=20;
 
+  if(state.logoPosition==="center"){
+    img.style.left="50%";
+    img.style.top="50%";
+    img.style.transform="translate(-50%,-50%)";
+  }else{
+
+    img.style.transform="none";
+
+    const map={
+      tl:[gap,gap],
+      tc:["50%",gap],
+      tr:[`calc(100% - ${size+gap}px)`,gap],
+
+      ml:[gap,"50%"],
+      mr:[`calc(100% - ${size+gap}px)`,"50%"],
+
+      bl:[gap,`calc(100% - ${size+gap}px)`],
+      bc:["50%",`calc(100% - ${size+gap}px)`],
+      br:[`calc(100% - ${size+gap}px)`,`calc(100% - ${size+gap}px)`]
+    };
+
+    const p=map[state.logoPosition];
+
+    img.style.left=typeof p[0]==="number"
+      ? p[0]+"px"
+      : p[0];
+
+    img.style.top=typeof p[1]==="number"
+      ? p[1]+"px"
+      : p[1];
+
+    if(state.logoPosition==="tc" ||
+       state.logoPosition==="bc"){
+      img.style.transform="translateX(-50%)";
+    }
+
+    if(state.logoPosition==="ml" ||
+       state.logoPosition==="mr"){
+      img.style.transform="translateY(-50%)";
+    }
   }
+}
 
-  currentQrText = data;
+$("logoAutoFit").onclick=()=>{
 
-  currentMatrix = createMatrix(data);
+  let max=18;
 
-  $("emptyState").style.display = "none";
+  const score=getHealthScore(max);
 
-  $("qrWrap").classList.add("visible");
+  if(score<85) max=15;
+  if(score<75) max=12;
+  if(score<65) max=9;
 
-  $("exportRow").style.display = "grid";
+  state.logoSize=max;
+  $("logoSize").value=max;
+  $("logoSizeValue").textContent=max+"%";
 
-  $("status").textContent =
-    "QR-Code wird gebaut…";
+  updateLogoOverlay();
+  updateHealth();
+};
 
-  /*
-    Erst normalen QR rendern,
-    dann Animation darüber.
-  */
+/* ---------- HEALTH ---------- */
 
-  drawQR(
-    $("qrCanvas"),
-    currentMatrix
+function luminance(hex){
+
+  const rgb=hex.match(/\w\w/g).map(x=>parseInt(x,16)/255);
+
+  return rgb.map(c=>
+    c<=.03928 ? c/12.92 : Math.pow((c+.055)/1.055,2.4)
+  ).reduce((a,c,i)=>a+[0.2126,0.7152,0.0722][i]*c,0);
+}
+
+function contrastRatio(a,b){
+
+  const l1=luminance(a);
+  const l2=luminance(b);
+
+  const light=Math.max(l1,l2);
+  const dark=Math.min(l1,l2);
+
+  return (light+.05)/(dark+.05);
+}
+
+function getHealthScore(logoSize=state.logoSize){
+
+  if(!state.generated) return 0;
+
+  let score=100;
+
+  const ratio=contrastRatio(
+    $("fg").value,
+    $("bgColor").value
   );
 
-  $("animationCanvas").style.display = "block";
+  if(ratio<3) score-=45;
+  else if(ratio<4.5) score-=25;
+  else if(ratio<7) score-=8;
 
-  animateBuild(currentMatrix);
+  const margin=Number($("margin").value);
 
-  saveHistory(data);
+  if(margin<2) score-=15;
+  else if(margin<4) score-=5;
 
+  if(state.currentMatrix){
+
+    const density=
+      state.currentMatrix.matrix.flat().filter(Boolean).length /
+      (state.currentMatrix.count**2);
+
+    if(density>.65) score-=12;
+    if(density>.75) score-=15;
+  }
+
+  if(state.logo){
+
+    if(logoSize>25) score-=25;
+    else if(logoSize>20) score-=12;
+    else if(logoSize>16) score-=5;
+  }
+
+  if($("ecc").value==="L" && state.logo){
+    score-=10;
+  }
+
+  return Math.max(0,Math.min(100,Math.round(score)));
 }
 
+function updateHealth(){
 
-/* =========================================================
-   EXPORT PNG
-========================================================= */
+  if(!state.generated) return;
 
-$("downloadPng").addEventListener(
-  "click",
-  () => {
+  const score=getHealthScore();
 
-    if(!currentMatrix) return;
+  const numbers=[
+    $("scoreNumber"),
+    $("previewScore")
+  ];
 
-    const canvas =
-      document.createElement("canvas");
+  numbers.forEach(el=>{
+    el.textContent=score;
 
-    drawQR(
-      canvas,
-      currentMatrix
-    );
+    el.classList.remove("warning","bad");
 
-    const link =
-      document.createElement("a");
-
-    link.download =
-      "qrforge-qr.png";
-
-    link.href =
-      canvas.toDataURL("image/png");
-
-    link.click();
-
-  }
-);
-
-
-/* =========================================================
-   EXPORT SVG
-========================================================= */
-
-$("downloadSvg").addEventListener(
-  "click",
-  () => {
-
-    if(!currentMatrix) return;
-
-    const svg =
-      createSVG(
-        currentMatrix
-      );
-
-    const blob =
-      new Blob(
-        [svg],
-        {type:"image/svg+xml"}
-      );
-
-    const url =
-      URL.createObjectURL(blob);
-
-    const link =
-      document.createElement("a");
-
-    link.download =
-      "qrforge-qr.svg";
-
-    link.href = url;
-
-    link.click();
-
-    setTimeout(
-      () => URL.revokeObjectURL(url),
-      1000
-    );
-
-  }
-);
-
-
-function createSVG(matrix){
-
-  const size = Number($("size").value);
-
-  const margin = Number($("margin").value);
-
-  const n = matrix.length;
-
-  const total = n + margin*2;
-
-  const fg = $("fgColor").value;
-  const bg = $("bgColor").value;
-
-  let modules = "";
-
-  for(let row=0;row<n;row++){
-
-    for(let col=0;col<n;col++){
-
-      if(!matrix[row][col]) continue;
-
-      const x = col+margin;
-      const y = row+margin;
-
-      modules +=
-        `<rect x="${x}" y="${y}" width="1" height="1"/>`;
-
-    }
-
-  }
-
-  let gradient = "";
-
-  if(gradientEnabled){
-
-    gradient = `
-      <defs>
-        <linearGradient id="qrGradient"
-          x1="0%" y1="0%"
-          x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${fg}"/>
-          <stop offset="100%" stop-color="${$("gradientColor").value}"/>
-        </linearGradient>
-      </defs>
-    `;
-
-  }
-
-  const fill =
-    gradientEnabled
-      ? "url(#qrGradient)"
-      : fg;
-
-  return `
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="${size}"
-  height="${size}"
-  viewBox="0 0 ${total} ${total}"
->
-${gradient}
-<rect width="100%" height="100%" fill="${bg}"/>
-<g fill="${fill}">
-${modules}
-</g>
-</svg>
-`;
-
-}
-
-
-/* =========================================================
-   HISTORY
-========================================================= */
-
-function saveHistory(data){
-
-  let history =
-    JSON.parse(
-      localStorage.getItem("qrforge-history") || "[]"
-    );
-
-  history =
-    history.filter(
-      x => x !== data
-    );
-
-  history.unshift(data);
-
-  history =
-    history.slice(0,8);
-
-  localStorage.setItem(
-    "qrforge-history",
-    JSON.stringify(history)
-  );
-
-  renderHistory();
-
-}
-
-
-function renderHistory(){
-
-  const list =
-    $("historyList");
-
-  const history =
-    JSON.parse(
-      localStorage.getItem("qrforge-history") || "[]"
-    );
-
-  list.innerHTML = "";
-
-  history.forEach(data => {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "history-item";
-
-    item.textContent =
-      data;
-
-    item.title =
-      data;
-
-    item.addEventListener(
-      "click",
-      () => {
-
-        const input =
-          document.getElementById("inputMain");
-
-        if(input){
-
-          input.value = data;
-
-        }
-
-      }
-    );
-
-    list.appendChild(item);
-
+    if(score<70) el.classList.add("bad");
+    else if(score<85) el.classList.add("warning");
   });
 
+  const ratio=contrastRatio(
+    $("fg").value,
+    $("bgColor").value
+  );
+
+  $("contrastStatus").textContent=
+    ratio>=4.5 ? "Sehr gut" :
+    ratio>=3 ? "Okay" : "Zu niedrig";
+
+  $("contrastStatus").className=
+    ratio>=4.5 ? "good" :
+    ratio>=3 ? "warningText" : "badText";
+
+  const margin=Number($("margin").value);
+
+  $("quietStatus").textContent=
+    margin>=4 ? "Gut" :
+    margin>=2 ? "Okay" : "Klein";
+
+  $("quietStatus").className=
+    margin>=4 ? "good" :
+    margin>=2 ? "warningText" : "badText";
+
+  $("logoStatus").textContent=
+    !state.logo ? "Kein Logo" :
+    state.logoSize<=18 ? "Sicher" :
+    state.logoSize<=23 ? "Grenzwertig" : "Zu groß";
+
+  $("logoStatus").className=
+    !state.logo || state.logoSize<=18 ? "good" :
+    state.logoSize<=23 ? "warningText" : "badText";
+
+  let density=0;
+
+  if(state.currentMatrix){
+    density=
+      state.currentMatrix.matrix.flat().filter(Boolean).length /
+      (state.currentMatrix.count**2);
+  }
+
+  $("densityStatus").textContent=
+    density<.55 ? "Niedrig" :
+    density<.7 ? "Normal" : "Hoch";
+
+  $("densityStatus").className=
+    density<.7 ? "good" : "warningText";
 }
 
-renderHistory();
-updateContrast();
+/* ---------- SMART COLOR ---------- */
 
+function smartColors(){
 
-/* =========================================================
-   ENTER / CMD+ENTER
-========================================================= */
+  const base=$("fg").value;
 
-document.addEventListener(
-  "keydown",
-  e => {
+  const palettes=[
+    ["#111111","#ffffff","#5c6cff","#e8ebff","#242936"],
+    ["#15202b","#f7f9fb","#00a8ff","#dff4ff","#283747"],
+    ["#241526","#fff8ff","#b65cff","#f1dcff","#38243d"],
+    ["#0d261d","#f4fff9","#28c982","#d8f7e8","#193c2e"],
+    ["#241a0b","#fffaf0","#e4a62a","#fff0c7","#493817"]
+  ];
 
+  $("palette").innerHTML="";
+
+  palettes.forEach(colors=>{
+
+    const sw=document.createElement("div");
+    sw.className="swatch";
+
+    sw.style.background=
+      `linear-gradient(90deg,${colors[0]} 0 20%,${colors[1]} 20% 40%,${colors[2]} 40% 60%,${colors[3]} 60% 80%,${colors[4]} 80%)`;
+
+    sw.title="Palette anwenden";
+
+    sw.onclick=()=>{
+
+      $("fg").value=colors[0];
+      $("fgText").value=colors[0];
+
+      $("bgColor").value=colors[1];
+      $("bgText").value=colors[1];
+
+      $("fg2").value=colors[2];
+      $("fg2Text").value=colors[2];
+
+      if(state.generated) renderQR(true);
+    };
+
+    $("palette").appendChild(sw);
+  });
+}
+
+smartColors();
+
+$("smartColor").onclick=()=>{
+
+  const candidates=[
+    ["#111111","#ffffff"],
+    ["#172033","#f7fbff"],
+    ["#241438","#fffaff"],
+    ["#123327","#f5fff9"],
+    ["#25200f","#fffdf3"]
+  ];
+
+  let best=candidates[0];
+  let bestRatio=0;
+
+  candidates.forEach(c=>{
+    const ratio=contrastRatio(c[0],c[1]);
+
+    if(ratio>bestRatio){
+      best=c;
+      bestRatio=ratio;
+    }
+  });
+
+  $("fg").value=best[0];
+  $("fgText").value=best[0];
+
+  $("bgColor").value=best[1];
+  $("bgText").value=best[1];
+
+  if(state.generated) renderQR(true);
+};
+
+/* ---------- ACCESSIBILITY ---------- */
+
+$("accessibility").onclick=()=>{
+
+  const ratio=contrastRatio(
+    $("fg").value,
+    $("bgColor").value
+  );
+
+  let message="";
+
+  if(ratio>=7){
+    message="Sehr hoher Kontrast. Gute Lesbarkeit auch bei eingeschränkter Farbwahrnehmung.";
+  }else if(ratio>=4.5){
+    message="Guter Kontrast. Für QR-Codes normalerweise eine solide Ausgangsbasis.";
+  }else if(ratio>=3){
+    message="Mittlerer Kontrast. Eine dunklere QR-Farbe oder hellere Fläche wäre sicherer.";
+  }else{
+    message="Niedriger Kontrast. Verwende eine deutlich hellere Hintergrundfarbe.";
+  }
+
+  $("accessibilityResult").textContent=message;
+};
+
+/* ---------- ADAPTIVE PRESETS ---------- */
+
+const presets={
+  phone:{
+    ecc:"M",
+    margin:4,
+    info:"Smartphone: kompakte Darstellung mit ausgewogener Scanbarkeit."
+  },
+  screen:{
+    ecc:"M",
+    margin:5,
+    info:"Bildschirm: etwas mehr Quiet Zone für Displays und Präsentationen."
+  },
+  poster:{
+    ecc:"H",
+    margin:6,
+    info:"Poster: hohe Fehlerkorrektur und größere Quiet Zone."
+  },
+  card:{
+    ecc:"Q",
+    margin:5,
+    info:"Visitenkarte: kompakt, aber mit zusätzlicher Fehlertoleranz."
+  },
+  sticker:{
+    ecc:"H",
+    margin:6,
+    info:"Sticker: hohe Fehlerkorrektur für Kratzer und Verschmutzungen."
+  },
+  document:{
+    ecc:"Q",
+    margin:5,
+    info:"Dokument: auf sauberen Druck und zuverlässiges Scannen ausgelegt."
+  }
+};
+
+document.querySelectorAll(".preset").forEach(btn=>{
+  btn.onclick=()=>{
+
+    const p=presets[btn.dataset.preset];
+
+    $("ecc").value=p.ecc;
+    $("margin").value=p.margin;
+    $("marginValue").textContent=p.margin;
+
+    $("presetInfo").textContent=p.info;
+
+    if(state.generated) renderQR(true);
+  };
+});
+
+/* ---------- BEAUTIFY ---------- */
+
+$("beautify").onclick=()=>{
+
+  if(!state.generated){
+    alert("Erstelle zuerst einen QR-Code.");
+    return;
+  }
+
+  const candidates=[
+    {fg:"#111111",bg:"#ffffff",ecc:"M",margin:4,module:"square"},
+    {fg:"#172033",bg:"#f7fbff",ecc:"Q",margin:5,module:"round"},
+    {fg:"#241438",bg:"#fffaff",ecc:"Q",margin:5,module:"dot"},
+    {fg:"#123327",bg:"#f5fff9",ecc:"Q",margin:5,module:"round"},
+    {fg:"#25200f",bg:"#fffdf3",ecc:"H",margin:6,module:"square"}
+  ];
+
+  let best=null;
+  let bestScore=-Infinity;
+
+  candidates.forEach(c=>{
+
+    $("fg").value=c.fg;
+    $("bgColor").value=c.bg;
+    $("ecc").value=c.ecc;
+    $("margin").value=c.margin;
+    $("moduleStyle").value=c.module;
+
+    const s=getHealthScore();
+
+    const aestheticBonus=
+      c.module==="round" ? 4 :
+      c.module==="dot" ? 3 : 1;
+
+    const total=s+aestheticBonus;
+
+    if(total>bestScore){
+      bestScore=total;
+      best={...c};
+    }
+  });
+
+  $("fg").value=best.fg;
+  $("fgText").value=best.fg;
+
+  $("bgColor").value=best.bg;
+  $("bgText").value=best.bg;
+
+  $("ecc").value=best.ecc;
+  $("margin").value=best.margin;
+  $("marginValue").textContent=best.margin;
+  $("moduleStyle").value=best.module;
+
+  renderQR(true);
+};
+
+/* ---------- MORPH ---------- */
+
+$("morphTest").onclick=()=>{
+
+  if(!state.generated){
+    alert("Erstelle zuerst einen QR-Code.");
+    return;
+  }
+
+  renderQR(true);
+};
+
+/* ---------- GENERATE ---------- */
+
+$("generate").onclick=()=>{
+  renderQR(true);
+};
+
+/* ---------- LIVE UPDATE ---------- */
+
+document.addEventListener("input",e=>{
+
+  if(!state.generated) return;
+
+  if(
+    e.target.matches("input") ||
+    e.target.matches("textarea") ||
+    e.target.matches("select")
+  ){
     if(
-      (e.ctrlKey || e.metaKey) &&
-      e.key === "Enter"
+      e.target.id!=="logoInput" &&
+      e.target.id!=="fg" &&
+      e.target.id!=="bgColor" &&
+      e.target.id!=="fg2"
     ){
+      renderQR(true);
+    }
+  }
+});
 
-      generate();
+/* ---------- EXPORT PNG ---------- */
 
+$("downloadPNG").onclick=()=>{
+
+  if(!state.generated) return;
+
+  const link=document.createElement("a");
+
+  link.download="qrforge.png";
+  link.href=$("qrCanvas").toDataURL("image/png");
+  link.click();
+};
+
+/* ---------- EXPORT SVG ---------- */
+
+$("downloadSVG").onclick=()=>{
+
+  if(!state.generated) return;
+
+  const result=state.currentMatrix;
+  const n=result.count;
+  const margin=Number($("margin").value);
+  const total=n+margin*2;
+
+  const fg=$("fg").value;
+  const bg=$("bgColor").value;
+
+  let modules="";
+
+  for(let y=0;y<n;y++){
+    for(let x=0;x<n;x++){
+
+      if(!result.matrix[y][x]) continue;
+
+      modules+=
+        `<rect x="${x+margin}" y="${y+margin}" width="1" height="1"/>`;
+    }
+  }
+
+  const svg=`
+<svg xmlns="http://www.w3.org/2000/svg"
+ viewBox="0 0 ${total} ${total}"
+ shape-rendering="crispEdges">
+
+<rect width="100%" height="100%" fill="${bg}"/>
+
+<g fill="${fg}">
+${modules}
+</g>
+
+</svg>`;
+
+  const blob=new Blob([svg],{type:"image/svg+xml"});
+  const url=URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="qrforge.svg";
+  a.click();
+
+  URL.revokeObjectURL(url);
+};
+
+/* ---------- COPY ---------- */
+
+$("copyQR").onclick=async()=>{
+
+  if(!state.generated) return;
+
+  $("qrCanvas").toBlob(async blob=>{
+
+    try{
+
+      await navigator.clipboard.write([
+        new ClipboardItem({"image/png":blob})
+      ]);
+
+      $("copyQR").textContent="Kopiert ✓";
+
+      setTimeout(()=>{
+        $("copyQR").textContent="QR als Bild kopieren";
+      },1400);
+
+    }catch{
+
+      alert("Das Kopieren von Bildern wird von diesem Browser nicht unterstützt.");
     }
 
-  }
-);
+  });
+};
+
+/* ---------- RESIZE ---------- */
+
+window.addEventListener("resize",()=>{
+  updateLogoOverlay();
+});
+
+/* ---------- INITIAL ---------- */
+
+updateHealth();
 
 </script>
-
 </body>
 </html>
